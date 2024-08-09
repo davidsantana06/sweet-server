@@ -1,0 +1,67 @@
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column, relationship
+)
+from typing import List
+
+from app.extensions import database
+from app.typing import SelectChoices
+
+from ..inheritable import Model, Resource
+
+
+Materials = List['Material']
+
+
+class Material(database.Model, Model, Resource):
+    id: Mapped[int] = mapped_column(
+        autoincrement=True,
+        unique=True,
+        nullable=False,
+        primary_key=True
+    )
+
+    recipe_rels: Mapped[List['RecipeMaterial']] = relationship(
+        back_populates='material',
+        cascade='all, delete'
+    )
+
+    @staticmethod
+    def save(material: 'Material') -> None:
+        Model.save(material)
+
+    @staticmethod
+    def delete(material: 'Material') -> None:
+        Model.delete(material)
+
+    @classmethod
+    def find_all_by_name(cls, name: str) -> Materials:
+        return cls.query.filter(
+            Material.name.icontains(name)
+        ).order_by(
+            Material.name,
+            Material.brand,
+            Material.supplier,
+            Material.value
+        ).all()
+
+    @classmethod
+    def find_all_select_choices_not_related_to_recipe(
+        cls,
+        related_material_ids: List[int]
+    ) -> SelectChoices:
+        return cls.query.with_entities(
+            Material.id, 
+            Material.name
+        ).filter(
+            Material.id.not_in(related_material_ids)
+        ).order_by(
+            Material.name
+        ).all()
+
+    @classmethod
+    def find_first_by_id(cls, id: int) -> 'Material':
+        return cls.query.filter(Material.id == id).first()
+
+
+from .recipe_material import RecipeMaterial
