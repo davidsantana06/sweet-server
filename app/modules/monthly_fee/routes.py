@@ -12,7 +12,6 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    form.value.data = float(form.value.data)
     if app_operations.validate_form(form):
         monthly_fee = monthly_fee_operations.create(
             form.name.data,
@@ -22,7 +21,7 @@ def create():
     return monthly_fee.to_dict(), HTTPStatus.CREATED
 
 
-@monthly_fee.get('/get-all')
+@monthly_fee.get('/all')
 @login_required
 def get_all():
     return [
@@ -31,7 +30,16 @@ def get_all():
     ]
 
 
-@monthly_fee.get('/get-one/id/<int:id>')
+@monthly_fee.get('/all/<string:name>')
+@login_required
+def get_all_by_name(name: str):
+    return [
+        monthly_fee.to_dict() for monthly_fee
+        in monthly_fee_operations.get_all_by_name(name)
+    ]
+
+
+@monthly_fee.get('/one/<int:id>')
 @login_required
 def get_one_by_id(id: int):
     return monthly_fee_operations.get_one_by_id(id).to_dict()
