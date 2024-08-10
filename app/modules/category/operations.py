@@ -1,3 +1,5 @@
+from werkzeug.exceptions import NotFound
+
 from app.database import Category
 from app.typing import SelectChoices
 
@@ -12,4 +14,7 @@ def get_all_select_choices() -> SelectChoices:
 
 
 def get_one_by_name(name: str) -> Category:
-    return Category.find_first_by_name(name)
+    category = Category.find_first_by_name(name)
+    if not category:
+        raise NotFound('The category was not found.')
+    return category

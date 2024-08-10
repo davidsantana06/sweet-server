@@ -1,3 +1,5 @@
+from werkzeug.exceptions import NotFound
+
 from app.database import PaymentMethod
 from app.typing import SelectChoices
 
@@ -12,4 +14,7 @@ def get_all_select_choices() -> SelectChoices:
 
 
 def get_one_by_name(name: str) -> PaymentMethod:
-    return PaymentMethod.find_first_by_name(name)
+    payment_method = PaymentMethod.find_first_by_name(name)
+    if not payment_method:
+        raise NotFound('The payment method was not found.')
+    return payment_method

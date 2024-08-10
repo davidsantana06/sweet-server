@@ -1,4 +1,6 @@
 from flask_bcrypt import generate_password_hash
+from werkzeug.exceptions import NotFound
+
 from app.database import User
 
 
@@ -9,4 +11,7 @@ def create(name: str, password: str) -> None:
 
 
 def get_one_by_id(id: int) -> User:
-    return User.find_first_by_id(id)
+    user = User.find_first_by_id(id)
+    if not user:
+        raise NotFound('The user was not found.')
+    return user
