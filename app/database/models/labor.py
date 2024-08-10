@@ -39,12 +39,22 @@ class Labor(database.Model, Model):
         Model.delete(labor)
 
     @classmethod
+    def find_all(cls) -> Labors:
+        return cls.query.filter(
+            Labor.id != 1
+        ).order_by(
+            Labor.person_name,
+            Labor.hourly_rate
+        ).all()
+
+    @classmethod
     def find_all_by_person_name(cls, person_name: str) -> Labors:
         return cls.query.filter(
             Labor.person_name.icontains(person_name), 
             Labor.id != 1
         ).order_by(
-            Labor.person_name, Labor.hourly_rate
+            Labor.person_name, 
+            Labor.hourly_rate
         ).all()
 
     @classmethod
@@ -53,7 +63,8 @@ class Labor(database.Model, Model):
             Labor.id, 
             Labor.person_name
         ).order_by(
-            Labor.person_name
+            Labor.person_name, 
+            Labor.hourly_rate
         ).all()
 
     @classmethod
