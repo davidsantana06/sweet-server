@@ -40,11 +40,21 @@ class Customer(database.Model, Model):
         Model.delete(customer)
 
     @classmethod
+    def find_all(cls) -> Customers:
+        return cls.query.order_by(
+            Customer.name,
+            Customer.instagram,
+            Customer.phone
+        ).all()
+
+    @classmethod
     def find_all_by_name(cls, name: str) -> Customers:
         return cls.query.filter(
             Customer.name.icontains(name)
         ).order_by(
-            Customer.name
+            Customer.name,
+            Customer.instagram,
+            Customer.phone
         ).all()
 
     @classmethod
@@ -53,7 +63,9 @@ class Customer(database.Model, Model):
             Customer.id, 
             Customer.name
         ).order_by(
-            Customer.name
+            Customer.name,
+            Customer.instagram,
+            Customer.phone
         ).all()
 
     @classmethod
