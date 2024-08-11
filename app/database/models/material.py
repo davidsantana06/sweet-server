@@ -35,6 +35,15 @@ class Material(database.Model, Model, Resource):
         Model.delete(material)
 
     @classmethod
+    def find_all(cls) -> Materials:
+        return cls.query.order_by(
+            Material.name,
+            Material.brand,
+            Material.supplier,
+            Material.value
+        ).all()
+
+    @classmethod
     def find_all_by_name(cls, name: str) -> Materials:
         return cls.query.filter(
             Material.name.icontains(name)
@@ -48,20 +57,34 @@ class Material(database.Model, Model, Resource):
     @classmethod
     def find_all_select_choices_not_related_to_recipe(
         cls,
-        related_material_ids: List[int]
+        related_ids: List[int]
     ) -> SelectChoices:
         return cls.query.with_entities(
             Material.id, 
             Material.name
         ).filter(
-            Material.id.not_in(related_material_ids)
+            Material.id.not_in(related_ids)
         ).order_by(
-            Material.name
+            Material.name,
+            Material.brand,
+            Material.supplier,
+            Material.value
         ).all()
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Material':
         return cls.query.filter(Material.id == id).first()
+    
+    def __init__(
+        self,
+        name: str, brand: str, supplier: str, value: float,
+        current_quantity: float, minimum_quantity: int
+    ) -> None:
+        Resource.__init__(
+            self,
+            name, brand, supplier, value,
+            current_quantity, minimum_quantity
+        )
 
 
 from .recipe_material import RecipeMaterial
