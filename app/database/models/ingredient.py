@@ -37,6 +37,15 @@ class Ingredient(database.Model, Model, Resource):
         Model.delete(ingredient)
 
     @classmethod
+    def find_all(cls) -> Ingredients:
+        return cls.query.order_by(
+            Ingredient.name, 
+            Ingredient.brand,
+            Ingredient.supplier, 
+            Ingredient.value
+        ).all()
+
+    @classmethod
     def find_all_by_name(cls, name: str) -> Ingredients:
         return cls.query.filter(
             Ingredient.name.icontains(name)
@@ -50,15 +59,18 @@ class Ingredient(database.Model, Model, Resource):
     @classmethod
     def find_all_select_choices_not_related_to_recipe(
         cls,
-        related_recipe_ids: List[int]
+        related_ids: List[int]
     ) -> SelectChoices:
         return cls.query.with_entities(
             Ingredient.id, 
             Ingredient.name
         ).filter(
-            Ingredient.id.not_in(related_recipe_ids)
+            Ingredient.id.not_in(related_ids)
         ).order_by(
-            Ingredient.name
+            Ingredient.name, 
+            Ingredient.brand,
+            Ingredient.supplier, 
+            Ingredient.value
         ).all()
 
     @classmethod
@@ -73,8 +85,7 @@ class Ingredient(database.Model, Model, Resource):
     ) -> None:
         Resource.__init__(
             self,
-            name, brand, supplier,
-            value,
+            name, brand, supplier, value,
             current_quantity, minimum_quantity
         )
         self.weight = weight
