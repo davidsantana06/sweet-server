@@ -20,7 +20,7 @@ def run():
 
     def create_default_labors(setup_data: SetupData):
         try:
-            _ = labor_operations.get_one_by_id(1)
+            _ = labor_operations.get_one_by_id(1, except_default=False)
         except:
             default_labor_data = setup_data['default_labor_data']
             person_name = default_labor_data['person_name']
