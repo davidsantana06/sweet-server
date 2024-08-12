@@ -6,7 +6,7 @@ from sqlalchemy.orm import (
 from typing import List
 
 from app.extensions import database
-from app.typing import SelectChoices
+from app.typing import RelatedIds, SelectChoices
 
 from ..inheritable import Model, Resource
 
@@ -59,7 +59,7 @@ class Ingredient(database.Model, Model, Resource):
     @classmethod
     def find_all_select_choices_not_related_to_recipe(
         cls,
-        related_ids: List[int]
+        related_ids: RelatedIds
     ) -> SelectChoices:
         return cls.query.with_entities(
             Ingredient.id, 

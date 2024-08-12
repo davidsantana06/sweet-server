@@ -1,8 +1,7 @@
-from typing import List
 from werkzeug.exceptions import NotFound
 
 from app.database import Material, Materials
-from app.typing import SelectChoices
+from app.typing import RelatedIds, SelectChoices
 
 from .forms import UpdateForm
 
@@ -27,7 +26,7 @@ def get_all_by_name(name: str) -> Materials:
     return Material.find_all_by_name(name)
 
 
-def get_all_select_choices(related_ids: List[int]) -> SelectChoices:
+def get_all_select_choices(related_ids: RelatedIds) -> SelectChoices:
     return Material.find_all_select_choices_not_related_to_recipe(
         related_ids
     )
