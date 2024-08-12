@@ -6,7 +6,7 @@ from sqlalchemy.orm import (
 from typing import Dict, List
 
 from app.extensions import database
-from app.typing import SelectChoices
+from app.typing import RelatedIds, SelectChoices
 
 from ..inheritable import Model
 
@@ -53,6 +53,17 @@ class Product(database.Model, Model):
         Model.delete(product)
 
     @classmethod
+    def find_all(cls) -> Products:
+        return cls.query.join(
+            Product.recipe
+        ).join(
+            Recipe.category
+        ).order_by(
+            Recipe.name, 
+            Category.name
+        ).all()
+
+    @classmethod
     def find_all_by_name(cls, name: str) -> Products:
         return cls.query.join(
             Product.recipe
@@ -66,14 +77,14 @@ class Product(database.Model, Model):
         ).all()
 
     @classmethod
-    def find_all_select_choices_not_related_to_sell(
-        cls, related_product_ids: List[int]
+    def find_all_select_choices_not_related_to_sale(
+        cls, related_ids: RelatedIds
     ) -> SelectChoices:
         return cls.query.with_entities(
             Product.id, 
             Product.name
         ).filter(
-            Product.id.not_in(related_product_ids)
+            Product.id.not_in(related_ids)
         ).order_by(
             Product.name
         ).all()
@@ -108,7 +119,8 @@ class Product(database.Model, Model):
         return (
             self.monthly_fees_value + 
             self.recipe.ingredients_value + 
-            self.recipe.materials_value + self.labor_value
+            self.recipe.materials_value + 
+            self.labor_value
         )
 
     @property
