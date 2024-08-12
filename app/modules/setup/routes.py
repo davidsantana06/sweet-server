@@ -42,10 +42,12 @@ def run():
                 user_operations.create(name, password)
 
     setup_data = setup_operations.get_data()
-    name = request.args.get('name')
-    password = request.args.get('password')
+    form = request.form
     create_default_categories(setup_data)
     create_default_labors(setup_data)
     create_default_payment_methods(setup_data)
-    create_default_user(name, password)
+    create_default_user(
+        form['name'],
+        form['password']
+    )
     return {'message': 'The setup was completed successfully.'}
