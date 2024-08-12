@@ -3,6 +3,7 @@ from http import HTTPStatus
 from flask_login import login_required
 
 from app import operations as app_operations
+from app.modules.recipe import operations as recipe_operations
 
 from .import operations as ingredient_operations, ingredient
 from .forms import CreateForm, UpdateForm
@@ -43,10 +44,12 @@ def get_all_by_name(name: str):
     ]
 
 
-@ingredient.get('/all-select-choices/<string:id_recipe>')
+@ingredient.get('/all-select-choices/<int:id_recipe>')
 @login_required
 def get_all_select_choices(id_recipe: int):
-    related_ids = []
+    related_ids = recipe_operations.get_all_ingredient_rel_related_ids_by_id(
+        id_recipe
+    )
     return [
         {'id': id, 'name': name} for id, name
         in ingredient_operations.get_all_select_choices(related_ids)

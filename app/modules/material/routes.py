@@ -3,6 +3,7 @@ from http import HTTPStatus
 from flask_login import login_required
 
 from app import operations as app_operations
+from app.modules.recipe import operations as recipe_operations
 
 from .import operations as material_operations, material
 from .forms import CreateForm, UpdateForm
@@ -12,7 +13,6 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    form.value.data = float(form.value.data)
     if app_operations.validate_form(form):
         material = material_operations.create(
             form.name.data, 
@@ -43,10 +43,12 @@ def get_all_by_name(name: str):
     ]
 
 
-@material.get('/all-select-choices/<string:id_recipe>')
+@material.get('/all-select-choices/<int:id_recipe>')
 @login_required
 def get_all_select_choices(id_recipe: int):
-    related_ids = []
+    related_ids = recipe_operations.get_all_material_rel_related_ids_by_id(
+        id_recipe
+    )
     return [
         {'id': id, 'name': name} for id, name
         in material_operations.get_all_select_choices(related_ids)

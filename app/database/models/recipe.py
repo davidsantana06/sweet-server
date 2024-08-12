@@ -51,11 +51,19 @@ class Recipe(database.Model, Model):
         Model.delete(recipe)
 
     @classmethod
+    def find_all(cls) -> Recipes:
+        return cls.query.order_by(
+            Recipe.name,
+            Recipe.preparation_time
+        ).all()
+
+    @classmethod
     def find_all_by_name(cls, name: str) -> Recipes:
         return cls.query.filter(
             Recipe.name.icontains(name)
         ).order_by(
-            Recipe.name
+            Recipe.name,
+            Recipe.preparation_time
         ).all()
 
     @classmethod
@@ -64,7 +72,8 @@ class Recipe(database.Model, Model):
             Recipe.id, 
             Recipe.name
         ).order_by(
-            Recipe.name
+            Recipe.name,
+            Recipe.preparation_time
         ).all()
 
     @classmethod

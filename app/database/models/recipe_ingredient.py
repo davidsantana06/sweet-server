@@ -6,6 +6,7 @@ from sqlalchemy.orm import (
 from typing import List
 
 from app.extensions import database
+from app.typing import RelatedIds
 
 from ..inheritable import Model
 
@@ -44,6 +45,16 @@ class RecipeIngredient(database.Model, Model):
     @classmethod
     def find_all_by_id_recipe(cls, id_recipe: int) -> RecipeIngredients:
         return cls.query.filter(
+            RecipeIngredient.id_recipe == id_recipe
+        ).order_by(
+            RecipeIngredient.created_at
+        ).all()
+    
+    @classmethod
+    def find_all_related_ids_by_id_recipe(cls, id_recipe: int) -> RelatedIds:
+        return cls.query.with_entities(
+            RecipeIngredient.id
+        ).filter(
             RecipeIngredient.id_recipe == id_recipe
         ).order_by(
             RecipeIngredient.created_at
