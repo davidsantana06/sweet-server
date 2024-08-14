@@ -13,15 +13,15 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    if app_operations.validate_form(form):
-        material = material_operations.create(
-            form.name.data, 
-            form.brand.data, 
-            form.supplier.data,
-            form.value.data,
-            form.current_quantity.data, 
-            form.minimum_quantity.data
-        )
+    app_operations.validate_form(form)
+    material = material_operations.create(
+        form.name.data, 
+        form.brand.data, 
+        form.supplier.data,
+        form.value.data,
+        form.current_quantity.data, 
+        form.minimum_quantity.data
+    )
     return material.to_dict(), HTTPStatus.CREATED
 
 
@@ -66,8 +66,8 @@ def get_one_by_id(id: int):
 def update(id: int):
     form = UpdateForm(request.form)
     material = material_operations.get_one_by_id(id)
-    if app_operations.validate_form(form):
-        material = material_operations.update(material, form)
+    app_operations.validate_form(form)
+    material = material_operations.update(material, form)
     return material.to_dict()
 
 

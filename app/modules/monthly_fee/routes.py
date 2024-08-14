@@ -12,12 +12,12 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    if app_operations.validate_form(form):
-        monthly_fee = monthly_fee_operations.create(
-            form.name.data,
-            form.description.data,
-            form.value.data
-        )
+    app_operations.validate_form(form)
+    monthly_fee = monthly_fee_operations.create(
+        form.name.data,
+        form.description.data,
+        form.value.data
+    )
     return monthly_fee.to_dict(), HTTPStatus.CREATED
 
 
@@ -50,8 +50,8 @@ def get_one_by_id(id: int):
 def update(id: int):
     form = UpdateForm(request.form)
     monthly_fee = monthly_fee_operations.get_one_by_id(id)
-    if app_operations.validate_form(form):
-        monthly_fee = monthly_fee_operations.update(monthly_fee, form)
+    app_operations.validate_form(form)
+    monthly_fee = monthly_fee_operations.update(monthly_fee, form)
     return monthly_fee.to_dict()
 
 

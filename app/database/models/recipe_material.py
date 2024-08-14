@@ -43,32 +43,37 @@ class RecipeMaterial(database.Model, Model):
         Model.delete(recipe_material)
 
     @classmethod
+    def __query_all(cls, filters=[]) -> RecipeMaterials:
+        return cls._query_all(
+            filters=filters,
+            ordinances=[
+                RecipeMaterial.created_at, 
+                RecipeMaterial.quantity
+            ]
+        )
+
+    @classmethod
     def find_all_by_id_recipe(cls, id_recipe: int) -> RecipeMaterials:
-        return cls.query.filter(
-            RecipeMaterial.id_recipe == id_recipe
-        ).order_by(
-            RecipeMaterial.created_at
-        ).all()
+        return cls.__query_all(filters=[RecipeMaterial.id_recipe == id_recipe])
     
     @classmethod
     def find_all_related_ids_by_id_recipe(cls, id_recipe: int) -> RelatedIds:
-        return cls.query.with_entities(
-            RecipeMaterial.id
-        ).filter(
-            RecipeMaterial.id_recipe == id_recipe
-        ).order_by(
-            RecipeMaterial.created_at
-        ).all()
+        return cls.__query_all(
+            columns=[RecipeMaterial.id],
+            filters=[RecipeMaterial.id_recipe == id_recipe]
+        )
 
     @classmethod
     def find_first_by_id_recipe_and_id_material(
         cls,
         id_recipe: int, id_material: int
     ) -> 'RecipeMaterial':
-        return cls.query.filter(
-            RecipeMaterial.id_recipe == id_recipe,
-            RecipeMaterial.id_material == id_material
-        ).first()
+        cls._query_first(
+            filters=[
+                RecipeMaterial.id_recipe == id_recipe,
+                RecipeMaterial.id_material == id_material
+            ]
+        )
 
     def __init__(self, id_recipe: int, id_material: int, quantity: int) -> None:
         self.id_recipe = id_recipe

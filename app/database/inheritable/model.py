@@ -3,9 +3,12 @@ from flask_sqlalchemy.model import Model as SQLAlchemyModel
 from re import findall
 from sqlalchemy import Column, DateTime
 from sqlalchemy.ext.declarative import declared_attr
-from typing import Dict
+from typing import Dict, List
 
 from app.extensions import database
+
+
+Models = List['Model']
 
 
 class Model(SQLAlchemyModel):
@@ -45,6 +48,29 @@ class Model(SQLAlchemyModel):
         except Exception as e:
             database.session.rollback()
             raise e
+
+    @classmethod
+    def _query_all(
+        cls,
+        columns=[],
+        joins=[],
+        filters=[],
+        ordinances=[]
+    ) -> Models:
+        query = cls.query
+        if columns:
+            query = query.with_entities(*columns)
+        for join in joins:
+            query = query.join(join)
+        if filters:
+            query = query.filter(*filters)
+        if ordinances:
+            query = query.order_by(*ordinances)
+        return query.all()
+
+    @classmethod
+    def _query_first(cls, filters=[]) -> 'Model':
+        return cls.query.filter(*filters).first()
 
     def to_dict(self) -> Dict[str, object]:
         return {

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Float, ForeignKey, Integer
+from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import (
     Mapped,
     mapped_column, relationship
@@ -30,6 +30,7 @@ class Product(database.Model, Model):
         ForeignKey('labor.id'),
         nullable=False
     )
+    name = Column(String(100), nullable=False)
     loss_margin = Column(Float(), nullable=False)
     contribuition_margin = Column(Float(), nullable=False)
 
@@ -53,53 +54,50 @@ class Product(database.Model, Model):
         Model.delete(product)
 
     @classmethod
+    def __query_all(cls, columns=[], filters=[]) -> Products:
+        return cls._query_all(
+            columns=columns,
+            filters=filters,
+            ordinances=[
+                Product.name,
+                Product.contribuition_margin,
+                Product.loss_margin,
+                Product.id
+            ]
+        )
+
+    @classmethod
     def find_all(cls) -> Products:
-        return cls.query.join(
-            Product.recipe
-        ).join(
-            Recipe.category
-        ).order_by(
-            Recipe.name, 
-            Category.name
-        ).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_by_name(cls, name: str) -> Products:
-        return cls.query.join(
-            Product.recipe
-        ).join(
-            Recipe.category
-        ).filter(
-            Recipe.name.icontains(name)
-        ).order_by(
-            Recipe.name, 
-            Category.name
-        ).all()
+        return cls.__query_all(filters=[Product.name.icontains(name)])
 
     @classmethod
     def find_all_select_choices_not_related_to_sale(
         cls, related_ids: RelatedIds
     ) -> SelectChoices:
-        return cls.query.with_entities(
-            Product.id, 
-            Product.name
-        ).filter(
-            Product.id.not_in(related_ids)
-        ).order_by(
-            Product.name
-        ).all()
+        return cls.__query_all(
+            columns=[
+                Product.id,
+                Product.name
+            ],
+            filters=[Product.id.not_in(related_ids)]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Product':
-        return cls.query.filter(Product.id == id).first()
+        return cls._query_first(filters=[Product.id == id])
 
     def __init__(
         self,
-        id_recipe: int, id_labor: int,
+        id_recipe: int, id_labor: int, name: str,
         loss_margin: float, contribuition_margin: float
     ) -> None:
         self.id_recipe = id_recipe
         self.id_labor = id_labor
+        self.name = name
         self.loss_margin = loss_margin
         self.contribuition_margin = contribuition_margin
 
@@ -140,6 +138,7 @@ class Product(database.Model, Model):
             'id': self.id,
             'id_recipe': self.id_recipe,
             'id_labor': self.id_labor,
+            'name': self.name,
             'loss_margin': self.loss_margin,
             'contribuition_margin': self.contribuition_margin,
             'monthly_fees_value': self.monthly_fees_value,

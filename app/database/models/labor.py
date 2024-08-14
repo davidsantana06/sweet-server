@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Float, Integer, String
+from sqlalchemy import Column, ColumnElement, Float, Integer, String
 from sqlalchemy.orm import (
     Mapped,
     mapped_column, relationship
@@ -39,44 +39,52 @@ class Labor(database.Model, Model):
         Model.delete(labor)
 
     @classmethod
+    def __compose_filters(
+        cls,
+        filters=[],
+        except_default: bool = True
+    ) -> List[ColumnElement[bool]]:
+        return filters + [Labor.id != 1] if except_default else []
+
+    @classmethod
+    def __query_all(
+        cls, 
+        columns=[], 
+        filters=[],
+        except_default: bool = True
+    ) -> Labors:
+        return cls._query_all(
+            columns=columns,
+            filters=cls.__compose_filters(filters, except_default),
+            ordinances=[
+                Labor.person_name,
+                Labor.hourly_rate,
+                Labor.id
+            ]
+        )
+
+    @classmethod
     def find_all_except_default(cls) -> Labors:
-        return cls.query.filter(
-            Labor.id != 1
-        ).order_by(
-            Labor.person_name,
-            Labor.hourly_rate
-        ).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_by_person_name_except_default(cls, person_name: str) -> Labors:
-        return cls.query.filter(
-            Labor.id != 1,
-            Labor.person_name.icontains(person_name)
-        ).order_by(
-            Labor.person_name, 
-            Labor.hourly_rate
-        ).all()
+        return cls._query_all(filters=[Labor.person_name == person_name])
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
-        return cls.query.with_entities(
-            Labor.id, 
-            Labor.person_name
-        ).order_by(
-            Labor.person_name, 
-            Labor.hourly_rate
-        ).all()
+        return cls.__query_all(
+            columns=[
+                Labor.id, 
+                Labor.person_name
+            ]
+        )
 
     @classmethod
-    def find_first_by_id(cls, id: int) -> 'Labor':
-        return cls.query.filter(Labor.id == id).first()
-    
-    @classmethod
-    def find_first_by_id_except_default(cls, id: int) -> 'Labor':
-        return cls.query.filter(
-            Labor.id != 1,
-            Labor.id == id
-        ).first()
+    def find_first_by_id(cls, id: int, except_default: bool = True) -> 'Labor':
+        return cls._query_first(
+            filters=cls.__compose_filters([Labor.id == id], except_default)
+        )
 
     def __init__(self, person_name: str, hourly_rate: float) -> None:
         self.person_name = person_name

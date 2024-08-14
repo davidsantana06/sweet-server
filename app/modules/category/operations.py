@@ -21,11 +21,11 @@ def _check_existance(category: Category) -> bool:
 
 def get_one_by_id(id: int) -> Category:
     category = Category.find_first_by_id(id)
-    _ = _check_existance(category)
+    _check_existance(category)
     return category
 
 
 def get_one_by_name(name: str) -> Category:
     category = Category.find_first_by_name(name)
-    _ = _check_existance(category)
+    _check_existance(category)
     return category

@@ -49,36 +49,39 @@ class Recipe(database.Model, Model):
     @staticmethod
     def delete(recipe: 'Recipe') -> None:
         Model.delete(recipe)
+    
+    @classmethod
+    def __query_all(cls, columns=[], filters=[]) -> Recipes:
+        return cls._query_all(
+            columns=columns,
+            filters=filters,
+            ordinances=[
+                Recipe.name,
+                Recipe.preparation_time,
+                Recipe.id
+            ]
+        )
 
     @classmethod
     def find_all(cls) -> Recipes:
-        return cls.query.order_by(
-            Recipe.name,
-            Recipe.preparation_time
-        ).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_by_name(cls, name: str) -> Recipes:
-        return cls.query.filter(
-            Recipe.name.icontains(name)
-        ).order_by(
-            Recipe.name,
-            Recipe.preparation_time
-        ).all()
+        return cls.__query_all(filters=[Recipe.name.icontains(name)])
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
-        return cls.query.with_entities(
-            Recipe.id, 
-            Recipe.name
-        ).order_by(
-            Recipe.name,
-            Recipe.preparation_time
-        ).all()
+        return cls.__query_all(
+            columns=[
+                Recipe.id, 
+                Recipe.name
+            ]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Recipe':
-        return cls.query.filter(Recipe.id == id).first()
+        return cls._query_first(filters=[Recipe.id == id])
 
     def __init__(
         self,

@@ -1,4 +1,7 @@
-from sqlalchemy import Column, Float, ForeignKey, Integer
+from sqlalchemy import (
+    Column, Float, ForeignKey, Integer,
+    desc
+)
 from sqlalchemy.orm import (
     Mapped,
     mapped_column, relationship
@@ -53,11 +56,13 @@ class Sale(database.Model, Model):
 
     @classmethod
     def find_all(cls) -> Sales:
-        return cls.query.order_by(Sale.id).all()
+        return cls._query_all(
+            ordinances=[desc(Sale.id)]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Sale':
-        return cls.query.filter(Sale.id == id).first()
+        return cls._query_first(filters=[Sale.id == id])
 
     def __init__(
         self,

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, SelectField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import FloatField, SelectField, StringField
+from wtforms.validators import DataRequired, Length, NumberRange
 
 
 class _Form(FlaskForm):
@@ -9,6 +9,12 @@ class _Form(FlaskForm):
     )
     id_labor = SelectField(
         validators=[DataRequired()]
+    )
+    name = StringField(
+        validators=[
+            DataRequired(),
+            Length(1, 100)
+        ]
     )
     loss_margin = FloatField(
         default=0.0,

@@ -11,5 +11,6 @@ from .models import (
     RecipeMaterial, RecipeMaterials,
     Recipe, Recipes,
     SaleProduct, SaleProducts,
+    Sale, Sales,
     User, Users
 )

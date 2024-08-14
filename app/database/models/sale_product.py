@@ -41,20 +41,33 @@ class SaleProduct(database.Model, Model):
     @staticmethod
     def delete(sale_product: 'SaleProduct') -> None:
         Model.delete(sale_product)
+    
+    @classmethod
+    def __query_all(cls, filters=[]) -> SaleProducts:
+        return cls._query_all(
+            filters=filters,
+            ordinances=[
+                SaleProduct.created_at,
+                SaleProduct.unit_value,
+                SaleProduct.quantity
+            ]
+        )
 
     @classmethod
     def find_all_by_id_sale(cls, id_sale: int) -> SaleProducts:
-        return cls.query.filter(SaleProduct.id_sale == id_sale).first()
+        return cls.__query_all(filters=[SaleProduct.id_sale == id_sale])
 
     @classmethod
     def find_first_by_id_sale_and_id_product(
         cls,
         id_sale: int, id_product: int
     ) -> 'SaleProduct':
-        return cls.query.filter(
-            SaleProduct.id_sale == id_sale,
-            SaleProduct.id_product == id_product
-        ).first()
+        return cls._query_first(
+            filters=[
+                SaleProduct.id_sale == id_sale,
+                SaleProduct.id_product == id_product
+            ]
+        )
 
     def __init__(self, id_sale: int, id_product: int, value: float) -> None:
         self.id_sale = id_sale

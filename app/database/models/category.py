@@ -36,25 +36,35 @@ class Category(database.Model, Model):
         Model.delete(category)
 
     @classmethod
+    def __query_all(cls, columns=[]) -> Categories:
+        return cls._query_all(
+            columns=columns,
+            ordinances=[
+                Category.name,
+                Category.id
+            ]
+        )
+
+    @classmethod
     def find_all(cls) -> Categories:
-        return cls.query.order_by(Category.name).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
-        return cls.query.with_entities(
-            Category.id, 
-            Category.name
-        ).order_by(
-            Category.name
-        ).all()
+        return cls.__query_all(
+            columns=[
+                Category.id,
+                Category.name
+            ]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Category':
-        return cls.query.filter(Category.id == id).first()
+        return cls._query_first(filters=[Category.id == id])
 
     @classmethod
     def find_first_by_name(cls, name: str) -> 'Category':
-        return cls.query.filter(Category.name == name).first()
+        return cls._query_first(filters=[Category.name == name])
 
     def __init__(self, name: str) -> None:
         self.name = name

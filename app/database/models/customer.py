@@ -38,39 +38,40 @@ class Customer(database.Model, Model):
     @staticmethod
     def delete(customer: 'Customer') -> None:
         Model.delete(customer)
+    
+    @classmethod
+    def __query_all(cls, columns=[], filters=[]) -> Customers:
+        return cls._query_all(
+            columns=columns,
+            filters=filters,
+            ordinances=[
+                Customer.name, 
+                Customer.phone, 
+                Customer.instagram, 
+                Customer.id
+            ]
+        )
 
     @classmethod
     def find_all(cls) -> Customers:
-        return cls.query.order_by(
-            Customer.name,
-            Customer.instagram,
-            Customer.phone
-        ).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_by_name(cls, name: str) -> Customers:
-        return cls.query.filter(
-            Customer.name.icontains(name)
-        ).order_by(
-            Customer.name,
-            Customer.instagram,
-            Customer.phone
-        ).all()
+        return cls.__query_all(filters=[Customer.name.icontains(name)])
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
-        return cls.query.with_entities(
-            Customer.id, 
-            Customer.name
-        ).order_by(
-            Customer.name,
-            Customer.instagram,
-            Customer.phone
-        ).all()
+        return cls.__query_all(
+            columns=[
+                Customer.id, 
+                Customer.name
+            ]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Labor':
-        return cls.query.filter(Customer.id == id).first()
+        return cls._query_first(filters=[Customer.id == id])
 
     def __init__(self, name: str, phone: str, instagram: str, notes: str) -> None:
         self.name = name

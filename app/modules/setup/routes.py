@@ -14,13 +14,13 @@ def run():
     def create_default_categories(setup_data: SetupData):
         for name in setup_data['category_names']:
             try:
-                _ = category_operations.get_one_by_name(name)
+                category_operations.get_one_by_name(name)
             except:
                 category_operations.create(name)
 
     def create_default_labors(setup_data: SetupData):
         try:
-            _ = labor_operations.get_one_by_id(1, except_default=False)
+            labor_operations.get_one_by_id(1, except_default=False)
         except:
             default_labor_data = setup_data['default_labor_data']
             person_name = default_labor_data['person_name']
@@ -30,13 +30,13 @@ def run():
     def create_default_payment_methods(setup_data: SetupData):
         for name in setup_data['payment_method_names']:
             try:
-                _ = payment_method_operations.get_one_by_name(name)
+                payment_method_operations.get_one_by_name(name)
             except:
                 payment_method_operations.create(name)
 
     def create_default_user(name: str, password: str):
         try:
-            _ = user_operations.get_one_by_id(1)
+            user_operations.get_one_by_id(1)
         except:
             if name and password:
                 user_operations.create(name, password)

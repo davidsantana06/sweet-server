@@ -28,26 +28,29 @@ class MonthlyFee(database.Model, Model):
     @staticmethod
     def delete(monthlyFee: 'MonthlyFee') -> None:
         Model.delete(monthlyFee)
+    
+    @classmethod
+    def __query_all(cls, filters=[]) -> MonthlyFees:
+        return cls._query_all(
+            filters=filters,
+            ordinances=[
+                MonthlyFee.name, 
+                MonthlyFee.value, 
+                MonthlyFee.id
+            ]
+        )
 
     @classmethod
     def find_all(cls) -> MonthlyFees:
-        return cls.query.order_by(
-            MonthlyFee.name, 
-            MonthlyFee.value
-        ).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_by_name(cls, name: str) -> MonthlyFees:
-        return cls.query.filter(
-            MonthlyFee.name.icontains(name)
-        ).order_by(
-            MonthlyFee.name, 
-            MonthlyFee.value
-        ).all()
+        return cls.__query_all(filters=[MonthlyFee.name.icontains(name)])
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'MonthlyFee':
-        return cls.query.filter(MonthlyFee.id == id).first()
+        return cls._query_first(filters=[MonthlyFee.id == id])
 
     def __init__(self, name: str, description: str, value: float) -> None:
         self.name = name

@@ -30,12 +30,8 @@ class User(database.Model, Model, UserMixin):
         Model.delete(user)
 
     @classmethod
-    def find_all(cls) -> Users:
-        return cls.query.order_by(User.nickname).all()
-
-    @classmethod
     def find_first_by_id(cls, id: int) -> 'User':
-        return cls.query.filter(User.id == id).first()
+        return cls._query_first(filters=[User.id == id])
 
     def __init__(self, name: str, password: str) -> None:
         self.name = name

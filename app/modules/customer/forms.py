@@ -11,10 +11,10 @@ class _Form(FlaskForm):
         ],
     )
     phone = StringField(
-        validators=[Length(15, 15)]
+        validators=[Length(0, 15)]
     )
     instagram = StringField(
-        validators=[Length(1, 30)]
+        validators=[Length(0, 30)]
     )
     notes = TextAreaField(
         validators=[Length(0, 1_000)]

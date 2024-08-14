@@ -7,11 +7,11 @@ from .forms import UpdateForm
 
 
 def create(
-    id_recipe: int, id_labor: int,
+    id_recipe: int, id_labor: int, name: str,
     loss_margin: float, contribuition_margin: float
 ) -> Product:
     product = Product(
-        id_recipe, id_labor,
+        id_recipe, id_labor, name,
         loss_margin, contribuition_margin
     )
     Product.save(product)

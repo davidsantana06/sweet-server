@@ -12,13 +12,13 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    if app_operations.validate_form(form):
-        customer = customer_operations.create(
-            form.name.data,
-            form.phone.data,
-            form.instagram.data,
-            form.notes.data
-        )
+    app_operations.validate_form(form)
+    customer = customer_operations.create(
+        form.name.data,
+        form.phone.data,
+        form.instagram.data,
+        form.notes.data
+    )
     return customer.to_dict(), HTTPStatus.CREATED
 
 
@@ -60,8 +60,8 @@ def get_one_by_id(id: int):
 def update(id: int):
     form = UpdateForm(request.form)
     customer = customer_operations.get_one_by_id(id)
-    if app_operations.validate_form(form):
-        customer = customer_operations.update(customer, form)
+    app_operations.validate_form(form)
+    customer = customer_operations.update(customer, form)
     return customer.to_dict()
 
 

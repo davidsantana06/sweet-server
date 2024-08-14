@@ -14,15 +14,16 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    if app_operations.validate_form(form):
-        _ = recipe_operations.get_one_by_id(form.id_recipe.data)
-        _ = labor_operations.get_one_by_id(form.id_labor.data)
-        product = product_operations.create(
-            form.id_recipe.data,
-            form.id_labor.data,
-            form.loss_margin.data,
-            form.contribuition_margin.data
-        )
+    app_operations.validate_form(form)
+    recipe_operations.get_one_by_id(form.id_recipe.data)
+    labor_operations.get_one_by_id(form.id_labor.data)
+    product = product_operations.create(
+        form.id_recipe.data,
+        form.id_labor.data,
+        form.name.data,
+        form.loss_margin.data,
+        form.contribuition_margin.data
+    )
     return product.to_dict(), HTTPStatus.CREATED
 
 
@@ -69,10 +70,10 @@ def get_one_by_id(id: int):
 def update(id: int):
     form = UpdateForm(request.form)
     product = product_operations.get_one_by_id(id)
-    if app_operations.validate_form(form):
-        _ = recipe_operations.get_one_by_id(form.id_recipe.data)
-        _ = labor_operations.get_one_by_id(form.id_labor.data)
-        product = product_operations.update(product, form)
+    app_operations.validate_form(form)
+    recipe_operations.get_one_by_id(form.id_recipe.data)
+    labor_operations.get_one_by_id(form.id_labor.data)
+    product = product_operations.update(product, form)
     return product.to_dict()
 
 

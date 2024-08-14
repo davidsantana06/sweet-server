@@ -34,27 +34,37 @@ class PaymentMethod(database.Model, Model):
     @staticmethod
     def delete(payment_method: 'PaymentMethod') -> None:
         Model.delete(payment_method)
+    
+    @classmethod
+    def __query_all(cls, columns=[]) -> PaymentMethods:
+        return cls._query_all(
+            columns=columns,
+            ordinances=[
+                PaymentMethod.name, 
+                PaymentMethod.id
+            ]
+        )
 
     @classmethod
     def find_all(cls) -> PaymentMethods:
-        return cls.query.order_by(PaymentMethod.name).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
-        return cls.query.with_entities(
-            PaymentMethod.id, 
-            PaymentMethod.name
-        ).order_by(
-            PaymentMethod.name
-        ).all()
+        return cls.__query_all(
+            columns=[
+                PaymentMethod.id, 
+                PaymentMethod.name
+            ]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Labor':
-        return cls.query.filter(PaymentMethod.id == id).first()
+        return cls._query_first(filters=[PaymentMethod.id == id])
 
     @classmethod
     def find_first_by_name(cls, name: str) -> 'PaymentMethod':
-        return cls.query.filter(PaymentMethod.name == name).first()
+        return cls._query_first(filters=[PaymentMethod.name == name])
     
     @property
     def sales_quantity(self) -> int:

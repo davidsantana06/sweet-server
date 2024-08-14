@@ -35,45 +35,45 @@ class Material(database.Model, Model, Resource):
         Model.delete(material)
 
     @classmethod
+    def __query_all(cls, columns=[], filters=[]) -> Materials:
+        return cls._query_all(
+            columns=columns,
+            filters=filters,
+            ordinances=[
+                Material.name, 
+                Material.brand, 
+                Material.supplier, 
+                Material.value,
+                Material.current_quantity,
+                Material.minimum_quantity,
+                Material.id
+            ]
+        )
+
+    @classmethod
     def find_all(cls) -> Materials:
-        return cls.query.order_by(
-            Material.name,
-            Material.brand,
-            Material.supplier,
-            Material.value
-        ).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_by_name(cls, name: str) -> Materials:
-        return cls.query.filter(
-            Material.name.icontains(name)
-        ).order_by(
-            Material.name,
-            Material.brand,
-            Material.supplier,
-            Material.value
-        ).all()
+        return cls.__query_all(filters=[Material.name.icontains(name)])
 
     @classmethod
     def find_all_select_choices_not_related_to_recipe(
         cls,
         related_ids: RelatedIds
     ) -> SelectChoices:
-        return cls.query.with_entities(
-            Material.id, 
-            Material.name
-        ).filter(
-            Material.id.not_in(related_ids)
-        ).order_by(
-            Material.name,
-            Material.brand,
-            Material.supplier,
-            Material.value
-        ).all()
+        return cls.__query_all(
+            columns=[
+                Material.id, 
+                Material.name
+            ],
+            filters=[Material.id.not_in(related_ids)]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Material':
-        return cls.query.filter(Material.id == id).first()
+        return cls._query_first(filters=[Material.id == id])
     
     def __init__(
         self,

@@ -35,47 +35,48 @@ class Ingredient(database.Model, Model, Resource):
     @staticmethod
     def delete(ingredient: 'Ingredient') -> None:
         Model.delete(ingredient)
+    
+    @classmethod
+    def __query_all(cls, columns=[], filters=[]) -> Ingredients:
+        return cls._query_all(
+            columns=columns,
+            filters=filters,
+            ordinances=[
+                Ingredient.name, 
+                Ingredient.brand, 
+                Ingredient.supplier, 
+                Ingredient.value,
+                Ingredient.weight,
+                Ingredient.current_quantity,
+                Ingredient.minimum_quantity,
+                Ingredient.id
+            ]
+        )
 
     @classmethod
     def find_all(cls) -> Ingredients:
-        return cls.query.order_by(
-            Ingredient.name, 
-            Ingredient.brand,
-            Ingredient.supplier, 
-            Ingredient.value
-        ).all()
+        return cls.__query_all()
 
     @classmethod
     def find_all_by_name(cls, name: str) -> Ingredients:
-        return cls.query.filter(
-            Ingredient.name.icontains(name)
-        ).order_by(
-            Ingredient.name, 
-            Ingredient.brand,
-            Ingredient.supplier, 
-            Ingredient.value
-        ).all()
+        return cls.__query_all(filters=[Ingredient.name.icontains(name)])
 
     @classmethod
     def find_all_select_choices_not_related_to_recipe(
         cls,
         related_ids: RelatedIds
     ) -> SelectChoices:
-        return cls.query.with_entities(
-            Ingredient.id, 
-            Ingredient.name
-        ).filter(
-            Ingredient.id.not_in(related_ids)
-        ).order_by(
-            Ingredient.name, 
-            Ingredient.brand,
-            Ingredient.supplier, 
-            Ingredient.value
-        ).all()
+        return cls.__query_all(
+            columns=[
+                Ingredient.id, 
+                Ingredient.name
+            ],
+            filters=[Ingredient.id.not_in(related_ids)]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Ingredient':
-        return cls.query.filter(Ingredient.id == id).first()
+        return cls._query_first(filters=[Ingredient.id == id])
 
     def __init__(
         self,
