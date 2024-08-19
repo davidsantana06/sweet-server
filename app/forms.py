@@ -11,14 +11,10 @@ class ResourceForm(FlaskForm):
         ]
     )
     brand = StringField(
-        validators=[
-            Length(0, 100)
-        ]
+        validators=[Length(0, 100)]
     )
     supplier = StringField(
-        validators=[
-            Length(0, 100)
-        ]
+        validators=[Length(0, 100)]
     )
     value = FloatField(
         validators=[

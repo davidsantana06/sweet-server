@@ -29,7 +29,7 @@ def create():
 @login_required
 def get_all():
     return [
-        material.to_dict() for material
+        material.to_dict() for material 
         in material_operations.get_all()
     ]
 
@@ -38,7 +38,7 @@ def get_all():
 @login_required
 def get_all_by_name(name: str):
     return [
-        material.to_dict() for material
+        material.to_dict() for material 
         in material_operations.get_all_by_name(name)
     ]
 
@@ -64,8 +64,8 @@ def get_one_by_id(id: int):
 @material.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    form = UpdateForm(request.form)
     material = material_operations.get_one_by_id(id)
+    form = UpdateForm(request.form)
     app_operations.validate_form(form)
     material = material_operations.update(material, form)
     return material.to_dict()

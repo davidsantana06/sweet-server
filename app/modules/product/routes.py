@@ -30,17 +30,14 @@ def create():
 @product.get('/all')
 @login_required
 def get_all():
-    return [
-        product.to_dict() for product
-        in product_operations.get_all()
-    ]
+    return [product.to_dict() for product in product_operations.get_all()]
 
 
 @product.get('/all/<string:name>')
 @login_required
 def get_all_by_name(name: str):
     return [
-        product.to_dict() for product
+        product.to_dict() for product 
         in product_operations.get_all_by_name(name)
     ]
 
@@ -68,8 +65,8 @@ def get_one_by_id(id: int):
 
 @product.patch('/update/<int:id>')
 def update(id: int):
-    form = UpdateForm(request.form)
     product = product_operations.get_one_by_id(id)
+    form = UpdateForm(request.form)
     app_operations.validate_form(form)
     recipe_operations.get_one_by_id(form.id_recipe.data)
     labor_operations.get_one_by_id(form.id_labor.data)

@@ -19,17 +19,17 @@ def create(
 
 
 def create_ingredient_rel(
-    id_recipe: int, id_ingredient: int, weight: int
+    id: int, id_ingredient: int, weight: int
 ) -> RecipeIngredient:
-    ingredient_rel = RecipeIngredient(id_recipe, id_ingredient, weight)
+    ingredient_rel = RecipeIngredient(id, id_ingredient, weight)
     RecipeIngredient.save(ingredient_rel)
     return ingredient_rel
 
 
 def create_material_rel(
-    id_recipe: int, id_material: int, quantity: int
+    id: int, id_material: int, quantity: int
 ) -> RecipeMaterial:
-    material_rel = RecipeMaterial(id_recipe, id_material, quantity)
+    material_rel = RecipeMaterial(id, id_material, quantity)
     RecipeMaterial.save(material_rel)
     return material_rel
 

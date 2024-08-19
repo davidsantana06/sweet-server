@@ -25,17 +25,14 @@ def create():
 @customer.get('/all')
 @login_required
 def get_all():
-    return [
-        customer.to_dict() for customer
-        in customer_operations.get_all()
-    ]
+    return [customer.to_dict() for customer in customer_operations.get_all()]
 
 
 @customer.get('/all/<string:name>')
 @login_required
 def get_all_by_name(name: str):
     return [
-        customer.to_dict() for customer
+        customer.to_dict() for customer 
         in customer_operations.get_all_by_name(name)
     ]
 
@@ -58,8 +55,8 @@ def get_one_by_id(id: int):
 @customer.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    form = UpdateForm(request.form)
     customer = customer_operations.get_one_by_id(id)
+    form = UpdateForm(request.form)
     app_operations.validate_form(form)
     customer = customer_operations.update(customer, form)
     return customer.to_dict()

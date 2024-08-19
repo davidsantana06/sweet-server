@@ -12,7 +12,6 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    form.hourly_rate.data = float(form.hourly_rate.data)
     app_operations.validate_form(form)
     labor = labor_operations.create(
         form.person_name.data,
@@ -24,17 +23,14 @@ def create():
 @labor.get('/all')
 @login_required
 def get_all():
-    return [
-        labor.to_dict() for labor
-        in labor_operations.get_all()
-    ]
+    return [labor.to_dict() for labor in labor_operations.get_all()]
 
 
 @labor.get('/all/<string:person_name>')
 @login_required
 def get_all_by_person_name(person_name: str):
     return [
-        labor.to_dict() for labor
+        labor.to_dict() for labor 
         in labor_operations.get_all_by_person_name(person_name)
     ]
 
@@ -57,8 +53,8 @@ def get_one_by_id(id: int):
 @labor.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    form = UpdateForm(request.form)
     labor = labor_operations.get_one_by_id(id)
+    form = UpdateForm(request.form)
     app_operations.validate_form(form)
     labor = labor_operations.update(labor, form)
     return labor.to_dict()

@@ -25,7 +25,7 @@ def create():
 @login_required
 def get_all():
     return [
-        monthly_fee.to_dict() for monthly_fee 
+        monthly_fee.to_dict() for monthly_fee
         in monthly_fee_operations.get_all()
     ]
 
@@ -48,8 +48,8 @@ def get_one_by_id(id: int):
 @monthly_fee.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    form = UpdateForm(request.form)
     monthly_fee = monthly_fee_operations.get_one_by_id(id)
+    form = UpdateForm(request.form)
     app_operations.validate_form(form)
     monthly_fee = monthly_fee_operations.update(monthly_fee, form)
     return monthly_fee.to_dict()

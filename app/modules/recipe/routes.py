@@ -32,12 +32,12 @@ def create():
 
 @recipe.post('/create-ingredient-rel/<int:id>')
 def create_ingredient_rel(id: int):
-    form = CreateIngredientRelForm(request.form)
     recipe_operations.get_one_by_id(id)
+    form = CreateIngredientRelForm(request.form)
     app_operations.validate_form(form)
     ingredient_operations.get_one_by_id(form.id_ingredient.data)
     ingredient_rel = recipe_operations.create_ingredient_rel(
-        form.id_recipe.data,
+        id,
         form.id_ingredient.data,
         form.weight.data
     )
@@ -46,12 +46,12 @@ def create_ingredient_rel(id: int):
 
 @recipe.post('/create-material-rel/<int:id>')
 def create_material_rel(id: int):
-    form = CreateMaterialRelForm(request.form)
     recipe_operations.get_one_by_id(id)
+    form = CreateMaterialRelForm(request.form)
     app_operations.validate_form(form)
     material_operations.get_one_by_id(form.id_material.data)
     material_rel = recipe_operations.create_material_rel(
-        form.id_recipe.data,
+        id,
         form.id_material.data,
         form.quantity.data
     )
@@ -61,10 +61,7 @@ def create_material_rel(id: int):
 @recipe.get('/all')
 @login_required
 def get_all():
-    return [
-        recipe.to_dict() for recipe
-        in recipe_operations.get_all()
-    ]
+    return [recipe.to_dict() for recipe in recipe_operations.get_all()]
 
 
 @recipe.get('/all/<string:name>')
@@ -110,21 +107,25 @@ def get_one_by_id(id: int):
     return {
         **recipe.to_dict(),
         **{'category': recipe.category.to_dict()},
-        **{'ingredients': [
-            ingredient_rel.ingredient.to_dict()
-            for ingredient_rel in recipe.ingredient_rels
-        ]},
-        **{'materials': [
-            material_rel.material.to_dict()
-            for material_rel in recipe.material_rels
-        ]}
+        **{
+            'ingredients': [
+                ingredient_rel.ingredient.to_dict()
+                for ingredient_rel in recipe.ingredient_rels
+            ]
+        },
+        **{
+            'materials': [
+                material_rel.material.to_dict()
+                for material_rel in recipe.material_rels
+            ]
+        }
     }
 
 
 @recipe.patch('/update/<int:id>')
 def update(id: int):
-    form = UpdateForm(request.form)
     recipe = recipe_operations.get_one_by_id(id)
+    form = UpdateForm(request.form)
     app_operations.validate_form(form)
     recipe = recipe_operations.update(recipe, form)
     return recipe.to_dict()
@@ -132,10 +133,10 @@ def update(id: int):
 
 @recipe.patch('/update-ingredient-rel/<int:id>/ingredient/<int:id_ingredient>')
 def update_ingredient_rel(id: int, id_ingredient: int):
-    form = UpdateIngredientRelForm(request.form)
     ingredient_rel = recipe_operations.get_one_ingredient_rel_by_id_and_id_ingredient(
         id, id_ingredient
     )
+    form = UpdateIngredientRelForm(request.form)
     app_operations.validate_form(form)
     ingredient_rel = recipe_operations.update_ingredient_rel(
         ingredient_rel, form
@@ -145,10 +146,10 @@ def update_ingredient_rel(id: int, id_ingredient: int):
 
 @recipe.patch('/update-material-rel/<int:id>/material/<int:id_material>')
 def update_material_rel(id: int, id_material: int):
-    form = UpdateMaterialRelForm(request.form)
     material_rel = recipe_operations.get_one_material_rel_by_id_and_id_material(
         id, id_material
     )
+    form = UpdateMaterialRelForm(request.form)
     app_operations.validate_form(form)
     material_rel = recipe_operations.update_material_rel(
         material_rel, form

@@ -15,12 +15,12 @@ def create():
     form = CreateForm(request.form)
     app_operations.validate_form(form)
     ingredient = ingredient_operations.create(
-        form.name.data, 
-        form.brand.data, 
+        form.name.data,
+        form.brand.data,
         form.supplier.data,
         form.value.data,
         form.weight.data,
-        form.current_quantity.data, 
+        form.current_quantity.data,
         form.minimum_quantity.data
     )
     return ingredient.to_dict(), HTTPStatus.CREATED
@@ -30,7 +30,7 @@ def create():
 @login_required
 def get_all():
     return [
-        ingredient.to_dict() for ingredient
+        ingredient.to_dict() for ingredient 
         in ingredient_operations.get_all()
     ]
 
@@ -39,7 +39,7 @@ def get_all():
 @login_required
 def get_all_by_name(name: str):
     return [
-        ingredient.to_dict() for ingredient
+        ingredient.to_dict() for ingredient 
         in ingredient_operations.get_all_by_name(name)
     ]
 
@@ -65,8 +65,8 @@ def get_one_by_id(id: int):
 @ingredient.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    form = UpdateForm(request.form)
     ingredient = ingredient_operations.get_one_by_id(id)
+    form = UpdateForm(request.form)
     app_operations.validate_form(form)
     ingredient = ingredient_operations.update(ingredient, form)
     return ingredient.to_dict()

@@ -6,29 +6,32 @@ from app.modules.payment_method import operations as payment_method_operations
 from app.modules.user import operations as user_operations
 
 from . import operations as setup_operations, setup
-from .typing import SetupData
+from .typing import (
+    DefaultLaborData,
+    CategoryNames, PaymentMethodNames
+)
 
 
 @setup.post('/run')
 def run():
-    def create_default_categories(setup_data: SetupData):
-        for name in setup_data['category_names']:
+    def create_default_categories(names: CategoryNames):
+        for name in names:
             try:
                 category_operations.get_one_by_name(name)
             except:
                 category_operations.create(name)
 
-    def create_default_labors(setup_data: SetupData):
+    def create_default_labor(data: DefaultLaborData):
         try:
             labor_operations.get_one_by_id(1, except_default=False)
         except:
-            default_labor_data = setup_data['default_labor_data']
-            person_name = default_labor_data['person_name']
-            hourly_rate = default_labor_data['hourly_rate']
-            labor_operations.create(person_name, hourly_rate)
+            labor_operations.create(
+                data['person_name'],
+                data['hourly_rate']
+            )
 
-    def create_default_payment_methods(setup_data: SetupData):
-        for name in setup_data['payment_method_names']:
+    def create_default_payment_methods(names: PaymentMethodNames):
+        for name in names:
             try:
                 payment_method_operations.get_one_by_name(name)
             except:
@@ -42,12 +45,11 @@ def run():
                 user_operations.create(name, password)
 
     setup_data = setup_operations.get_data()
-    form = request.form
-    create_default_categories(setup_data)
-    create_default_labors(setup_data)
-    create_default_payment_methods(setup_data)
+    create_default_categories(setup_data['category_names'])
+    create_default_labor(setup_data['default_labor_data'])
+    create_default_payment_methods(setup_data['payment_method_names'])
     create_default_user(
-        form['name'],
-        form['password']
+        request.form.get('name'),
+        request.form.get('password')
     )
     return {'message': 'The setup was completed successfully.'}
