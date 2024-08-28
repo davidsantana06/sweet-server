@@ -3,6 +3,7 @@ from http import HTTPStatus
 from flask_login import login_required
 
 from app import operations as app_operations
+from app.facades import response
 
 from . import operations as labor_operations, labor
 from .forms import CreateForm, UpdateForm
@@ -12,42 +13,41 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    app_operations.validate_form(form)
+    app_operations.validate(form)
     labor = labor_operations.create(
-        form.person_name.data,
-        form.hourly_rate.data
+        *app_operations.get_data(form)
     )
-    return labor.to_dict(), HTTPStatus.CREATED
+    return response.as_model(labor, HTTPStatus.CREATED)
 
 
 @labor.get('/all')
 @login_required
 def get_all():
-    return [labor.to_dict() for labor in labor_operations.get_all()]
+    return response.as_models(labor_operations.get_all())
 
 
 @labor.get('/all/<string:person_name>')
 @login_required
 def get_all_by_person_name(person_name: str):
-    return [
-        labor.to_dict() for labor 
-        in labor_operations.get_all_by_person_name(person_name)
-    ]
+    return response.as_models(
+        labor_operations.get_all_by_person_name(person_name)
+    )
 
 
 @labor.get('/all-select-choices')
 @login_required
 def get_all_select_choices():
-    return [
-        {'id': id, 'person_name': person_name} for id, person_name
-        in labor_operations.get_all_select_choices()
-    ]
+    return response.as_select_choices(
+        labor_operations.get_all_select_choices()
+    )
 
 
 @labor.get('/one/<int:id>')
 @login_required
 def get_one_by_id(id: int):
-    return labor_operations.get_one_by_id(id).to_dict()
+    return response.as_model(
+        labor_operations.get_one_by_id(id)
+    )
 
 
 @labor.patch('/update/<int:id>')
@@ -55,9 +55,9 @@ def get_one_by_id(id: int):
 def update(id: int):
     labor = labor_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
-    app_operations.validate_form(form)
+    app_operations.validate(form)
     labor = labor_operations.update(labor, form)
-    return labor.to_dict()
+    return response.as_model(labor)
 
 
 @labor.delete('/delete/<int:id>')
@@ -65,4 +65,4 @@ def update(id: int):
 def delete(id: int):
     labor = labor_operations.get_one_by_id(id)
     labor_operations.delete(labor)
-    return {'message': 'The labor was deleted.'}
+    return response.as_message('The labor was deleted.')

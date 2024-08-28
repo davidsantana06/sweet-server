@@ -13,8 +13,13 @@ def get_all_select_choices() -> SelectChoices:
     return PaymentMethod.find_all_select_choices()
 
 
-def get_one_by_name(name: str) -> PaymentMethod:
-    payment_method = PaymentMethod.find_first_by_name(name)
+def _check_existance(payment_method: PaymentMethod) -> bool:
     if not payment_method:
         raise NotFound('The payment method was not found.')
+    return True
+
+
+def get_one_by_name(name: str) -> PaymentMethod:
+    payment_method = PaymentMethod.find_first_by_name(name)
+    _check_existance(payment_method)
     return payment_method

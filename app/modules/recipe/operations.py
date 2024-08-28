@@ -62,11 +62,22 @@ def get_all_material_rel_related_ids_by_id(id: int) -> RelatedIds:
     return RecipeMaterial.find_all_related_ids_by_id_recipe(id)
 
 
-def get_one_by_id(id: int) -> Recipe:
-    recipe = Recipe.find_first_by_id(id)
+def _check_existance(recipe: Recipe) -> bool:
     if not recipe:
         raise NotFound('The recipe was not found.')
+    return True
+
+
+def get_one_by_id(id: int) -> Recipe:
+    recipe = Recipe.find_first_by_id(id)
+    _check_existance(recipe)
     return recipe
+
+
+def _check_ingredient_rel_existance(ingredient_rel: RecipeIngredient) -> bool:
+    if not ingredient_rel:
+        raise NotFound('The ingredient rel was not found.')
+    return True
 
 
 def get_one_ingredient_rel_by_id_and_id_ingredient(
@@ -75,9 +86,14 @@ def get_one_ingredient_rel_by_id_and_id_ingredient(
     ingredient_rel = RecipeIngredient.find_first_by_id_recipe_and_id_ingredient(
         id, id_ingredient
     )
-    if not ingredient_rel:
-        raise NotFound('The ingredient rel was not found.')
+    _check_ingredient_rel_existance(ingredient_rel)
     return ingredient_rel
+
+
+def _check_material_rel_existance(material_rel: RecipeMaterial) -> bool:
+    if not material_rel:
+        raise NotFound('The material rel was not found.')
+    return True
 
 
 def get_one_material_rel_by_id_and_id_material(
@@ -87,8 +103,7 @@ def get_one_material_rel_by_id_and_id_material(
     material_rel = RecipeMaterial.find_first_by_id_recipe_and_id_material(
         id, id_material
     )
-    if not material_rel:
-        raise NotFound('The material rel was not found.')
+    _check_material_rel_existance(material_rel)
     return material_rel
 
 

@@ -17,10 +17,15 @@ def get_all_by_name(name: str) -> MonthlyFees:
     return MonthlyFee.find_all_by_name(name)
 
 
-def get_one_by_id(id: int) -> MonthlyFee:
-    monthly_fee = MonthlyFee.find_first_by_id(id)
+def _check_existance(monthly_fee: MonthlyFee) -> bool:
     if not monthly_fee:
         raise NotFound('The monthly fee was not found.')
+    return True
+
+
+def get_one_by_id(id: int) -> MonthlyFee:
+    monthly_fee = MonthlyFee.find_first_by_id(id)
+    _check_existance(monthly_fee)
     return monthly_fee
 
 

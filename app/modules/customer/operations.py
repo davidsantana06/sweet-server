@@ -24,10 +24,15 @@ def get_all_select_choices() -> SelectChoices:
     return Customer.find_all_select_choices()
 
 
-def get_one_by_id(id: int) -> Customer:
-    customer = Customer.find_first_by_id(id)
+def _check_existance(customer: Customer) -> bool:
     if not customer:
         raise NotFound('The customer was not found.')
+    return True
+
+
+def get_one_by_id(id: int) -> Customer:
+    customer = Customer.find_first_by_id(id)
+    _check_existance(customer)
     return customer
 
 

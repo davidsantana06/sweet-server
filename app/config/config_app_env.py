@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from os import environ
 
-from ..constants import DATABASE_FILE, ENV_FILE, STATIC_FOLDER
+from app.constants import DATABASE_FILE, ENV_FILE, STATIC_FOLDER
 
 
 def configure_app_env(app: Flask) -> None:

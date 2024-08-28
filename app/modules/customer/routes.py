@@ -3,6 +3,7 @@ from http import HTTPStatus
 from flask_login import login_required
 
 from app import operations as app_operations
+from app.facades import response
 
 from . import operations as customer_operations, customer
 from .forms import CreateForm, UpdateForm
@@ -12,44 +13,41 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    app_operations.validate_form(form)
+    app_operations.validate(form)
     customer = customer_operations.create(
-        form.name.data,
-        form.phone.data,
-        form.instagram.data,
-        form.notes.data
+        *app_operations.get_data(form)
     )
-    return customer.to_dict(), HTTPStatus.CREATED
+    return response.as_model(customer, HTTPStatus.CREATED)
 
 
 @customer.get('/all')
 @login_required
 def get_all():
-    return [customer.to_dict() for customer in customer_operations.get_all()]
+    return response.as_models(customer_operations.get_all())
 
 
 @customer.get('/all/<string:name>')
 @login_required
 def get_all_by_name(name: str):
-    return [
-        customer.to_dict() for customer 
-        in customer_operations.get_all_by_name(name)
-    ]
+    return response.as_models(
+        customer_operations.get_all_by_name(name)
+    )
 
 
 @customer.get('/all-select-choices')
 @login_required
 def get_all_select_choices():
-    return [
-        {'id': id, 'name': name} for id, name
-        in customer_operations.get_all_select_choices()
-    ]
+    return response.as_select_choices(
+        customer_operations.get_all_select_choices()
+    )
 
 
 @customer.get('/one/<int:id>')
 @login_required
 def get_one_by_id(id: int):
-    return customer_operations.get_one_by_id(id).to_dict()
+    return response.as_model(
+        customer_operations.get_one_by_id(id)
+    )
 
 
 @customer.patch('/update/<int:id>')
@@ -57,9 +55,9 @@ def get_one_by_id(id: int):
 def update(id: int):
     customer = customer_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
-    app_operations.validate_form(form)
+    app_operations.validate(form)
     customer = customer_operations.update(customer, form)
-    return customer.to_dict()
+    return response.as_model(customer)
 
 
 @customer.delete('/delete/<int:id>')
@@ -67,4 +65,4 @@ def update(id: int):
 def delete(id: int):
     customer = customer_operations.get_one_by_id(id)
     customer_operations.delete(customer)
-    return {'message': 'The customer was deleted.'}
+    return response.as_message('The customer was deleted.')

@@ -7,7 +7,7 @@ from .forms import UpdateForm
 
 
 def create(
-    name: str, brand: str, supplier: str, 
+    name: str, brand: str, supplier: str,
     value: float, weight: int,
     current_quantity: int, minimun_quantity: int
 ) -> Ingredient:
@@ -33,10 +33,15 @@ def get_all_select_choices(related_ids: RelatedIds) -> SelectChoices:
     )
 
 
-def get_one_by_id(id: int) -> Ingredient:
-    ingredient = Ingredient.find_first_by_id(id)
+def _check_existance(ingredient: Ingredient) -> bool:
     if not ingredient:
         raise NotFound('The ingredient was not found.')
+    return True
+
+
+def get_one_by_id(id: int) -> Ingredient:
+    ingredient = Ingredient.find_first_by_id(id)
+    _check_existance(ingredient)
     return ingredient
 
 

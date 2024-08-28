@@ -1,5 +1,6 @@
 from flask import request
 
+from app.facades import response
 from app.modules.category import operations as category_operations
 from app.modules.labor import operations as labor_operations
 from app.modules.payment_method import operations as payment_method_operations
@@ -52,4 +53,4 @@ def run():
         request.form.get('name'),
         request.form.get('password')
     )
-    return {'message': 'The setup was completed successfully.'}
+    return response.as_message('The setup was completed successfully.')

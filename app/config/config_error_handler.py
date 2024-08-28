@@ -1,5 +1,8 @@
 from flask import Flask
+from http import HTTPStatus
 from werkzeug.exceptions import HTTPException, InternalServerError
+
+from app.facades import response
 
 
 _GENERIC_DESCRIPTION = \
@@ -11,7 +14,8 @@ def _error_handler(e: Exception):
         (e.code, e.description or _GENERIC_DESCRIPTION) if isinstance(e, HTTPException)
         else (InternalServerError.code, InternalServerError.description)
     )
-    return {'message': description}, code
+    status = HTTPStatus(code)
+    return response.as_message(description, status)
 
 
 def configure_error_handler(app: Flask) -> None:

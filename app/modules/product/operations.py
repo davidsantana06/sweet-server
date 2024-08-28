@@ -30,10 +30,15 @@ def get_all_select_choices(related_ids: RelatedIds) -> SelectChoices:
     return Product.find_all_select_choices_not_related_to_sale(related_ids)
 
 
-def get_one_by_id(id: int) -> Product:
-    product = Product.find_first_by_id(id)
+def _check_existance(product: Product) -> bool:
     if not product:
         raise NotFound('The product was not found.')
+    return True
+
+
+def get_one_by_id(id: int) -> Product:
+    product = Product.find_first_by_id(id)
+    _check_existance(product)
     return product
 
 

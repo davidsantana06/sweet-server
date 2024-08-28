@@ -10,8 +10,13 @@ def create(name: str, password: str) -> None:
     User.save(user)
 
 
-def get_one_by_id(id: int) -> User:
-    user = User.find_first_by_id(id)
+def _check_existance(user: User) -> bool:
     if not user:
         raise NotFound('The user was not found.')
+    return True
+
+
+def get_one_by_id(id: int) -> User:
+    user = User.find_first_by_id(id)
+    _check_existance(user)
     return user
