@@ -2,8 +2,8 @@ from flask import request
 from http import HTTPStatus
 from flask_login import login_required
 
-from app import operations as app_operations
-from app.facades import response
+from app.modules.common import operations as common_operations
+from app.modules.common.facades import response
 
 from . import operations as customer_operations, customer
 from .forms import CreateForm, UpdateForm
@@ -13,9 +13,9 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     customer = customer_operations.create(
-        *app_operations.get_data(form)
+        *common_operations.get_data(form)
     )
     return response.as_model(customer, HTTPStatus.CREATED)
 
@@ -55,7 +55,7 @@ def get_one_by_id(id: int):
 def update(id: int):
     customer = customer_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     customer = customer_operations.update(customer, form)
     return response.as_model(customer)
 

@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Integer, Float, String
 from sqlalchemy.ext.declarative import declared_attr
 
+from .model import Model
 
-class Resource():
+
+class Resource(Model):
     @declared_attr
     def name(cls):
         return Column(String(100), nullable=False)

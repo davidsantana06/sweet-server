@@ -15,8 +15,7 @@ def check_authentication() -> bool:
 def check_credentials(user: User, password: str) -> bool:
     if not check_password_hash(user.password, password):
         raise Unauthorized(
-            'The provided password is incorrect. ' + \
-            'Please check your credentials and try again.'
+            'The credentials are incorrect. Please check your input and try again.'
         )
     return True
 

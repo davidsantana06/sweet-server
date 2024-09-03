@@ -6,9 +6,9 @@ from sqlalchemy.orm import (
 from typing import Dict, List
 
 from app.extensions import database
-from app.typing import RelatedIds, SelectChoices
 
 from ..inheritable import Model
+from ..typing import RelatedIds, SelectChoices
 
 
 Products = List['Product']

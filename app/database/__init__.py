@@ -1,3 +1,4 @@
+from .inheritable import Model, Models
 from .models import (
     Category, Categories,
     Customer, Customers,
@@ -14,3 +15,4 @@ from .models import (
     Sale, Sales,
     User, Users
 )
+from .typing import RelatedIds, SelectChoices

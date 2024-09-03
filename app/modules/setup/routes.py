@@ -1,7 +1,7 @@
 from flask import request
 
-from app.facades import response
 from app.modules.category import operations as category_operations
+from app.modules.common.facades import response
 from app.modules.labor import operations as labor_operations
 from app.modules.payment_method import operations as payment_method_operations
 from app.modules.user import operations as user_operations

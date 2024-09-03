@@ -1,8 +1,10 @@
 from http import HTTPStatus
 from typing import Dict, Tuple
 
-from app.database.inheritable import Model, Models
-from app.typing import SelectChoices
+from app.database import (
+    Model, Models,
+    SelectChoices
+)
 
 
 _Response = Tuple[
@@ -46,5 +48,6 @@ class ResponseFacade():
         status: HTTPStatus = HTTPStatus.OK
     ) -> _Response:
         return [
-            {'id': id, 'name': name} for id, name in select_choices
+            {'value': value, 'label': label}
+            for value, label in select_choices
         ], status

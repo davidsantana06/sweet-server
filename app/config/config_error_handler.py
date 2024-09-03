@@ -2,16 +2,12 @@ from flask import Flask
 from http import HTTPStatus
 from werkzeug.exceptions import HTTPException, InternalServerError
 
-from app.facades import response
-
-
-_GENERIC_DESCRIPTION = \
-    'The server encountered an unexpected condition that prevented it from fulfilling the request.'
+from app.modules.common.facades import response
 
 
 def _error_handler(e: Exception):
     code, description = (
-        (e.code, e.description or _GENERIC_DESCRIPTION) if isinstance(e, HTTPException)
+        (e.code, e.description) if isinstance(e, HTTPException)
         else (InternalServerError.code, InternalServerError.description)
     )
     status = HTTPStatus(code)

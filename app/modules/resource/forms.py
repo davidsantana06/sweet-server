@@ -3,7 +3,7 @@ from wtforms import FloatField, IntegerField, StringField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 
-class ResourceForm(FlaskForm):
+class Form(FlaskForm):
     name = StringField(
         validators=[
             DataRequired(),

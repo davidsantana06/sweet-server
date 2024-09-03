@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from os import environ
 
-from app.constants import DATABASE_FILE, ENV_FILE, STATIC_FOLDER
+from app.paths import DATABASE_FILE, ENV_FILE
 
 
 def configure_app_env(app: Flask) -> None:
@@ -16,4 +16,3 @@ def configure_app_env(app: Flask) -> None:
         'WTF_CSRF_ENABLED': False
     })
     app.json.sort_keys = False
-    app.static_folder = STATIC_FOLDER

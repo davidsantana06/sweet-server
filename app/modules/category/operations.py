@@ -1,7 +1,5 @@
 from werkzeug.exceptions import NotFound
-
-from app.database import Category
-from app.typing import SelectChoices
+from app.database import Category, SelectChoices
 
 
 def create(name: str) -> None:

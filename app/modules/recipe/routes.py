@@ -2,11 +2,11 @@ from flask import request
 from http import HTTPStatus
 from flask_login import login_required
 
-from app import operations as app_operations
-from app.facades import response
+from app.modules.common import operations as common_operations
+from app.modules.common.facades import response
 from app.modules.category import operations as category_operations
-from app.modules.ingredient import operations as ingredient_operations
-from app.modules.material import operations as material_operations
+from app.modules.resource.modules.ingredient import operations as ingredient_operations
+from app.modules.resource.modules.material import operations as material_operations
 
 from . import operations as recipe_operations, recipe
 from .forms import (
@@ -20,10 +20,10 @@ from .forms import (
 @login_required
 def create():
     form = CreateForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     category_operations.get_one_by_id(form.id_category.data)
     recipe = recipe_operations.create(
-        *app_operations.get_data(form)
+        *common_operations.get_data(form)
     )
     return response.as_model(recipe, HTTPStatus.CREATED)
 
@@ -32,10 +32,10 @@ def create():
 def create_ingredient_rel(id: int):
     recipe_operations.get_one_by_id(id)
     form = CreateIngredientRelForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     ingredient_operations.get_one_by_id(form.id_ingredient.data)
     ingredient_rel = recipe_operations.create_ingredient_rel(
-        id, *app_operations.get_data(form)
+        id, *common_operations.get_data(form)
     )
     return response.as_model(ingredient_rel, HTTPStatus.CREATED)
 
@@ -44,10 +44,10 @@ def create_ingredient_rel(id: int):
 def create_material_rel(id: int):
     recipe_operations.get_one_by_id(id)
     form = CreateMaterialRelForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     material_operations.get_one_by_id(form.id_material.data)
     material_rel = recipe_operations.create_material_rel(
-        id, *app_operations.get_data(form)
+        id, *common_operations.get_data(form)
     )
     return response.as_model(material_rel, HTTPStatus.CREATED)
 
@@ -116,7 +116,7 @@ def get_one_by_id(id: int):
 def update(id: int):
     recipe = recipe_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     recipe = recipe_operations.update(recipe, form)
     return response.as_model(recipe)
 
@@ -127,7 +127,7 @@ def update_ingredient_rel(id: int, id_ingredient: int):
         id, id_ingredient
     )
     form = UpdateIngredientRelForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     ingredient_rel = recipe_operations.update_ingredient_rel(
         ingredient_rel, form
     )
@@ -140,7 +140,7 @@ def update_material_rel(id: int, id_material: int):
         id, id_material
     )
     form = UpdateMaterialRelForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     material_rel = recipe_operations.update_material_rel(
         material_rel, form
     )

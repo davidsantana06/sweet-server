@@ -1,5 +1,5 @@
 import json
-from app.constants import SETUP_FILE
+from app.paths import SETUP_FILE
 from .typing import SetupData
 
 

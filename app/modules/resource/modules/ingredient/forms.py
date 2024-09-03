@@ -1,10 +1,10 @@
 from wtforms import FloatField
 from wtforms.validators import DataRequired, NumberRange
 
-from app.forms import ResourceForm
+from app.modules.resource.forms import Form
 
 
-class _Form(ResourceForm):
+class _Form(Form):
     weight = FloatField(
         validators=[
             DataRequired(),

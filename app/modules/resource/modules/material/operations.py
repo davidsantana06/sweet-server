@@ -1,8 +1,8 @@
 from werkzeug.exceptions import NotFound
-
-from app.database import Material, Materials
-from app.typing import RelatedIds, SelectChoices
-
+from app.database import (
+    Material, Materials,
+    RelatedIds, SelectChoices
+)
 from .forms import UpdateForm
 
 

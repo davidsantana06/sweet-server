@@ -1,7 +1,5 @@
 from werkzeug.exceptions import NotFound
-
-from app.database import PaymentMethod
-from app.typing import SelectChoices
+from app.database import PaymentMethod, SelectChoices
 
 
 def create(name: str) -> None:

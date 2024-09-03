@@ -1,12 +1,10 @@
 from werkzeug.exceptions import NotFound
-
 from app.database import (
     Recipe, Recipes,
     RecipeIngredient, RecipeIngredients,
-    RecipeMaterial, RecipeMaterials
+    RecipeMaterial, RecipeMaterials,
+    RelatedIds, SelectChoices
 )
-from app.typing import RelatedIds, SelectChoices
-
 from .forms import UpdateForm, UpdateIngredientRelForm, UpdateMaterialRelForm
 
 

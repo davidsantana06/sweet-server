@@ -5,15 +5,15 @@ from sqlalchemy.orm import (
 from typing import List
 
 from app.extensions import database
-from app.typing import RelatedIds, SelectChoices
 
 from ..inheritable import Model, Resource
+from ..typing import RelatedIds, SelectChoices
 
 
 Materials = List['Material']
 
 
-class Material(database.Model, Model, Resource):
+class Material(database.Model, Resource):
     id: Mapped[int] = mapped_column(
         autoincrement=True,
         unique=True,

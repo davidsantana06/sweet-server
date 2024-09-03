@@ -6,15 +6,15 @@ from sqlalchemy.orm import (
 from typing import List
 
 from app.extensions import database
-from app.typing import RelatedIds, SelectChoices
 
 from ..inheritable import Model, Resource
+from ..typing import RelatedIds, SelectChoices
 
 
 Ingredients = List['Ingredient']
 
 
-class Ingredient(database.Model, Model, Resource):
+class Ingredient(database.Model, Resource):
     id: Mapped[int] = mapped_column(
         autoincrement=True,
         unique=True,

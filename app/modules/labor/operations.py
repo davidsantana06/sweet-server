@@ -1,8 +1,8 @@
 from werkzeug.exceptions import NotFound
-
-from app.database import Labor, Labors
-from app.typing import SelectChoices
-
+from app.database import (
+    Labor, Labors,
+    SelectChoices
+)
 from .forms import UpdateForm
 
 

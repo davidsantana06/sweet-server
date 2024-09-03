@@ -4,14 +4,14 @@ from app.extensions import cors, database, bcrypt, login_manager
 from app.database import *
 
 
-def _configure_cors(app: Flask) -> None:
-    cors.init_app(app, origins='*')
-
-
 def _configure_database(app: Flask) -> None:
     database.init_app(app)
     with app.app_context():
         database.create_all()
+
+
+def _configure_cors(app: Flask) -> None:
+    cors.init_app(app, origins='*')
 
 
 def _configure_bcrypt(app: Flask) -> None:

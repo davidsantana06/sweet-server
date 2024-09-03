@@ -1,8 +1,8 @@
 from flask import request
 from http import HTTPStatus
 
-from app import operations as app_operations
-from app.facades import response
+from app.modules.common import operations as common_operations
+from app.modules.common.facades import response
 from app.modules.user import operations as user_operations
 
 from . import operations as auth_operations, auth
@@ -17,10 +17,10 @@ def login():
             HTTPStatus.CONFLICT
         )
     form = LoginForm(request.form)
-    app_operations.validate(form)
+    common_operations.validate(form)
     user = user_operations.get_one_by_id(1)
     auth_operations.check_credentials(
-        user, *app_operations.get_data(form)
+        user, *common_operations.get_data(form)
     )
     auth_operations.login(user)
     return response.as_dict({

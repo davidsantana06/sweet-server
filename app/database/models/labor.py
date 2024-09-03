@@ -6,9 +6,9 @@ from sqlalchemy.orm import (
 from typing import List
 
 from app.extensions import database
-from app.typing import SelectChoices
 
 from ..inheritable import Model
+from ..typing import SelectChoices
 
 
 Labors = List['Labor']
