@@ -14,7 +14,7 @@ class _Form(FlaskForm):
         validators=[Length(0, 15)]
     )
     instagram = StringField(
-        validators=[Length(0, 30)]
+        validators=[Length(0, 31)]
     )
     notes = TextAreaField(
         validators=[Length(0, 1_000)]
