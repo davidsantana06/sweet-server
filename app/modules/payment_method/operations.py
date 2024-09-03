@@ -1,10 +1,23 @@
 from werkzeug.exceptions import NotFound
-from app.database import PaymentMethod, SelectChoices
+from app.database import (
+    PaymentMethod, PaymentMethods,
+    SelectChoices
+)
+from .forms import UpdateForm
 
 
-def create(name: str) -> None:
+def create(name: str) -> PaymentMethod:
     payment_method = PaymentMethod(name)
     PaymentMethod.save(payment_method)
+    return payment_method
+
+
+def get_all() -> PaymentMethods:
+    return PaymentMethod.find_all()
+
+
+def get_all_by_name(name: str) -> PaymentMethods:
+    return PaymentMethod.find_all_by_name(name)
 
 
 def get_all_select_choices() -> SelectChoices:
@@ -17,7 +30,23 @@ def _check_existance(payment_method: PaymentMethod) -> bool:
     return True
 
 
+def get_one_by_id(id: int) -> PaymentMethod:
+    payment_method = PaymentMethod.find_first_by_id(id)
+    _check_existance(payment_method)
+    return payment_method
+
+
 def get_one_by_name(name: str) -> PaymentMethod:
     payment_method = PaymentMethod.find_first_by_name(name)
     _check_existance(payment_method)
     return payment_method
+
+
+def update(payment_method: PaymentMethod, form: UpdateForm) -> PaymentMethod:
+    form.populate_obj(payment_method)
+    PaymentMethod.save(payment_method)
+    return payment_method
+
+
+def delete(payment_method: PaymentMethod) -> None:
+    PaymentMethod.delete(payment_method)

@@ -36,9 +36,10 @@ class PaymentMethod(database.Model, Model):
         Model.delete(payment_method)
     
     @classmethod
-    def __query_all(cls, columns=[]) -> PaymentMethods:
+    def __query_all(cls, columns=[], filters=[]) -> PaymentMethods:
         return cls._query_all(
             columns=columns,
+            filters=filters,
             ordinances=[
                 PaymentMethod.name, 
                 PaymentMethod.id
@@ -48,6 +49,10 @@ class PaymentMethod(database.Model, Model):
     @classmethod
     def find_all(cls) -> PaymentMethods:
         return cls.__query_all()
+
+    @classmethod
+    def find_all_by_name(cls, name: str) -> PaymentMethods:
+        return cls.__query_all(filters=[PaymentMethod.name.icontains(name)])
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
@@ -68,7 +73,7 @@ class PaymentMethod(database.Model, Model):
     
     @property
     def sales_quantity(self) -> int:
-        return self.sales.__len__
+        return len(self.sales)
 
     def __init__(self, name: str) -> None:
         self.name = name
