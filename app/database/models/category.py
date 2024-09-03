@@ -36,9 +36,10 @@ class Category(database.Model, Model):
         Model.delete(category)
 
     @classmethod
-    def __query_all(cls, columns=[]) -> Categories:
+    def __query_all(cls, columns=[], filters=[]) -> Categories:
         return cls._query_all(
             columns=columns,
+            filters=filters,
             ordinances=[
                 Category.name,
                 Category.id
@@ -48,6 +49,10 @@ class Category(database.Model, Model):
     @classmethod
     def find_all(cls) -> Categories:
         return cls.__query_all()
+    
+    @classmethod
+    def find_all_by_name(cls, name: str) -> Categories:
+        return cls.__query_all(filters=[Category.name.icontains(name)])
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
