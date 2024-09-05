@@ -44,7 +44,7 @@ class Labor(database.Model, Model):
         filters=[],
         except_default: bool = True
     ) -> List[ColumnElement[bool]]:
-        return filters + [Labor.id != 1] if except_default else []
+        return (filters + [Labor.id != 1]) if except_default else filters
 
     @classmethod
     def __query_all(
