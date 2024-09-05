@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, ColumnElement, Integer, String
 from typing import Dict, List
 
 from app.extensions import database
@@ -19,6 +19,7 @@ class User(database.Model, Model, UserMixin):
         primary_key=True
     )
     name = Column(String(30), nullable=False)
+    nickname = Column(String(15), unique=True, nullable=False)
     password = Column(String(60), nullable=False)
 
     @staticmethod
@@ -30,12 +31,46 @@ class User(database.Model, Model, UserMixin):
         Model.delete(user)
 
     @classmethod
-    def find_first_by_id(cls, id: int) -> 'User':
-        return cls._query_first(filters=[User.id == id])
+    def __compose_filters(
+        cls,
+        filters=[],
+        except_super: bool = True
+    ) -> List[ColumnElement[bool]]:
+        return (filters + [User.id != 1]) if except_super else filters
 
-    def __init__(self, name: str, password: str) -> None:
+    @classmethod
+    def __query_all(cls, filters=[], except_super: bool = True) -> Users:
+        return cls._query_all(
+            filters=cls.__compose_filters(filters, except_super),
+            ordinances=[
+                User.name,
+                User.nickname,
+                User.id
+            ]
+        )
+
+    @classmethod
+    def find_all_except_super(cls) -> Users:
+        return cls.__query_all()
+
+    @classmethod
+    def find_all_by_name_except_super(cls, name: str) -> Users:
+        return cls.__query_all(filters=[User.name.icontains(name)])
+
+    @classmethod
+    def find_first_by_nickname(cls, nickname: str) -> 'User':
+        return cls._query_first(filters=[User.nickname == nickname])
+
+    @classmethod
+    def find_first_by_id(cls, id: int, except_super: bool = True) -> 'User':
+        return cls._query_first(
+            filters=cls.__compose_filters([User.id == id], except_super)
+        )
+
+    def __init__(self, name: str, nickname: str, password: str) -> None:
         self.name = name
+        self.nickname = nickname
         self.password = password
 
     def to_dict(self) -> Dict[str, object]:
-        return {'id': self.id, 'name': self.name}
+        return {'id': self.id, 'name': self.name, 'nickname': self.nickname}

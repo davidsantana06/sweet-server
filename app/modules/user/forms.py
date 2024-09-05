@@ -3,7 +3,13 @@ from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired, Length
 
 
-class LoginForm(FlaskForm):
+class _Form(FlaskForm):
+    name = StringField(
+        validators=[
+            DataRequired(),
+            Length(1, 30)
+        ]
+    )
     nickname = StringField(
         validators=[
             DataRequired(),
@@ -16,3 +22,11 @@ class LoginForm(FlaskForm):
             Length(4, 20)
         ]
     )
+
+
+class CreateForm(_Form):
+    ...
+
+
+class UpdateForm(_Form):
+    ...

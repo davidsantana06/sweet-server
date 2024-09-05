@@ -21,7 +21,9 @@ def _configure_bcrypt(app: Flask) -> None:
 def _configure_login_manager(app: Flask) -> None:
     login_manager.init_app(app)
     login_manager.user_loader(
-        lambda user_id: User.find_first_by_id(int(user_id))
+        lambda id: User.find_first_by_id(
+            int(id), except_super=False
+        )
     )
 
 

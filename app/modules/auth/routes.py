@@ -18,16 +18,12 @@ def login():
         )
     form = LoginForm(request.form)
     common_operations.validate(form)
-    user = user_operations.get_one_by_id(1)
-    auth_operations.check_credentials(
-        user, *common_operations.get_data(form)
-    )
+    user = user_operations.get_one_by_nickname(form.nickname.data)
+    auth_operations.check_credentials(user, form.password.data)
     auth_operations.login(user)
     return response.as_dict({
         'user': user.to_dict(),
-        'message':
-            'Authentication successful. ' +
-            'User credentials have been stored in the session.'
+        'message': 'Authentication successful. User data have been stored in the session.'
     })
 
 
