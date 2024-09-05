@@ -2,7 +2,6 @@ from flask import request
 from http import HTTPStatus
 from flask_login import login_required
 
-from app.modules.common import operations as common_operations
 from app.modules.common.facades import response
 from app.modules.labor import operations as labor_operations
 from app.modules.recipe import operations as recipe_operations
@@ -15,12 +14,9 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    common_operations.validate(form)
     recipe_operations.get_one_by_id(form.id_recipe.data)
     labor_operations.get_one_by_id(form.id_labor.data)
-    product = product_operations.create(
-        *common_operations.get_data(form)
-    )
+    product = product_operations.create(*form.data)
     return response.as_model(product, HTTPStatus.CREATED)
 
 
@@ -62,7 +58,6 @@ def get_one_by_id(id: int):
 def update(id: int):
     product = product_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
-    common_operations.validate(form)
     recipe_operations.get_one_by_id(form.id_recipe.data)
     labor_operations.get_one_by_id(form.id_labor.data)
     product = product_operations.update(product, form)

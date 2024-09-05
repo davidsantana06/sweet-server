@@ -1,9 +1,10 @@
-from flask_wtf import FlaskForm
 from wtforms import FloatField, SelectField, StringField
 from wtforms.validators import DataRequired, Length, NumberRange
 
+from app.modules.common.forms import Form
 
-class _Form(FlaskForm):
+
+class _Form(Form):
     id_recipe = SelectField(
         validators=[DataRequired()]
     )

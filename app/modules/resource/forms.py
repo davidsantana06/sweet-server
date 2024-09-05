@@ -1,9 +1,10 @@
-from flask_wtf import FlaskForm
 from wtforms import FloatField, IntegerField, StringField
 from wtforms.validators import DataRequired, Length, NumberRange
 
+from app.modules.common.forms import Form as CommonForm
 
-class Form(FlaskForm):
+
+class Form(CommonForm):
     name = StringField(
         validators=[
             DataRequired(),

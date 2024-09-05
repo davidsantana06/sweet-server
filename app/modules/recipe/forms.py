@@ -1,9 +1,10 @@
-from flask_wtf import FlaskForm
 from wtforms import IntegerField, SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Length, NumberRange
 
+from app.modules.common.forms import Form
 
-class _Form(FlaskForm):
+
+class _Form(Form):
     id_category = SelectField(
         validators=[DataRequired()]
     )
@@ -34,7 +35,7 @@ class UpdateForm(_Form):
     ...
 
 
-class _IngredientRelForm(FlaskForm):
+class _IngredientRelForm(Form):
     id_ingredient = SelectField(
         validators=[DataRequired()]
     )
@@ -51,7 +52,7 @@ class UpdateIngredientRelForm(_IngredientRelForm):
     ...
 
 
-class _MaterialRelForm(FlaskForm):
+class _MaterialRelForm(Form):
     id_material = SelectField(
         validators=[DataRequired()]
     )

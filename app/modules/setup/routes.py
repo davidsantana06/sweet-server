@@ -1,7 +1,6 @@
 from flask import request
 
 from app.modules.category import operations as category_operations
-from app.modules.common import operations as common_operations
 from app.modules.common.facades import response
 from app.modules.labor import operations as labor_operations
 from app.modules.payment_method import operations as payment_method_operations
@@ -45,10 +44,7 @@ def run():
             user_operations.get_one_by_id(1, except_super=False)
         except:
             form = CreateUserForm(request.form)
-            common_operations.validate(form)
-            user_operations.create(
-                *common_operations.get_data(form)
-            )
+            user_operations.create(*form.data)
 
     setup_data = setup_operations.get_data()
     create_default_categories(setup_data['category_names'])

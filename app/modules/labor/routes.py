@@ -2,7 +2,6 @@ from flask import request
 from http import HTTPStatus
 from flask_login import login_required
 
-from app.modules.common import operations as common_operations
 from app.modules.common.facades import response
 
 from . import operations as labor_operations, labor
@@ -13,10 +12,7 @@ from .forms import CreateForm, UpdateForm
 @login_required
 def create():
     form = CreateForm(request.form)
-    common_operations.validate(form)
-    labor = labor_operations.create(
-        *common_operations.get_data(form)
-    )
+    labor = labor_operations.create(*form.data)
     return response.as_model(labor, HTTPStatus.CREATED)
 
 
@@ -55,7 +51,6 @@ def get_one_by_id(id: int):
 def update(id: int):
     labor = labor_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
-    common_operations.validate(form)
     labor = labor_operations.update(labor, form)
     return response.as_model(labor)
 

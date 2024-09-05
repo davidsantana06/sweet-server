@@ -2,7 +2,6 @@ from flask import request
 from flask_login import login_required
 from http import HTTPStatus
 
-from app.modules.common import operations as common_operations
 from app.modules.common.facades import response
 
 from . import operations as user_operations, user
@@ -15,10 +14,7 @@ from .forms import CreateForm, UpdateForm
 @access_required(is_super=True)
 def create():
     form = CreateForm(request.form)
-    common_operations.validate(form)
-    user = user_operations.create(
-        *common_operations.get_data(form)
-    )
+    user = user_operations.create(*form.data)
     return response.as_model(user, HTTPStatus.CREATED)
 
 
@@ -53,7 +49,6 @@ def get_one_by_id(id: int):
 def update(id: int):
     user = user_operations.get_one_by_id(id, except_super=False)
     form = UpdateForm(request.form)
-    common_operations.validate(form)
     user = user_operations.update(user, form)
     return response.as_model(user)
 
