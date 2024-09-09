@@ -33,15 +33,10 @@ def get_all_select_choices(related_ids: RelatedIds) -> SelectChoices:
     )
 
 
-def _check_existance(ingredient: Ingredient) -> bool:
-    if not ingredient:
-        raise NotFound('The ingredient was not found.')
-    return True
-
-
 def get_one_by_id(id: int) -> Ingredient:
     ingredient = Ingredient.find_first_by_id(id)
-    _check_existance(ingredient)
+    if not ingredient:
+        raise NotFound('The ingredient was not found.')
     return ingredient
 
 

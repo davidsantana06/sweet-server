@@ -1,8 +1,11 @@
+from typing import Literal, Union
 from werkzeug.exceptions import NotFound
+
 from app.database import (
     PaymentMethod, PaymentMethods,
     SelectChoices
 )
+
 from .forms import UpdateForm
 
 
@@ -24,22 +27,26 @@ def get_all_select_choices() -> SelectChoices:
     return PaymentMethod.find_all_select_choices()
 
 
-def _check_existance(payment_method: PaymentMethod) -> bool:
+def _get_one_or_except_by(
+    field: Literal['id', 'name'],
+    value: Union[int, str]
+) -> PaymentMethod:
+    function = {
+        'id': PaymentMethod.find_first_by_id,
+        'name': PaymentMethod.find_first_by_name
+    }[field]
+    payment_method = function(value)
     if not payment_method:
         raise NotFound('The payment method was not found.')
-    return True
+    return payment_method
 
 
 def get_one_by_id(id: int) -> PaymentMethod:
-    payment_method = PaymentMethod.find_first_by_id(id)
-    _check_existance(payment_method)
-    return payment_method
+    return _get_one_or_except_by('id', id)
 
 
 def get_one_by_name(name: str) -> PaymentMethod:
-    payment_method = PaymentMethod.find_first_by_name(name)
-    _check_existance(payment_method)
-    return payment_method
+    return _get_one_or_except_by('name', name)
 
 
 def update(payment_method: PaymentMethod, form: UpdateForm) -> PaymentMethod:

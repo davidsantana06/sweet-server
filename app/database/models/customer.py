@@ -70,7 +70,7 @@ class Customer(database.Model, Model):
         )
 
     @classmethod
-    def find_first_by_id(cls, id: int) -> 'Labor':
+    def find_first_by_id(cls, id: int) -> 'Customer':
         return cls._query_first(filters=[Customer.id == id])
 
     def __init__(self, name: str, phone: str, instagram: str, notes: str) -> None:
@@ -80,5 +80,4 @@ class Customer(database.Model, Model):
         self.notes = notes
 
 
-from .labor import Labor
 from .sale import Sale

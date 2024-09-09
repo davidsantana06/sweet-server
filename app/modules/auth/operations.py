@@ -7,21 +7,19 @@ from app.database import User
 from app.modules.user import operations as user_operations
 
 
-def login(user: User) -> None:
+def check_authentication() -> bool:
+    return user_operations.get_current().is_authenticated
+
+
+def login(user: User, password: str) -> None:
+    is_credentials_correct = check_password_hash(user.password, password)
+    if not is_credentials_correct:
+        raise Unauthorized(
+            'The credentials are incorrect. '
+            'Please check your input and try again.'
+        )
     login_user(user, remember=True, duration=timedelta(days=365))
 
 
 def logout() -> None:
     logout_user()
-
-
-def check_authentication() -> bool:
-    return user_operations.get_current().is_authenticated
-
-
-def check_credentials(user: User, password: str) -> bool:
-    if not check_password_hash(user.password, password):
-        raise Unauthorized(
-            'The credentials are incorrect. Please check your input and try again.'
-        )
-    return True

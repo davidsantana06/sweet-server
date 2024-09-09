@@ -17,7 +17,6 @@ def login():
         )
     form = LoginForm(request.form)
     user = user_operations.get_one_by_nickname(form.nickname.data)
-    auth_operations.check_credentials(user, form.password.data)
     auth_operations.login(user)
     return response.as_dict({
         'user': user.to_dict(),
@@ -27,11 +26,10 @@ def login():
 
 @auth.delete('/logout')
 def logout():
-    if not auth_operations.check_authentication():
-        return response.as_message(
-            'User is not logged in. No credentials were removed from the session.'
-        )
-    auth_operations.logout()
-    return response.as_message(
+    message = (
+        'User is not logged in. No credentials were removed from the session.'
+        if auth_operations.check_authentication() else
         'User credentials have been successfully removed from the session.'
     )
+    auth_operations.logout()
+    return response.as_message(message)

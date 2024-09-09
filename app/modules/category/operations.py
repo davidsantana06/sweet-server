@@ -1,8 +1,11 @@
+from typing import Literal, Union
 from werkzeug.exceptions import NotFound
+
 from app.database import (
     Category, Categories,
     SelectChoices
 )
+
 from .forms import UpdateForm
 
 
@@ -23,22 +26,26 @@ def get_all_select_choices() -> SelectChoices:
     return Category.find_all_select_choices()
 
 
-def _check_existance(category: Category) -> bool:
+def _get_one_or_except_by(
+    field: Literal['id', 'name'],
+    value: Union[int, str]
+) -> Category:
+    function = {
+        'id': Category.find_first_by_id,
+        'name': Category.find_first_by_name
+    }[field]
+    category = function(value)
     if not category:
         raise NotFound('The category was not found.')
-    return True
+    return category
 
 
 def get_one_by_id(id: int) -> Category:
-    category = Category.find_first_by_id(id)
-    _check_existance(category)
-    return category
+    return _get_one_or_except_by('id', id)
 
 
 def get_one_by_name(name: str) -> Category:
-    category = Category.find_first_by_name(name)
-    _check_existance(category)
-    return category
+    return _get_one_or_except_by('name', name)
 
 
 def update(category: Category, form: UpdateForm) -> Category:

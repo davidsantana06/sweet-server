@@ -24,15 +24,10 @@ def get_all_select_choices() -> SelectChoices:
     return Labor.find_all_select_choices()
 
 
-def _check_existance(labor: Labor) -> bool:
-    if not labor:
-        raise NotFound('The labor was not found.')
-    return True
-
-
 def get_one_by_id(id: int, except_default: bool = True) -> Labor:
     labor = Labor.find_first_by_id(id, except_default=except_default)
-    _check_existance(labor)
+    if not labor:
+        raise NotFound('The labor was not found.')
     return labor
 
 

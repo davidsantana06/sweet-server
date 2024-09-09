@@ -32,15 +32,10 @@ def get_all_select_choices(related_ids: RelatedIds) -> SelectChoices:
     )
 
 
-def _check_existance(material: Material) -> bool:
-    if not material:
-        raise NotFound('The material was not found.')
-    return True
-
-
 def get_one_by_id(id: int) -> Material:
     material = Material.find_first_by_id(id)
-    _check_existance(material)
+    if not material:
+        raise NotFound('The material was not found.')
     return material
 
 

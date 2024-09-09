@@ -1,10 +1,17 @@
 from flask_bcrypt import generate_password_hash
 from flask_login import current_user
-from werkzeug.exceptions import NotFound, Unauthorized
+from typing import Literal, Union
+from werkzeug.exceptions import NotFound
 
 from app.database import User, Users
 
 from .forms import UpdateForm
+
+
+def check_acess(is_super: bool, is_self: bool, id: int) -> bool:
+    is_super = is_super and current_user.id == 1
+    is_self = is_self and current_user.id == id
+    return (is_super or is_self)
 
 
 def create(name: str, nickname: str, password: str) -> None:
@@ -26,17 +33,27 @@ def get_current() -> User:
     return current_user
 
 
-def get_one_by_nickname(nickname: str) -> User:
-    user = User.find_first_by_nickname(nickname)
-    _check_existance(user)
+def _get_one_or_except_by(
+    field: Literal['id', 'nickname'],
+    value: Union[int, str],
+    except_super: bool = True
+) -> User:
+    function = {
+        'id': User.find_first_by_id,
+        'nickname': User.find_first_by_nickname
+    }[field]
+    user = function(value, except_super)
+    if not user:
+        raise NotFound('The user was not found.')
     return user
 
 
 def get_one_by_id(id: int, except_super: bool = True) -> User:
-    user = User.find_first_by_id(id, except_super)
-    _check_existance(user)
-    print(user.to_dict())
-    return user
+    return _get_one_or_except_by('id', id, except_super)
+
+
+def get_one_by_nickname(nickname: str) -> User:
+    return _get_one_or_except_by('nickname', nickname)
 
 
 def update(user: User, form: UpdateForm) -> User:
@@ -47,19 +64,3 @@ def update(user: User, form: UpdateForm) -> User:
 
 def delete(user: User) -> None:
     User.delete(user)
-
-
-def check_acess(is_super: bool, is_self: bool, id: int) -> bool:
-    is_super = is_super and current_user.id == 1
-    is_self = is_self and current_user.id == id
-    if not (is_super or is_self):
-        raise Unauthorized(
-            'You do not have the required acess to manage users.'
-        )
-    return True
-
-
-def _check_existance(user: User) -> bool:
-    if not user:
-        raise NotFound('The user was not found.')
-    return True
