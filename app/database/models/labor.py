@@ -41,21 +41,21 @@ class Labor(database.Model, Model):
     @classmethod
     def __compose_filters(
         cls,
+        except_default: bool,
         filters=[],
-        except_default: bool = True
     ) -> List[ColumnElement[bool]]:
         return (filters + [Labor.id != 1]) if except_default else filters
 
     @classmethod
     def __query_all(
-        cls, 
-        columns=[], 
+        cls,
+        except_default: bool,
+        columns=[],
         filters=[],
-        except_default: bool = True
     ) -> Labors:
         return cls._query_all(
             columns=columns,
-            filters=cls.__compose_filters(filters, except_default),
+            filters=cls.__compose_filters(except_default, filters),
             ordinances=[
                 Labor.person_name,
                 Labor.hourly_rate,
@@ -65,25 +65,29 @@ class Labor(database.Model, Model):
 
     @classmethod
     def find_all_except_default(cls) -> Labors:
-        return cls.__query_all()
+        return cls.__query_all(except_default=True)
 
     @classmethod
     def find_all_by_person_name_except_default(cls, person_name: str) -> Labors:
-        return cls._query_all(filters=[Labor.person_name == person_name])
+        return cls.__query_all(
+            except_default=True,
+            filters=[Labor.person_name == person_name]
+        )
 
     @classmethod
     def find_all_select_choices(cls) -> SelectChoices:
         return cls.__query_all(
+            except_default=False,
             columns=[
-                Labor.id, 
+                Labor.id,
                 Labor.person_name
             ]
         )
 
     @classmethod
-    def find_first_by_id(cls, id: int, except_default: bool = True) -> 'Labor':
+    def find_first_by_id(cls, id: int, except_default: bool) -> 'Labor':
         return cls._query_first(
-            filters=cls.__compose_filters([Labor.id == id], except_default)
+            filters=cls.__compose_filters(except_default, [Labor.id == id])
         )
 
     def __init__(self, person_name: str, hourly_rate: float) -> None:

@@ -25,7 +25,7 @@ def get_all_select_choices() -> SelectChoices:
 
 
 def get_one_by_id(id: int, except_default: bool = True) -> Labor:
-    labor = Labor.find_first_by_id(id, except_default=except_default)
+    labor = Labor.find_first_by_id(id, except_default)
     if not labor:
         raise NotFound('The labor was not found.')
     return labor
