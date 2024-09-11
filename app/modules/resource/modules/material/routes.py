@@ -53,8 +53,8 @@ def get_one_by_id(id: int):
 @material.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    material = material_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
+    material = material_operations.get_one_by_id(id)
     material = material_operations.update(material, form)
     return response.as_model(material)
 

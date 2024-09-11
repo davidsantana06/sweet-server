@@ -41,8 +41,8 @@ def get_one_by_id(id: int):
 @monthly_fee.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    monthly_fee = monthly_fee_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
+    monthly_fee = monthly_fee_operations.get_one_by_id(id)
     monthly_fee = monthly_fee_operations.update(monthly_fee, form)
     return response.as_model(monthly_fee)
 

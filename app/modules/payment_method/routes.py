@@ -48,8 +48,8 @@ def get_one_by_id(id: int):
 
 @payment_method.patch('/update/<int:id>')
 def update(id: int):
-    payment_method = payment_method_operations.get_one_by('id', id)
     form = UpdateForm(request.form)
+    payment_method = payment_method_operations.get_one_by('id', id)
     payment_method = payment_method_operations.update(
         payment_method, form
     )

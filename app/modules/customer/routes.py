@@ -49,8 +49,8 @@ def get_one_by_id(id: int):
 @customer.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    customer = customer_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
+    customer = customer_operations.get_one_by_id(id)
     customer = customer_operations.update(customer, form)
     return response.as_model(customer)
 

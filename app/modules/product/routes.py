@@ -34,9 +34,9 @@ def get_all_by_name(name: str):
     )
 
 
-@product.get('/all-select-choices/<int:sale_id>')
+@product.get('/all-select-choices/<int:id_sale>')
 @login_required
-def get_all_select_choices(sale_id: int):
+def get_all_select_choices(id_sale: int):
     related_ids = []
     return response.as_select_choices(
         product_operations.get_all_select_choices(related_ids)
@@ -56,10 +56,10 @@ def get_one_by_id(id: int):
 
 @product.patch('/update/<int:id>')
 def update(id: int):
-    product = product_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
     recipe_operations.get_one_by_id(form.id_recipe.data)
     labor_operations.get_one_by_id(form.id_labor.data)
+    product = product_operations.get_one_by_id(id)
     product = product_operations.update(product, form)
     return response.as_model(product)
 

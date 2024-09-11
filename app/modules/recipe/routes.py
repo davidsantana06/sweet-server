@@ -26,8 +26,8 @@ def create():
 
 @recipe.post('/create-ingredient-rel/<int:id>')
 def create_ingredient_rel(id: int):
-    recipe_operations.get_one_by_id(id)
     form = CreateIngredientRelForm(request.form)
+    recipe_operations.get_one_by_id(id)
     ingredient_operations.get_one_by_id(form.id_ingredient.data)
     ingredient_rel = recipe_operations.create_ingredient_rel(
         id, *form.data
@@ -37,8 +37,8 @@ def create_ingredient_rel(id: int):
 
 @recipe.post('/create-material-rel/<int:id>')
 def create_material_rel(id: int):
-    recipe_operations.get_one_by_id(id)
     form = CreateMaterialRelForm(request.form)
+    recipe_operations.get_one_by_id(id)
     material_operations.get_one_by_id(form.id_material.data)
     material_rel = recipe_operations.create_material_rel(
         id, *form.data
@@ -108,18 +108,19 @@ def get_one_by_id(id: int):
 
 @recipe.patch('/update/<int:id>')
 def update(id: int):
-    recipe = recipe_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
+    category_operations.get_one_by('id', form.id_category.data)
+    recipe = recipe_operations.get_one_by_id(id)
     recipe = recipe_operations.update(recipe, form)
     return response.as_model(recipe)
 
 
 @recipe.patch('/update-ingredient-rel/<int:id>/ingredient/<int:id_ingredient>')
 def update_ingredient_rel(id: int, id_ingredient: int):
+    form = UpdateIngredientRelForm(request.form)
     ingredient_rel = recipe_operations.get_one_ingredient_rel_by_id_and_id_ingredient(
         id, id_ingredient
     )
-    form = UpdateIngredientRelForm(request.form)
     ingredient_rel = recipe_operations.update_ingredient_rel(
         ingredient_rel, form
     )
@@ -128,10 +129,10 @@ def update_ingredient_rel(id: int, id_ingredient: int):
 
 @recipe.patch('/update-material-rel/<int:id>/material/<int:id_material>')
 def update_material_rel(id: int, id_material: int):
+    form = UpdateMaterialRelForm(request.form)
     material_rel = recipe_operations.get_one_material_rel_by_id_and_id_material(
         id, id_material
     )
-    form = UpdateMaterialRelForm(request.form)
     material_rel = recipe_operations.update_material_rel(
         material_rel, form
     )

@@ -53,8 +53,8 @@ def get_one_by_id(id: int):
 @ingredient.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    ingredient = ingredient_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
+    ingredient = ingredient_operations.get_one_by_id(id)
     ingredient = ingredient_operations.update(ingredient, form)
     return response.as_model(ingredient)
 

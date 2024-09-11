@@ -49,8 +49,8 @@ def get_one_by_id(id: int):
 @labor.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    labor = labor_operations.get_one_by_id(id)
     form = UpdateForm(request.form)
+    labor = labor_operations.get_one_by_id(id)
     labor = labor_operations.update(labor, form)
     return response.as_model(labor)
 

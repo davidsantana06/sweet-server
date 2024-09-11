@@ -47,8 +47,8 @@ def get_one_by_id(id: int):
 @login_required
 @access_required(is_super=True, is_self=True)
 def update(id: int):
-    user = user_operations.get_one_by('id', id, except_super=False)
     form = UpdateForm(request.form)
+    user = user_operations.get_one_by('id', id, except_super=False)
     user = user_operations.update(user, form)
     return response.as_model(user)
 

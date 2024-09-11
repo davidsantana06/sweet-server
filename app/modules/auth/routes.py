@@ -28,10 +28,11 @@ def login():
 
 @auth.delete('/logout')
 def logout():
-    message = (
-        'User is not logged in. No credentials were removed from the session.'
-        if auth_operations.check_authentication() else
+    if not auth_operations.check_authentication():
+        return response.as_message(
+            'User is not logged in. No credentials were removed from the session.'
+        )
+    auth_operations.logout()
+    return response.as_message(
         'User credentials have been successfully removed from the session.'
     )
-    auth_operations.logout()
-    return response.as_message(message)

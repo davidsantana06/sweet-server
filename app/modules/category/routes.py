@@ -49,8 +49,8 @@ def get_one_by_id(id: int):
 @category.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    category = category_operations.get_one_by('id', id)
     form = UpdateForm(request.form)
+    category = category_operations.get_one_by('id', id)
     category = category_operations.update(category, form)
     return response.as_model(category)
 
