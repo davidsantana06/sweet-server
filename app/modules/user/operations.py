@@ -39,10 +39,10 @@ def _get_one_or_except_by(
     except_super: bool = True
 ) -> User:
     function = {
-        'id': User.find_first_by_id,
-        'nickname': User.find_first_by_nickname
+        'id': (lambda v: User.find_first_by_id(v, except_super)),
+        'nickname': (lambda v: User.find_first_by_nickname(v))
     }[field]
-    user = function(value, except_super)
+    user = function(value)
     if not user:
         raise NotFound('The user was not found.')
     return user

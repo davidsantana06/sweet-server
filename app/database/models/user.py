@@ -33,15 +33,15 @@ class User(database.Model, Model, UserMixin):
     @classmethod
     def __compose_filters(
         cls,
+        except_super: bool,
         filters=[],
-        except_super: bool = True
     ) -> List[ColumnElement[bool]]:
         return (filters + [User.id != 1]) if except_super else filters
 
     @classmethod
-    def __query_all(cls, filters=[], except_super: bool = True) -> Users:
+    def __query_all(cls, except_super: bool, filters=[]) -> Users:
         return cls._query_all(
-            filters=cls.__compose_filters(filters, except_super),
+            filters=cls.__compose_filters(except_super, filters),
             ordinances=[
                 User.name,
                 User.nickname,
@@ -51,20 +51,23 @@ class User(database.Model, Model, UserMixin):
 
     @classmethod
     def find_all_except_super(cls) -> Users:
-        return cls.__query_all()
+        return cls.__query_all(except_super=True)
 
     @classmethod
     def find_all_by_name_except_super(cls, name: str) -> Users:
-        return cls.__query_all(filters=[User.name.icontains(name)])
+        return cls.__query_all(
+            except_super=True,
+            filters=[User.name.icontains(name)]
+        )
 
     @classmethod
     def find_first_by_nickname(cls, nickname: str) -> 'User':
         return cls._query_first(filters=[User.nickname == nickname])
 
     @classmethod
-    def find_first_by_id(cls, id: int, except_super: bool = True) -> 'User':
+    def find_first_by_id(cls, id: int, except_super: bool) -> 'User':
         return cls._query_first(
-            filters=cls.__compose_filters([User.id == id], except_super)
+            filters=cls.__compose_filters(except_super, [User.id == id])
         )
 
     def __init__(self, name: str, nickname: str, password: str) -> None:
