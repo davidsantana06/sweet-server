@@ -1,4 +1,4 @@
 .venv/
 .env
 __pycache__/
-storage/data/database.sqlite3
+storage/*.sqlite3
