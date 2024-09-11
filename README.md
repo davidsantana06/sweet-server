@@ -25,7 +25,7 @@ Finally, the server can be started with the command **`python run.py`**.
 
 ##### 🗃️ Essential Data Creation
 
-The essential data can be found in `storage\data\setup.json`. This file contains the following keys:
+The essential data can be found in `storage\setup.json`. This file contains the following keys:
 
 * "category_names" - A list containing the names of recipe categories;
 * "payment_method_names" - A list containing the names of accepted payment methods;
