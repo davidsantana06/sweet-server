@@ -16,7 +16,9 @@ def login():
             HTTPStatus.CONFLICT
         )
     form = LoginForm(request.form)
-    user = user_operations.get_one_by_nickname(form.nickname.data)
+    user = user_operations.get_one_by(
+        'nickname', form.nickname.data, except_super=False
+    )
     auth_operations.login(user)
     return response.as_dict({
         'user': user.to_dict(),

@@ -27,7 +27,7 @@ def get_all_select_choices() -> SelectChoices:
     return PaymentMethod.find_all_select_choices()
 
 
-def _get_one_or_except_by(
+def get_one_by(
     field: Literal['id', 'name'],
     value: Union[int, str]
 ) -> PaymentMethod:
@@ -39,14 +39,6 @@ def _get_one_or_except_by(
     if not payment_method:
         raise NotFound('The payment method was not found.')
     return payment_method
-
-
-def get_one_by_id(id: int) -> PaymentMethod:
-    return _get_one_or_except_by('id', id)
-
-
-def get_one_by_name(name: str) -> PaymentMethod:
-    return _get_one_or_except_by('name', name)
 
 
 def update(payment_method: PaymentMethod, form: UpdateForm) -> PaymentMethod:

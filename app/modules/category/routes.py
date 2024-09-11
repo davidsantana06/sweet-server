@@ -42,14 +42,14 @@ def get_all_select_choices():
 @login_required
 def get_one_by_id(id: int):
     return response.as_model(
-        category_operations.get_one_by_id(id)
+        category_operations.get_one_by('id', id)
     )
 
 
 @category.patch('/update/<int:id>')
 @login_required
 def update(id: int):
-    category = category_operations.get_one_by_id(id)
+    category = category_operations.get_one_by('id', id)
     form = UpdateForm(request.form)
     category = category_operations.update(category, form)
     return response.as_model(category)
@@ -58,6 +58,6 @@ def update(id: int):
 @category.delete('/delete/<int:id>')
 @login_required
 def delete(id: int):
-    category = category_operations.get_one_by_id(id)
+    category = category_operations.get_one_by('id', id)
     category_operations.delete(category)
     return response.as_message('The customer was deleted.')

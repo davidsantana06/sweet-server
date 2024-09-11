@@ -26,7 +26,7 @@ def get_all_select_choices() -> SelectChoices:
     return Category.find_all_select_choices()
 
 
-def _get_one_or_except_by(
+def get_one_by(
     field: Literal['id', 'name'],
     value: Union[int, str]
 ) -> Category:
@@ -38,14 +38,6 @@ def _get_one_or_except_by(
     if not category:
         raise NotFound('The category was not found.')
     return category
-
-
-def get_one_by_id(id: int) -> Category:
-    return _get_one_or_except_by('id', id)
-
-
-def get_one_by_name(name: str) -> Category:
-    return _get_one_or_except_by('name', name)
 
 
 def update(category: Category, form: UpdateForm) -> Category:

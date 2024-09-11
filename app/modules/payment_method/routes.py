@@ -42,13 +42,13 @@ def get_all_select_choices():
 @login_required
 def get_one_by_id(id: int):
     return response.as_model(
-        payment_method_operations.get_one_by_id(id)
+        payment_method_operations.get_one_by('id', id)
     )
 
 
 @payment_method.patch('/update/<int:id>')
 def update(id: int):
-    payment_method = payment_method_operations.get_one_by_id(id)
+    payment_method = payment_method_operations.get_one_by('id', id)
     form = UpdateForm(request.form)
     payment_method = payment_method_operations.update(
         payment_method, form
@@ -58,6 +58,6 @@ def update(id: int):
 
 @payment_method.delete('/delete/<int:id>')
 def delete(id: int):
-    payment_method = payment_method_operations.get_one_by_id(id)
+    payment_method = payment_method_operations.get_one_by('id', id)
     payment_method_operations.delete(payment_method)
     return response.as_message('The payment method was deleted.')

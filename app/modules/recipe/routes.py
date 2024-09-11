@@ -19,7 +19,7 @@ from .forms import (
 @login_required
 def create():
     form = CreateForm(request.form)
-    category_operations.get_one_by_id(form.id_category.data)
+    category_operations.get_one_by('id', form.id_category.data)
     recipe = recipe_operations.create(*form.data)
     return response.as_model(recipe, HTTPStatus.CREATED)
 

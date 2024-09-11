@@ -33,7 +33,7 @@ def get_current() -> User:
     return current_user
 
 
-def _get_one_or_except_by(
+def get_one_by(
     field: Literal['id', 'nickname'],
     value: Union[int, str],
     except_super: bool = True
@@ -46,14 +46,6 @@ def _get_one_or_except_by(
     if not user:
         raise NotFound('The user was not found.')
     return user
-
-
-def get_one_by_id(id: int, except_super: bool = True) -> User:
-    return _get_one_or_except_by('id', id, except_super)
-
-
-def get_one_by_nickname(nickname: str) -> User:
-    return _get_one_or_except_by('nickname', nickname)
 
 
 def update(user: User, form: UpdateForm) -> User:

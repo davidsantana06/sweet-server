@@ -39,7 +39,7 @@ def get_all_by_name(name: str):
 @access_required(is_super=True, is_self=True)
 def get_one_by_id(id: int):
     return response.as_model(
-        user_operations.get_one_by_id(id, except_super=False)
+        user_operations.get_one_by('id', id, except_super=False)
     )
 
 
@@ -47,7 +47,7 @@ def get_one_by_id(id: int):
 @login_required
 @access_required(is_super=True, is_self=True)
 def update(id: int):
-    user = user_operations.get_one_by_id(id, except_super=False)
+    user = user_operations.get_one_by('id', id, except_super=False)
     form = UpdateForm(request.form)
     user = user_operations.update(user, form)
     return response.as_model(user)
@@ -57,6 +57,6 @@ def update(id: int):
 @login_required
 @access_required(is_super=True)
 def delete(id: int):
-    user = user_operations.get_one_by_id(id)
+    user = user_operations.get_one_by('id', id)
     user_operations.delete(user)
     return response.as_message('The user was deleted.')

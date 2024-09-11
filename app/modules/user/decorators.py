@@ -14,7 +14,8 @@ def access_required(is_super: bool = False, is_self: bool = False):
             )
             if not has_access:
                 raise Unauthorized(
-                    'You do not have the required access to manage users.'
+                    'You do not have the required access'
+                    'to manage users.'
                 )
             return f(*args, **kwargs)
         return decorated_function

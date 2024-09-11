@@ -19,7 +19,7 @@ def run():
     def create_default_categories(names: CategoryNames):
         for name in names:
             try:
-                category_operations.get_one_by_name(name)
+                category_operations.get_one_by('name', name)
             except:
                 category_operations.create(name)
 
@@ -35,13 +35,13 @@ def run():
     def create_default_payment_methods(names: PaymentMethodNames):
         for name in names:
             try:
-                payment_method_operations.get_one_by_name(name)
+                payment_method_operations.get_one_by('name', name)
             except:
                 payment_method_operations.create(name)
 
     def create_super_user():
         try:
-            user_operations.get_one_by_id(1, except_super=False)
+            user_operations.get_one_by('id', 1, except_super=False)
         except:
             form = CreateUserForm(request.form)
             user_operations.create(*form.data)
