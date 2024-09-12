@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple, Union
 
 from app.database import (
     Model, Models,
@@ -8,7 +8,10 @@ from app.database import (
 
 
 _Response = Tuple[
-    Dict[str, object],
+    Union[
+        List[Dict[str, object]],
+        Dict[str, object]
+    ],
     HTTPStatus
 ]
 
