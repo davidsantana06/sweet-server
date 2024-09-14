@@ -5,9 +5,10 @@ from werkzeug.exceptions import HTTPException, InternalServerError
 from app.modules.common.facades import response
 
 
-def _error_handler(e: Exception):
+def _error_handler(exception: Exception):
+    is_http_exception = isinstance(exception, HTTPException)
     code, description = (
-        (e.code, e.description) if isinstance(e, HTTPException)
+        (exception.code, exception.description) if is_http_exception
         else (InternalServerError.code, InternalServerError.description)
     )
     status = HTTPStatus(code)

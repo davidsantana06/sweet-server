@@ -1,9 +1,9 @@
 import json
-from app.paths import SETUP_FILE
+from app.config import paths
 from .typing import SetupData
 
 
 def get_data() -> SetupData:
-    with open(SETUP_FILE, 'r', encoding='utf-8') as file:
+    with open(paths.SETUP_FILE, 'r', encoding='utf-8') as file:
         data = json.load(file)
     return data
