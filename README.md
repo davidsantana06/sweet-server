@@ -9,18 +9,30 @@ Sweet Server is a REST API server designed for managing a confectionery business
 
 #### 🛠️ Installation and Configuration
 
-To begin the server installation, you need to have Python 3.9+ installed along with the source code, which can be cloned using the command **`git clone https://github.com/davidsantana06/sweet-server`**.
+To begin the server installation, ensure that Python 3.9 or higher is installed on your system. You will also need the source code, which can be cloned using the following command:
 
-With the files in hand, create a `.env` file with the same fields present in `.env.example`. In this file, you should specify the following fields:
+```bash
+git clone https://github.com/davidsantana06/sweet-server
+```
 
-* HOST - IP address;
-* PORT - Access port;
-* SECRET_KEY - Server secret key should be long and contain multiple characters;
-* DEBUG - Indicator to start the application in debug mode (`1`) or not (`0`).
+Once you have the files, create a `.env` file based on the template provided in `.env.example`. In this file, specify the following fields:
 
-Next, install the application dependencies using the command **`pip install -r requirements.txt`**. This process can be done in a virtual environment.
+* SECRET_KEY - Server secret key, which should be long and contain multiple characters;
+* ALLOWED_HOSTS - A list of addresses (or domains) allowed to make requests to the server, separated by space.
 
-Finally, the server can be started with the command **`python run.py`**.
+Next, install the application dependencies using the command:
+
+```bash
+pip install -r requirements.txt
+```
+
+This process can be performed within a virtual environment.
+
+Finally, start the server with:
+
+```bash
+flask --app app run
+```
 
 
 ##### 🗃️ Essential Data Creation
