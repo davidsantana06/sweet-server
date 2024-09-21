@@ -19,9 +19,10 @@ def login():
     user = user_operations.get_one_by(
         'nickname', form.nickname.data, except_super=False
     )
-    auth_operations.login(user)
+    expiration = auth_operations.login(user, form.password.data)
     return response.as_dict({
         'user': user.to_dict(),
+        'expiration': expiration,
         'message': 'Authentication successful. User data have been stored in the session.'
     })
 
