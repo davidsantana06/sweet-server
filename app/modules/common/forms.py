@@ -5,8 +5,9 @@ from werkzeug.exceptions import BadRequest
 
 
 class Form(FlaskForm):
-    def __init__(self, data: ImmutableDict[str, object]) -> None:
+    def __init__(self, data: ImmutableDict[str, str]) -> None:
         super().__init__(data)
+        self._cast_fields()
         if not super().validate():
             raise BadRequest(self.__error_description)
 
@@ -21,3 +22,6 @@ class Form(FlaskForm):
             'The submitted data is not valid. '
             f'Please review and correct [{fields}] before resubmitting.'
         )
+
+    def _cast_fields(self) -> None:
+        ...

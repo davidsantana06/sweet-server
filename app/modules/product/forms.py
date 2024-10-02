@@ -32,6 +32,14 @@ class _Form(Form):
         ]
     )
 
+    def _cast_fields(self) -> None:
+        self.loss_margin.data = float(
+            self.loss_margin.data
+        )
+        self.contribuition_margin.data = float(
+            self.contribuition_margin.data
+        )
+
 
 class CreateForm(_Form):
     ...

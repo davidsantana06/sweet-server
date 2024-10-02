@@ -21,6 +21,9 @@ class _Form(Form):
         validators=[Length(0, 1_000)]
     )
 
+    def _cast_fields(self) -> None:
+        self.hourly_rate.data = float(self.hourly_rate.data)
+
 
 class CreateForm(_Form):
     ...

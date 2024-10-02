@@ -20,6 +20,9 @@ class _Form(Form):
     description = TextAreaField(
         validators=[Length(0, 1_000)]
     )
+    
+    def _cast_fields(self) -> None:
+        self.value.data = float(self.value.data)
 
 
 class CreateForm(_Form):

@@ -25,6 +25,11 @@ class _Form(Form):
             Length(0, 1_000)
         ]
     )
+    
+    def _cast_fields(self) -> None:
+        self.preparation_time.data = int(
+            self.preparation_time.data
+        )
 
 
 class CreateForm(_Form):
