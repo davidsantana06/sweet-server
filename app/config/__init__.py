@@ -1,3 +1,1 @@
-from .config_enviroment import configure_enviroment
-from .config_error_handler import configure_error_handler
-from .config_extensions import configure_extensions
+from .configurations import configure_enviroment, configure_extensions
