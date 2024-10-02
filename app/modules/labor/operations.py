@@ -6,8 +6,12 @@ from app.database import (
 from .forms import UpdateForm
 
 
-def create(person_name: str, hourly_rate: float) -> Labor:
-    labor = Labor(person_name, hourly_rate)
+def create(
+    person_name: str,
+    hourly_rate: float,
+    description: str
+) -> Labor:
+    labor = Labor(person_name, hourly_rate, description)
     Labor.save(labor)
     return labor
 

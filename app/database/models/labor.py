@@ -90,9 +90,15 @@ class Labor(database.Model, Model):
             filters=cls.__compose_filters(except_default, [Labor.id == id])
         )
 
-    def __init__(self, person_name: str, hourly_rate: float) -> None:
+    def __init__(
+        self, 
+        person_name: str, 
+        hourly_rate: float,
+        description: str
+    ) -> None:
         self.person_name = person_name
         self.hourly_rate = hourly_rate
+        self.description = description
 
 
 from .product import Product
