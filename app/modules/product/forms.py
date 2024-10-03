@@ -1,14 +1,14 @@
-from wtforms import FloatField, SelectField, StringField
+from wtforms import FloatField, IntegerField, StringField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 from app.modules.common.forms import Form
 
 
 class _Form(Form):
-    id_recipe = SelectField(
+    id_recipe = IntegerField(
         validators=[DataRequired()]
     )
-    id_labor = SelectField(
+    id_labor = IntegerField(
         validators=[DataRequired()]
     )
     name = StringField(
@@ -31,14 +31,6 @@ class _Form(Form):
             NumberRange(0, 10_000)
         ]
     )
-
-    def _cast_fields(self) -> None:
-        self.loss_margin.data = float(
-            self.loss_margin.data
-        )
-        self.contribuition_margin.data = float(
-            self.contribuition_margin.data
-        )
 
 
 class CreateForm(_Form):

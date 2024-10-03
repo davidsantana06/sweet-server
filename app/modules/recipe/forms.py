@@ -1,11 +1,11 @@
-from wtforms import IntegerField, SelectField, StringField, TextAreaField
+from wtforms import IntegerField, StringField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 from app.modules.common.forms import Form
 
 
 class _Form(Form):
-    id_category = SelectField(
+    id_category = IntegerField(
         validators=[DataRequired()]
     )
     name = StringField(
@@ -20,16 +20,11 @@ class _Form(Form):
             NumberRange(0, 10_000)
         ]
     )
-    description = TextAreaField(
+    description = StringField(
         validators=[
             Length(0, 1_000)
         ]
     )
-    
-    def _cast_fields(self) -> None:
-        self.preparation_time.data = int(
-            self.preparation_time.data
-        )
 
 
 class CreateForm(_Form):
@@ -41,7 +36,7 @@ class UpdateForm(_Form):
 
 
 class _IngredientRelForm(Form):
-    id_ingredient = SelectField(
+    id_ingredient = IntegerField(
         validators=[DataRequired()]
     )
     weight = IntegerField(
@@ -58,7 +53,7 @@ class UpdateIngredientRelForm(_IngredientRelForm):
 
 
 class _MaterialRelForm(Form):
-    id_material = SelectField(
+    id_material = IntegerField(
         validators=[DataRequired()]
     )
     quantity = IntegerField(

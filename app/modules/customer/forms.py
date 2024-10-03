@@ -1,4 +1,4 @@
-from wtforms import StringField, TextAreaField
+from wtforms import StringField
 from wtforms.validators import DataRequired, Length
 
 from app.modules.common.forms import Form
@@ -17,7 +17,7 @@ class _Form(Form):
     instagram = StringField(
         validators=[Length(0, 31)]
     )
-    notes = TextAreaField(
+    notes = StringField(
         validators=[Length(0, 1_000)]
     )
 

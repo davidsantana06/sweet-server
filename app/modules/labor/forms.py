@@ -1,4 +1,4 @@
-from wtforms import FloatField, StringField, TextAreaField
+from wtforms import FloatField, StringField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 from app.modules.common.forms import Form
@@ -17,12 +17,9 @@ class _Form(Form):
             NumberRange(0, 10_000)
         ]
     )
-    description = TextAreaField(
+    description = StringField(
         validators=[Length(0, 1_000)]
     )
-
-    def _cast_fields(self) -> None:
-        self.hourly_rate.data = float(self.hourly_rate.data)
 
 
 class CreateForm(_Form):

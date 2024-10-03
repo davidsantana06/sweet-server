@@ -35,12 +35,3 @@ class Form(CommonForm):
             NumberRange(0, 10_000)
         ]
     )
-
-    def _cast_fields(self) -> None:
-        self.value.data = float(self.value.data)
-        self.current_quantity.data = float(
-            self.current_quantity.data
-        )
-        self.minimum_quantity.data = int(
-            self.minimum_quantity.data
-        )

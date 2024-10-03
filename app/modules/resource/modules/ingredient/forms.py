@@ -12,10 +12,6 @@ class _Form(Form):
         ]
     )
 
-    def _cast_fields(self) -> None:
-        super()._cast_fields()
-        self.weight.data = float(self.weight.data)
-
 
 class CreateForm(_Form):
     ...
