@@ -5,6 +5,7 @@ from .modules.auth import auth
 from .modules.category import category
 from .modules.collaborator import collaborator
 from .modules.common import common
+from .modules.customer import customer
 from .modules.user import user
 
 
@@ -15,4 +16,5 @@ app.register_blueprint(auth)
 app.register_blueprint(category)
 app.register_blueprint(collaborator)
 app.register_blueprint(common)
+app.register_blueprint(customer)
 app.register_blueprint(user)
