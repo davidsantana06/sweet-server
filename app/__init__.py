@@ -11,6 +11,7 @@ from .modules.payment_method import payment_method
 from .modules.product import product
 from .modules.recipe import recipe
 from .modules.resource import resource
+from .modules.setup import setup
 from .modules.user import user
 
 
@@ -27,4 +28,5 @@ app.register_blueprint(payment_method)
 app.register_blueprint(product)
 app.register_blueprint(recipe)
 app.register_blueprint(resource)
+app.register_blueprint(setup)
 app.register_blueprint(user)

@@ -1,0 +1,32 @@
+{
+  "category_names": [
+    "Biscoito",
+    "Bolo com Cobertura",
+    "Bolo Recheado",
+    "Bolo Vulcão",
+    "Bolo Caseiro",
+    "Café",
+    "Doce Gourmet",
+    "Doce Tradicional",
+    "Goma Fresca",
+    "Manteiga",
+    "Pão de Queijo",
+    "Pão Doce",
+    "Pão Delícia",
+    "Pão Recheado",
+    "Picolé",
+    "Quiche",
+    "Sonho"
+  ],
+  "payment_method_names": [
+    "Cartão de Crédito",
+    "Cartão de Débito",
+    "Dinheiro",
+    "PIX"
+  ],
+  "default_collaborator_data": {
+    "name": "Ninguém",
+    "hourly_rate": 0,
+    "notes": ""
+  }
+}
