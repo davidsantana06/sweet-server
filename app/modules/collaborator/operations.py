@@ -11,11 +11,7 @@ def create(
     hourly_rate: float,
     notes: str
 ) -> Collaborator:
-    collaborator = Collaborator(
-        name,
-        hourly_rate,
-        notes
-    )
+    collaborator = Collaborator(name, hourly_rate, notes)
     Collaborator.save(collaborator)
     return collaborator
 

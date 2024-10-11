@@ -22,11 +22,11 @@ def get_all():
     return response.as_models(collaborator_operations.get_all())
 
 
-@collaborator.get('/all/<string:person_name>')
+@collaborator.get('/all/<string:name>')
 @login_required
-def get_all_by_person_name(person_name: str):
+def get_all_by_person_name(name: str):
     return response.as_models(
-        collaborator_operations.get_all_by_person_name(person_name)
+        collaborator_operations.get_all_by_name(name)
     )
 
 

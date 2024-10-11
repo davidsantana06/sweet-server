@@ -2,8 +2,8 @@ from flask import request
 from http import HTTPStatus
 from flask_login import login_required
 
-from app.modules.common.facades import response
 from app.modules.collaborator import operations as collaborator_operations
+from app.modules.common.facades import response
 from app.modules.recipe import operations as recipe_operations
 
 from . import operations as product_operations, product
@@ -15,7 +15,7 @@ from .forms import ProductForm
 def create():
     form = ProductForm(request.form)
     recipe_operations.get_one_by_id(form.id_recipe.data)
-    collaborator_operations.get_one_by_id(form.id_labor.data)
+    collaborator_operations.get_one_by_id(form.id_collaborator.data)
     product = product_operations.create(*form.data)
     return response.as_model(product, HTTPStatus.CREATED)
 
@@ -50,7 +50,7 @@ def get_one_by_id(id: int):
     return response.as_dict({
         **product.to_dict(),
         **{'recipe': product.recipe.to_dict()},
-        **{'labor': product.labor.to_dict()}
+        **{'collaborator': product.collaborator.to_dict()}
     })
 
 

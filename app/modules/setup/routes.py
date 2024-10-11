@@ -1,8 +1,8 @@
 from flask import request
 
 from app.modules.category import operations as category_operations
-from app.modules.common.facades import response
 from app.modules.collaborator import operations as collaborator_operations
+from app.modules.common.facades import response
 from app.modules.payment_method import operations as payment_method_operations
 from app.modules.user import operations as user_operations
 from app.modules.user.forms import UserForm
