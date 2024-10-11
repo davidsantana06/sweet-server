@@ -8,6 +8,8 @@ from .modules.common import common
 from .modules.customer import customer
 from .modules.monthly_fee import monthly_fee
 from .modules.payment_method import payment_method
+from .modules.recipe import recipe
+from .modules.resource import resource
 from .modules.user import user
 
 
@@ -21,4 +23,6 @@ app.register_blueprint(common)
 app.register_blueprint(customer)
 app.register_blueprint(monthly_fee)
 app.register_blueprint(payment_method)
+app.register_blueprint(recipe)
+app.register_blueprint(resource)
 app.register_blueprint(user)
