@@ -1,10 +1,6 @@
 from typing import List, TypedDict
 
 
-CategoryNames = List[str]
-PaymentMethodNames = List[str]
-
-
 class DefaultCollaboratorData(TypedDict):
     name: str
     hourly_rate: float
@@ -12,6 +8,6 @@ class DefaultCollaboratorData(TypedDict):
 
 
 class SetupData(TypedDict):
-    category_names: CategoryNames
-    payment_method_names: PaymentMethodNames
+    category_names: List[str]
+    payment_method_names: List[str]
     default_collaborator_data: DefaultCollaboratorData
