@@ -1,22 +1,19 @@
-from sqlalchemy import (
-    Column, Float, ForeignKey, Integer,
-    desc
-)
+from sqlalchemy import Column, Float, ForeignKey, Integer
 from sqlalchemy.orm import (
     Mapped,
     mapped_column, relationship
 )
-from typing import Dict, List
+from typing import List
 
-from app.extensions import database
+from app.extension import database
 
-from ..inheritable import Model
+from ..inheritable import Model, TimestampMixin
 
 
 Sales = List['Sale']
 
 
-class Sale(database.Model, Model):
+class Sale(database.Model, Model, TimestampMixin):
     id: Mapped[int] = mapped_column(
         autoincrement=True,
         unique=True,
@@ -31,9 +28,9 @@ class Sale(database.Model, Model):
         ForeignKey('payment_method.id'),
         nullable=False
     )
-    freight = Column(Float(), nullable=False)
-    discount = Column(Float(), nullable=False)
-    status = Column(Integer(), nullable=False, default=1)
+    freight = Column(Float, nullable=False)
+    discount = Column(Float, nullable=False)
+    completed = Column(Integer, nullable=False, default=0)
 
     customer: Mapped['Customer'] = relationship(
         back_populates='purchases'
@@ -48,23 +45,11 @@ class Sale(database.Model, Model):
 
     @classmethod
     def find_all(cls) -> Sales:
-        return cls._query_all(
-            ordinances=[desc(Sale.id)]
-        )
+        return cls._query_all(ordinances=[cls.id.desc()])
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Sale':
-        return cls._query_first(filters=[Sale.id == id])
-
-    def __init__(
-        self,
-        id_customer: int, id_payment_method: int,
-        freight: float, discount: float
-    ) -> None:
-        self.id_customer = id_customer
-        self.id_payment_method = id_payment_method
-        self.freight = freight
-        self.discount = discount
+        return cls._query_first(filters=[cls.id == id])
 
     @property
     def products_value(self) -> float:
@@ -80,19 +65,6 @@ class Sale(database.Model, Model):
     @property
     def total(self) -> float:
         return (self.sub_total - self.discount)
-    
-    def to_dict(self) -> Dict[str, object]:
-        return {
-            'id': self.id,
-            'id_customer': self.id_customer,
-            'id_payment_method': self.id_payment_method,
-            'freight': self.freight,
-            'discount': self.discount,
-            'status': self.status,
-            'products_value': self.products_value,
-            'sub_total': self.sub_total,
-            'total': self.total
-        }
 
 
 from .customer import Customer

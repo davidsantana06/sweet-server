@@ -5,15 +5,15 @@ from sqlalchemy.orm import (
 )
 from typing import List
 
-from app.extensions import database
+from app.extension import database
 
-from ..inheritable import Model
+from ..inheritable import Model, TimestampMixin
 
 
 SaleProducts = List['SaleProduct']
 
 
-class SaleProduct(database.Model, Model):
+class SaleProduct(database.Model, Model, TimestampMixin):
     id_sale: Mapped[int] = mapped_column(
         ForeignKey('sale.id'),
         nullable=False,
@@ -35,43 +35,21 @@ class SaleProduct(database.Model, Model):
     )
 
     @classmethod
-    def __query_all(cls, filters=[]) -> SaleProducts:
-        return cls._query_all(
-            filters=filters,
-            ordinances=[
-                SaleProduct.created_at,
-                SaleProduct.unit_value,
-                SaleProduct.quantity
-            ]
-        )
-
-    @classmethod
     def find_all_by_id_sale(cls, id_sale: int) -> SaleProducts:
-        return cls.__query_all(
-            filters=[SaleProduct.id_sale == id_sale]
+        return cls._query_all(
+            filters=[cls.id_sale == id_sale],
+            ordinances=[cls.created_at, cls.unit_value, cls.quantity]
         )
 
     @classmethod
-    def find_first_by_id_sale_and_id_product(
+    def find_first_by_ids(
         cls,
-        id_sale: int, id_product: int
+        id_sale: int, 
+        id_product: int
     ) -> 'SaleProduct':
         return cls._query_first(
-            filters=[
-                SaleProduct.id_sale == id_sale,
-                SaleProduct.id_product == id_product
-            ]
+            filters=[cls.id_sale == id_sale, cls.id_product == id_product]
         )
-
-    def __init__(
-        self,
-        id_sale: int,
-        id_product: int,
-        value: float
-    ) -> None:
-        self.id_sale = id_sale
-        self.id_product = id_product
-        self.value = value
 
 
 from .sale import Sale

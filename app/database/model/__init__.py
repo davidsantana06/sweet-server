@@ -11,4 +11,4 @@ from .recipe_material import RecipeMaterial, RecipeMaterials
 from .recipe import Recipe, Recipes
 from .sale_product import SaleProduct, SaleProducts
 from .sale import Sale, Sales
-from .user import User, Users
+from .user import User
