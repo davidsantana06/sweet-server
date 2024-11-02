@@ -22,7 +22,7 @@ class Customer(database.Model, Model, TimestampMixin):
     )
     name = Column(String(100), nullable=False)
     phone = Column(String(15))
-    instagram = Column(String(31))
+    instagram = Column(String(30))
     notes = Column(String(1000))
 
     purchases: Mapped[List['Sale']] = relationship(
