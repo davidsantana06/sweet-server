@@ -51,12 +51,15 @@ class Collaborator(database.Model, Model, TimestampMixin):
         )
 
     @classmethod
-    def find_all_except_default(cls) -> Collaborators:
-        return cls._query_all(except_default=True)
+    def find_all(cls) -> Collaborators:
+        return cls._query_all(except_default=False)
 
     @classmethod
-    def find_all_by_name_except_default(cls, name: str) -> Collaborators:
-        return cls._query_all(except_default=True, filters=[cls.name == name])
+    def find_all_by_name(cls, name: str) -> Collaborators:
+        return cls._query_all(
+            except_default=False, 
+            filters=[cls.name.icontains(name)]
+        )
 
     @classmethod
     def find_first_by_id(cls, id: int, except_default: bool) -> 'Collaborator':
