@@ -3,6 +3,7 @@ from flask import Flask
 
 from app.database.model import *
 from app.extension import api, cors, database
+from app.resource import category_ns
 
 from . import parameter
 from . import path
@@ -29,6 +30,7 @@ def _setup_database(app: Flask) -> None:
 
 def _setup_api(app: Flask) -> None:
     api.init_app(app)
+    api.add_namespace(category_ns)
 
 
 def _setup_cors(app: Flask) -> None:
