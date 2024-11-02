@@ -50,7 +50,8 @@ class Model(SQLAlchemyModel):
         return cls.query.filter(*filters).first()
 
     def __init__(self, **data) -> None:
-        self.from_dict(data)
-
-    def from_dict(self, **data) -> None:
         self.__dict__.update(data)
+
+    def update(self, **data) -> None:
+        for field, value in data.items():
+            setattr(self, field, value)
