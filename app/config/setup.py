@@ -9,6 +9,7 @@ from app.resource import (
     category_ns,
     collaborator_ns,
     customer_ns,
+    monthly_fee_ns,
     payment_method_ns,
     user_ns
 )
@@ -48,6 +49,7 @@ def _setup_api(app: Flask) -> None:
     api.add_namespace(category_ns)
     api.add_namespace(collaborator_ns)
     api.add_namespace(customer_ns)
+    api.add_namespace(monthly_fee_ns)
     api.add_namespace(payment_method_ns)
     api.add_namespace(user_ns)
 
