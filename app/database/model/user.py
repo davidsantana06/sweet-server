@@ -11,8 +11,8 @@ class User(database.Model, Model, TimestampMixin):
         nullable=False,
         primary_key=True
     )
-    name = Column(String(30), nullable=False)
+    name = Column(String(50), nullable=False)
 
     @classmethod
-    def find_super(cls) -> 'User':
-        return cls._query_first(filters=[cls.id == 1])
+    def find_first(cls) -> 'User':
+        return cls._query_first([cls.id == 1])

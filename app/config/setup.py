@@ -3,7 +3,13 @@ from flask import Flask
 
 from app.database.model import *
 from app.extension import api, cors, database
-from app.resource import category_ns, collaborator_ns, customer_ns, payment_method_ns
+from app.resource import (
+    category_ns,
+    collaborator_ns,
+    customer_ns,
+    payment_method_ns,
+    user_ns
+)
 
 from . import parameter
 from . import path
@@ -34,6 +40,7 @@ def _setup_api(app: Flask) -> None:
     api.add_namespace(collaborator_ns)
     api.add_namespace(customer_ns)
     api.add_namespace(payment_method_ns)
+    api.add_namespace(user_ns)
 
 
 def _setup_cors(app: Flask) -> None:
