@@ -20,7 +20,7 @@ class PaymentMethod(database.Model, Model, TimestampMixin):
         nullable=False,
         primary_key=True
     )
-    name = Column(String(100), nullable=False)
+    name = Column(String(50), nullable=False)
 
     sales: Mapped[List['Sale']] = relationship(
         back_populates='payment_method'
@@ -37,14 +37,6 @@ class PaymentMethod(database.Model, Model, TimestampMixin):
     @classmethod
     def find_all(cls) -> PaymentMethods:
         return cls._query_all()
-
-    @classmethod
-    def find_all_by_name(cls, name: str) -> PaymentMethods:
-        return cls._query_all(filters=[cls.name.icontains(name)])
-
-    @classmethod
-    def find_all_except(cls, ids: List[int]) -> PaymentMethods:
-        return cls._query_all(filters=[cls.id.not_in(ids)])
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'PaymentMethod':
