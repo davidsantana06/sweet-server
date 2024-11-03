@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, Float, String
 from sqlalchemy.ext.declarative import declared_attr
 
 
-class ResourceMixin():
+class SupplyMixin():
     @declared_attr
     def name(cls):
         return Column(String(100), nullable=False)

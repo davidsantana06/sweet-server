@@ -6,13 +6,13 @@ from typing import List
 
 from app.extension import database
 
-from ..inheritable import Model, ResourceMixin, TimestampMixin
+from ..inheritable import Model, SupplyMixin, TimestampMixin
 
 
 Materials = List['Material']
 
 
-class Material(database.Model, Model, ResourceMixin, TimestampMixin):
+class Material(database.Model, Model, SupplyMixin, TimestampMixin):
     id: Mapped[int] = mapped_column(
         autoincrement=True,
         unique=True,
