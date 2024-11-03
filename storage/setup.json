@@ -1,5 +1,5 @@
 {
-  "category_names": [
+  "default_categories": [
     "Biscoito",
     "Bolo com Cobertura",
     "Bolo Recheado",
@@ -18,15 +18,18 @@
     "Quiche",
     "Sonho"
   ],
-  "payment_method_names": [
+  "default_collaborator": {
+    "name": "Ninguém",
+    "hourly_rate": 0,
+    "notes": ""
+  },
+  "default_payment_methods": [
     "Cartão de Crédito",
     "Cartão de Débito",
     "Dinheiro",
     "PIX"
   ],
-  "default_collaborator_data": {
-    "name": "Ninguém",
-    "hourly_rate": 0,
-    "notes": ""
+  "user": {
+    "name": "Rosangela Santana"
   }
 }

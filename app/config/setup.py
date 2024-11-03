@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask
+from typing import List
+import json
 
 from app.database.model import *
 from app.extension import api, cors, database
@@ -10,6 +12,13 @@ from app.resource import (
     payment_method_ns,
     user_ns
 )
+from app.service import (
+    category_service,
+    collaborator_service,
+    payment_method_service,
+    user_service
+)
+from app.typing import DefaultCollaborator, SetupData, User
 
 from . import parameter
 from . import path
@@ -51,3 +60,39 @@ def setup_extensions(app: Flask) -> None:
     _setup_database(app)
     _setup_api(app)
     _setup_cors(app)
+
+
+def _get_setup_data() -> SetupData:
+    with open(path.SETUP_FILE, encoding='utf-8') as file:
+        return json.load(file)
+
+
+def _create_default_categories(names: List[str]) -> None:
+    for name in names:
+        try: category_service.get_one_by('name', name)
+        except: category_service.create({'name': name})
+
+
+def _create_default_collaborator(data: DefaultCollaborator) -> None:
+    try: collaborator_service.get_one_by_id(1, except_default=False)
+    except: collaborator_service.create(data)
+
+
+def _create_default_payment_methods(names: List[str]) -> None:
+    for name in names:
+        try: payment_method_service.get_one_by('name', name)
+        except: payment_method_service.create({'name': name})
+
+
+def _create_user(data: User) -> None:
+    try: user_service.get_one()
+    except: user_service.create(data)
+
+
+def setup_entities(app: Flask) -> None:
+    data = _get_setup_data()
+    with app.app_context():
+        _create_default_categories(data['default_categories'])
+        _create_default_collaborator(data['default_collaborator'])
+        _create_default_payment_methods(data['default_payment_methods'])
+        _create_user(data['user'])
