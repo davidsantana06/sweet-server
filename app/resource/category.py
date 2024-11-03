@@ -56,13 +56,3 @@ class CategoryById(Resource):
         ''' Delete a category by ID '''
         category_service.delete(id)
         return '', HTTPStatus.NO_CONTENT
-
-
-@category_ns.route('/search/<string:name>')
-@category_ns.param('name', 'The category name')
-class CategoryByName(Resource):
-    @category_ns.doc('get_all_by_name')
-    @category_ns.marshal_list_with(category)
-    def get(self, name: str):
-        ''' Get all categories by name '''
-        return category_service.get_all_by_name(name)

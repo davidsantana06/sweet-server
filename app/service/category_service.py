@@ -14,10 +14,6 @@ def get_all() -> Categories:
     return Category.find_all()
 
 
-def get_all_by_name(name: str) -> Categories:
-    return Category.find_all_by_name(name)
-
-
 def get_one_by(
     field: Literal['id', 'name'],
     value: Union[int, str]

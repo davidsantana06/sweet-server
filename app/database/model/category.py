@@ -41,10 +41,6 @@ class Category(database.Model, Model, TimestampMixin):
     @classmethod
     def find_all(cls) -> Categories:
         return cls._query_all()
-    
-    @classmethod
-    def find_all_by_name(cls, name: str) -> Categories:
-        return cls._query_all(filters=[cls.name.icontains(name)])
 
     @classmethod
     def find_first_by_id(cls, id: int) -> 'Category':
