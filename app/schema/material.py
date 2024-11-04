@@ -1,4 +1,14 @@
-from .supply import supply_info_schema, supply_stock_schema
+from .supply import (
+    SupplyInfoSchema, supply_info_schema,
+    SupplyStockSchema, supply_stock_schema
+)
 
 
-material_schema = supply_info_schema | supply_stock_schema
+class MaterialSchema(SupplyInfoSchema, SupplyStockSchema):
+    ...
+
+
+material_schema = MaterialSchema(
+    **supply_info_schema,
+    **supply_stock_schema
+)

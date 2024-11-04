@@ -1,10 +1,9 @@
-from typing import Dict
-
 from app.database import Customer, Customers
 from app.exception import CustomerNotFound
+from app.schema import CustomerSchema
 
 
-def create(data: Dict[str, object]) -> Customer:
+def create(data: CustomerSchema) -> Customer:
     customer = Customer(**data)
     Customer.save(customer)
     return customer
@@ -24,7 +23,7 @@ def get_one_by_id(id: int) -> Customer:
     return customer
 
 
-def update(id: int, data: Dict[str, object]) -> Customer:
+def update(id: int, data: CustomerSchema) -> Customer:
     customer = get_one_by_id(id)
     customer.update(**data)
     Customer.save(customer)

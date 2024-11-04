@@ -1,10 +1,11 @@
-from typing import Dict, Literal, Union
+from typing import Literal, Union
 
 from app.database import PaymentMethod, PaymentMethods
 from app.exception import PaymentMethotNotFound
+from app.schema import PaymentMethodSchema
 
 
-def create(data: Dict[str, object]) -> PaymentMethod:
+def create(data: PaymentMethodSchema) -> PaymentMethod:
     payment_method = PaymentMethod(**data)
     PaymentMethod.save(payment_method)
     return payment_method
@@ -24,7 +25,7 @@ def get_one_by(
     return payment_method
 
 
-def update(id: int, data: Dict[str, object]) -> PaymentMethod:
+def update(id: int, data: PaymentMethodSchema) -> PaymentMethod:
     payment_method = get_one_by('id', id)
     payment_method.update(**data)
     PaymentMethod.save(payment_method)

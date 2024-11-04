@@ -1,10 +1,9 @@
-from typing import Dict
-
 from app.database import Ingredient, Ingredients
 from app.exception import IngredientNotFound
+from app.schema import IngredientSchema
 
 
-def create(data: Dict[str, object]) -> Ingredient:
+def create(data: IngredientSchema) -> Ingredient:
     ingredient = Ingredient(**data)
     Ingredient.save(ingredient)
     return ingredient
@@ -29,7 +28,7 @@ def get_one_by_id(id: int) -> Ingredient:
     return ingredient
 
 
-def update(id: int, data: Dict[str, object]) -> Ingredient:
+def update(id: int, data: IngredientSchema) -> Ingredient:
     ingredient = get_one_by_id(id)
     ingredient.update(**data)
     Ingredient.save(ingredient)

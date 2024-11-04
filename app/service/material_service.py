@@ -1,10 +1,9 @@
-from typing import Dict
-
 from app.database import Material, Materials
 from app.exception import MaterialNotFound
+from app.schema import MaterialSchema
 
 
-def create(data: Dict[str, object]) -> Material:
+def create(data: MaterialSchema) -> Material:
     material = Material(**data)
     Material.save(material)
     return material
@@ -29,7 +28,7 @@ def get_one_by_id(id: int) -> Material:
     return material
 
 
-def update(id: int, data: Dict[str, object]) -> Material:
+def update(id: int, data: MaterialSchema) -> Material:
     material = get_one_by_id(id)
     material.update(**data)
     Material.save(material)

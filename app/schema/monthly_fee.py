@@ -1,27 +1,36 @@
 from flask_restx.fields import Float, Integer, String
+from typing import NotRequired, TypedDict
 
 
-monthly_fee_schema = {
-    'id': Integer(title='ID', readonly=True),
-    'name': String(
+class MonthlyFeeSchema(TypedDict):
+    id: NotRequired[int]
+    name: str
+    value: float
+    hourly_rate: NotRequired[float]
+    description: str
+
+
+monthly_fee_schema = MonthlyFeeSchema(
+    id=Integer(title='ID', readonly=True),
+    name=String(
         title='Name',
         required=True,
         min_length=1,
         max_length=100
     ),
-    'value': Float(
+    value=Float(
         title='Value',
         required=True,
         min=0,
         max=10_000
     ),
-    'hourly_rate': Float(
+    hourly_rate=Float(
         title='Hourly rate',
         readonly=True
     ),
-    'description': String(
+    description=String(
         title='Description',
         required=True,
         max_length=1_000
     )
-}
+)

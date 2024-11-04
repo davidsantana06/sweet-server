@@ -1,10 +1,9 @@
-from typing import Dict
-
 from app.database import Collaborator, Collaborators
 from app.exception import CollaboratorNotFound
+from app.schema import CollaboratorSchema
 
 
-def create(data: Dict[str, object]) -> Collaborator:
+def create(data: CollaboratorSchema) -> Collaborator:
     collaborator = Collaborator(**data)
     Collaborator.save(collaborator)
     return collaborator
@@ -24,7 +23,7 @@ def get_one_by_id(id: int, except_default: bool = True) -> Collaborator:
     return collaborator
 
 
-def update(id: int, data: Dict[str, object]) -> Collaborator:
+def update(id: int, data: CollaboratorSchema) -> Collaborator:
     collaborator = get_one_by_id(id)
     collaborator.update(**data)
     Collaborator.save(collaborator)

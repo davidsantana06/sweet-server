@@ -1,10 +1,11 @@
-from typing import Dict, Literal, Union
+from typing import Literal, Union
 
 from app.database import Category, Categories
 from app.exception import CategoryNotFound
+from app.schema import CategorySchema
 
 
-def create(data: Dict[str, object]) -> Category:
+def create(data: CategorySchema) -> Category:
     category = Category(**data)
     Category.save(category)
     return category
@@ -24,7 +25,7 @@ def get_one_by(
     return category
 
 
-def update(id: int, data: Dict[str, object]) -> Category:
+def update(id: int, data: CategorySchema) -> Category:
     category = get_one_by('id', id)
     category.update(**data)
     Category.save(category)

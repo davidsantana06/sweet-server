@@ -1,10 +1,9 @@
-from typing import Dict
-
 from app.database import MonthlyFee, MonthlyFees
 from app.exception import MonthlyFeeNotFound
+from app.schema import MonthlyFeeSchema
 
 
-def create(data: Dict[str, object]) -> MonthlyFee:
+def create(data: MonthlyFeeSchema) -> MonthlyFee:
     monthly_fee = MonthlyFee(**data)
     MonthlyFee.save(monthly_fee)
     return monthly_fee
@@ -24,7 +23,7 @@ def get_one_by_id(id: int) -> MonthlyFee:
     return monthly_fee
 
 
-def update(id: int, data: Dict[str, object]) -> MonthlyFee:
+def update(id: int, data: MonthlyFeeSchema) -> MonthlyFee:
     monthly_fee = get_one_by_id(id)
     monthly_fee.update(**data)
     MonthlyFee.save(monthly_fee)

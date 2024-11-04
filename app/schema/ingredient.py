@@ -1,9 +1,16 @@
 from flask_restx.fields import Integer
-from .supply import supply_info_schema, supply_stock_schema
+from .supply import (
+    SupplyInfoSchema, supply_info_schema,
+    SupplyStockSchema, supply_stock_schema
+)
 
 
-ingredient_schema = {
+class IngredientSchema(SupplyInfoSchema, SupplyStockSchema):
+    weight: int
+
+
+ingredient_schema = IngredientSchema(
     **supply_info_schema,
-    'weight': Integer(title='Weight', required=True),
+    weight=Integer(title='Weight', required=True),
     **supply_stock_schema
-}
+)
