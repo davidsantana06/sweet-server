@@ -50,16 +50,28 @@ class UserNotFound(NotFound):
     description = 'User not found'
 
 
-_exception = lambda exception: (HTTPStatus.NOT_FOUND, exception.description)
-category_not_found = _exception(CategoryNotFound)
-collaborator_not_found = _exception(CollaboratorNotFound)
-customer_not_found = _exception(CustomerNotFound)
-ingredient_not_found = _exception(IngredientNotFound)
-material_not_found = _exception(MaterialNotFound)
-monthly_fee_not_found = _exception(MonthlyFeeNotFound)
-payment_method_not_found = _exception(PaymentMethotNotFound)
-product_not_found = _exception(ProductNotFound)
-recipe_not_found = _exception(RecipeNotFound)
-recipe_ingredient_not_found = _exception(RecipeIngredientNotFound)
-recipe_material_not_found = _exception(RecipeMaterialNotFound)
-user_not_found = _exception(UserNotFound)
+_response = lambda description: (HTTPStatus.NOT_FOUND, description)
+
+category_not_found = _response(CategoryNotFound.description)
+
+collaborator_not_found = _response(CollaboratorNotFound.description)
+
+customer_not_found = _response(CustomerNotFound.description)
+
+ingredient_not_found = _response(IngredientNotFound.description)
+
+material_not_found = _response(MaterialNotFound.description)
+
+monthly_fee_not_found = _response(MonthlyFeeNotFound.description)
+
+payment_method_not_found = _response(PaymentMethotNotFound.description)
+
+product_not_found = _response(ProductNotFound.description)
+
+recipe_not_found = _response(RecipeNotFound.description)
+
+recipe_ingredient_not_found = _response(RecipeIngredientNotFound.description)
+
+recipe_material_not_found = _response(RecipeMaterialNotFound.description)
+
+user_not_found = _response(UserNotFound.description)

@@ -14,7 +14,10 @@ class SaleProductAlreadyExists(Conflict):
     description = 'Sale-product relation already exists'
 
 
-_exception = lambda exception: (HTTPStatus.CONFLICT, exception.description)
-recipe_ingredient_already_exists = _exception(RecipeIngredientAlreadyExists)
-recipe_material_already_exists = _exception(RecipeMaterialAlreadyExists)
-sale_product_already_exists = _exception(SaleProductAlreadyExists)
+_response = lambda description: (HTTPStatus.CONFLICT, description)
+
+recipe_ingredient_already_exists = _response(RecipeIngredientAlreadyExists.description)
+
+recipe_material_already_exists = _response(RecipeMaterialAlreadyExists.description)
+
+sale_product_already_exists = _response(SaleProductAlreadyExists.description)
