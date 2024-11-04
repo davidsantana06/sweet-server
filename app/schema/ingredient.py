@@ -1,4 +1,5 @@
 from flask_restx.fields import Integer
+from app.extension import api
 from .supply import (
     SupplyInfoSchema, supply_info_schema,
     SupplyStockSchema, supply_stock_schema
@@ -14,3 +15,5 @@ ingredient_schema = IngredientSchema(
     weight=Integer(title='Weight', required=True),
     **supply_stock_schema
 )
+
+ingredient = api.model('Ingredient', ingredient_schema)

@@ -38,6 +38,14 @@ class RecipeNotFound(NotFound):
     description = 'Recipe not found'
 
 
+class RecipeIngredientNotFound(NotFound):
+    description = 'Recipe-ingredient relation not found'
+
+
+class RecipeMaterialNotFound(NotFound):
+    description = 'Recipe-material relation not found'
+
+
 class UserNotFound(NotFound):
     description = 'User not found'
 
@@ -52,4 +60,6 @@ monthly_fee_not_found = _exception(MonthlyFeeNotFound)
 payment_method_not_found = _exception(PaymentMethotNotFound)
 product_not_found = _exception(ProductNotFound)
 recipe_not_found = _exception(RecipeNotFound)
+recipe_ingredient_not_found = _exception(RecipeIngredientNotFound)
+recipe_material_not_found = _exception(RecipeMaterialNotFound)
 user_not_found = _exception(UserNotFound)

@@ -1,6 +1,7 @@
 from app.database import Material, Materials
 from app.exception import MaterialNotFound
 from app.schema import MaterialSchema
+from app.service import recipe_service
 
 
 def create(data: MaterialSchema) -> Material:
@@ -18,7 +19,10 @@ def get_all_by_name(name: str) -> Materials:
 
 
 def get_all_unrelated_to_recipe(id_recipe: int) -> Materials:
-    related_ids = []
+    related_ids = recipe_service.get_all_material_rels_by_id(
+        id_recipe,
+        only_id_material=True
+    )
     return Material.find_all_except(related_ids)
 
 

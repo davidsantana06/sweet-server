@@ -41,8 +41,15 @@ class RecipeMaterial(database.Model, Model, TimestampMixin):
         )
 
     @classmethod
-    def find_all_by_id_recipe(cls, id_recipe: int) -> RecipeMaterials:
-        return cls._query_all(filters=[cls.id_recipe == id_recipe])
+    def find_all_by_id_recipe(
+        cls, 
+        id_recipe: int,
+        only_id_material: bool
+    ) -> RecipeMaterials:
+        return cls._query_all(
+            columns=[cls.id_material] if only_id_material else None,
+            filters=[cls.id_recipe == id_recipe]
+        )
 
     @classmethod
     def find_first_by_ids(

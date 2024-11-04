@@ -34,20 +34,32 @@ class RecipeIngredient(database.Model, Model, TimestampMixin):
     )
 
     @classmethod
-    def _query_all(cls, filters: List = None) -> RecipeIngredients:
+    def _query_all(
+        cls,
+        columns: List = None,
+        filters: List = None
+    ) -> RecipeIngredients:
         return super()._query_all(
+            columns=columns,
             filters=filters,
             ordinances=[cls.created_at, cls.weight]
         )
 
     @classmethod
-    def find_all_by_id_recipe(cls, id_recipe: int) -> RecipeIngredients:
-        return cls._query_all(filters=[cls.id_recipe == id_recipe])
-    
+    def find_all_by_id_recipe(
+        cls,
+        id_recipe: int,
+        only_id_ingredient: bool
+    ) -> RecipeIngredients:
+        return cls._query_all(
+            columns=[cls.id_ingredient] if only_id_ingredient else None,
+            filters=[cls.id_recipe == id_recipe]
+        )
+
     @classmethod
     def find_first_by_ids(
         cls,
-        id_recipe: int, 
+        id_recipe: int,
         id_ingredient: int
     ) -> 'RecipeIngredient':
         return cls._query_first(
@@ -60,4 +72,3 @@ class RecipeIngredient(database.Model, Model, TimestampMixin):
 
 from .ingredient import Ingredient
 from .recipe import Recipe
-from .recipe_ingredient import RecipeIngredient

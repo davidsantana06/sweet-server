@@ -62,6 +62,10 @@ class Recipe(database.Model, Model, TimestampMixin):
         return cls._query_first(filters=[cls.id == id])
 
     @property
+    def preparation_time_in_hours(self) -> float:
+        return (self.preparation_time / 60)
+
+    @property
     def ingredients_value(self) -> float:
         return sum(
             (
@@ -78,10 +82,6 @@ class Recipe(database.Model, Model, TimestampMixin):
             (material_rel.material.value * material_rel.quantity)
             for material_rel in self.material_rels
         )
-
-    @property
-    def preparation_time_in_hours(self) -> float:
-        return (self.preparation_time / 60)
 
 
 from .category import Category

@@ -1,6 +1,7 @@
 from app.database import Ingredient, Ingredients
 from app.exception import IngredientNotFound
 from app.schema import IngredientSchema
+from app.service import recipe_service
 
 
 def create(data: IngredientSchema) -> Ingredient:
@@ -18,7 +19,10 @@ def get_all_by_name(name: str) -> Ingredients:
 
 
 def get_all_unrelated_to_recipe(id_recipe: int) -> Ingredients:
-    related_ids = []
+    related_ids = recipe_service.get_all_ingredient_rels_by_id(
+        id_recipe,
+        only_id_ingredient=True
+    )
     return Ingredient.find_all_except(related_ids)
 
 
@@ -36,5 +40,5 @@ def update(id: int, data: IngredientSchema) -> Ingredient:
 
 
 def delete(id: int) -> None:
-    Ingredient = get_one_by_id(id)
-    Ingredient.delete(Ingredient)
+    ingredient = get_one_by_id(id)
+    Ingredient.delete(ingredient)
