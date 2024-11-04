@@ -28,7 +28,12 @@ recipe_ingredient_schema = RecipeIngredientSchema(
         title='Ingredient',
         readonly=True
     ),
-    weight=Integer(title='Weight', required=True)
+    weight=Integer(
+        title='Weight', 
+        required=True,
+        min=1,
+        max=10_000
+    )
 )
 
 recipe_ingredient = api.model('RecipeIngredient', recipe_ingredient_schema)

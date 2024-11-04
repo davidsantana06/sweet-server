@@ -12,7 +12,12 @@ class IngredientSchema(SupplyInfoSchema, SupplyStockSchema):
 
 ingredient_schema = IngredientSchema(
     **supply_info_schema,
-    weight=Integer(title='Weight', required=True),
+    weight=Integer(
+        title='Weight in grams', 
+        required=True,
+        min=1,
+        max=10_000
+    ),
     **supply_stock_schema
 )
 
