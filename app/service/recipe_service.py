@@ -57,6 +57,10 @@ def get_all() -> Recipes:
     return Recipe.find_all()
 
 
+def get_all_by_id_category(id_category: int) -> Recipes:
+    return Recipe.find_all_by_id_category(id_category)
+
+
 def get_all_by_name(name: str) -> Recipes:
     return Recipe.find_all_by_name(name)
 

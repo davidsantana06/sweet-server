@@ -164,6 +164,16 @@ class RecipeMaterialByIds(Resource):
         return '', HTTPStatus.NO_CONTENT
 
 
+@ns.route('/search/<int:id_category>')
+@ns.param('id_category', 'The category identifier')
+class RecipeByCategory(Resource):
+    @ns.doc('get_all_by_id_category')
+    @ns.marshal_list_with(recipe)
+    def get(self, id_category: int):
+        ''' Get all recipes by category ID '''
+        return recipe_service.get_all_by_id_category(id_category)
+
+
 @ns.route('/search/<string:name>')
 @ns.param('name', 'The recipe name')
 class RecipeByName(Resource):

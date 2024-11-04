@@ -57,16 +57,6 @@ class MaterialById(Resource):
         return '', HTTPStatus.NO_CONTENT
 
 
-@ns.route('/search/<string:name>')
-@ns.param('name', 'The material name')
-class MaterialByName(Resource):
-    @ns.doc('get_all_by_name')
-    @ns.marshal_list_with(material)
-    def get(self, name: str):
-        ''' Get all materials by name '''
-        return material_service.get_all_by_name(name)
-
-
 @ns.route('/search/<int:id_recipe>')
 @ns.param('id_recipe', 'The recipe identifier')
 class MaterialByIdRecipe(Resource):
@@ -75,3 +65,13 @@ class MaterialByIdRecipe(Resource):
     def get(self, id_recipe: int):
         ''' Get all materials unrelated to a recipe by its ID '''
         return material_service.get_all_unrelated_to_recipe(id_recipe)
+    
+
+@ns.route('/search/<string:name>')
+@ns.param('name', 'The material name')
+class MaterialByName(Resource):
+    @ns.doc('get_all_by_name')
+    @ns.marshal_list_with(material)
+    def get(self, name: str):
+        ''' Get all materials by name '''
+        return material_service.get_all_by_name(name)

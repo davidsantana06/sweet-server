@@ -54,6 +54,10 @@ class Recipe(database.Model, Model, TimestampMixin):
         return cls._query_all()
 
     @classmethod
+    def find_all_by_id_category(cls, id_category: int) -> Recipes:
+        return cls._query_all(filters=[cls.id_category == id_category])
+
+    @classmethod
     def find_all_by_name(cls, name: str) -> Recipes:
         return cls._query_all(filters=[cls.name.icontains(name)])
 
