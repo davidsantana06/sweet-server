@@ -28,7 +28,12 @@ recipe_material_schema = RecipeMaterialSchema(
         title='Material',
         readonly=True
     ),
-    quantity=Integer(title='Quantity', required=True)
+    quantity=Integer(
+        title='Quantity', 
+        required=True,
+        min=1,
+        max=10_000
+    )
 )
 
 recipe_material = api.model('RecipeMaterial', recipe_material_schema)
