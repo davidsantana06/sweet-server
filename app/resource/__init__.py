@@ -5,5 +5,6 @@ from .ingredient import ns as ingredient_ns
 from .material import ns as material_ns
 from .monthly_fee import ns as monthly_fee_ns
 from .payment_method import ns as payment_method_ns
+from .product import ns as product_ns
 from .recipe import ns as recipe_ns
 from .user import ns as user_ns

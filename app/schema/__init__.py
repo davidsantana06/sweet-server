@@ -5,6 +5,7 @@ from .ingredient import *
 from .material import *
 from .monthly_fee import *
 from .payment_method import *
+from .product import *
 from .recipe_ingredient import *
 from .recipe_material import *
 from .recipe import *
