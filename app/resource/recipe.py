@@ -2,6 +2,7 @@ from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
 from app.exception import (
+    category_not_found,
     invalid_payload,
     recipe_ingredient_already_exists,
     recipe_ingredient_not_found,
@@ -27,6 +28,7 @@ class Recipe(Resource):
     @ns.expect(recipe)
     @ns.marshal_with(recipe, code=HTTPStatus.CREATED)
     @ns.response(*invalid_payload)
+    @ns.response(*category_not_found)
     def post(self):
         ''' Create a new recipe '''
         return recipe_service.create(ns.payload), HTTPStatus.CREATED
@@ -44,7 +46,7 @@ class RecipeIngredient(Resource):
     @ns.doc('create_ingredient_rel')
     @ns.expect(recipe_ingredient)
     @ns.marshal_with(recipe_ingredient, code=HTTPStatus.CREATED)
-    @ns.response(HTTPStatus.NOT_FOUND, 'Recipe or ingredient not found')
+    @ns.response(HTTPStatus.NOT_FOUND, 'Ingredient or recipe not found')
     @ns.response(*recipe_ingredient_already_exists)
     def post(self):
         ''' Create a new recipe-ingredient relationship '''
@@ -65,7 +67,7 @@ class RecipeMaterial(Resource):
     @ns.doc('create_material_rel')
     @ns.expect(recipe_material)
     @ns.marshal_with(recipe_material, code=HTTPStatus.CREATED)
-    @ns.response(HTTPStatus.NOT_FOUND, 'Recipe or material not found')
+    @ns.response(HTTPStatus.NOT_FOUND, 'Material or recipe not found')
     @ns.response(*recipe_material_already_exists)
     def post(self):
         ''' Create a new recipe-material relationship '''
@@ -82,10 +84,10 @@ class RecipeMaterial(Resource):
 
 @ns.route('/<int:id>')
 @ns.param('id', 'The recipe identifier')
-@ns.response(*recipe_not_found)
 class RecipeById(Resource):
     @ns.doc('get_one')
     @ns.marshal_with(recipe)
+    @ns.response(*recipe_not_found)
     def get(self, id: int):
         ''' Get a recipe by ID '''
         return recipe_service.get_one_by_id(id)
@@ -94,6 +96,7 @@ class RecipeById(Resource):
     @ns.expect(recipe)
     @ns.marshal_with(recipe)
     @ns.response(*invalid_payload)
+    @ns.response(HTTPStatus.NOT_FOUND, 'Category or recipe not found')
     def put(self, id: int):
         ''' Update a recipe by ID '''
         return recipe_service.update(id, ns.payload)
@@ -112,7 +115,7 @@ class RecipeIngredientById(Resource):
     @ns.doc('get_all_ingredient_rels_by_id')
     @ns.marshal_list_with(recipe_ingredient)
     def get(self, id: int):
-        ''' Get all recipe-ingredient relationships by recipe ID '''
+        ''' Get all recipe-ingredient relationships by (recipe) ID '''
         return recipe_service.get_all_ingredient_rels_by_id(id)
 
 
@@ -141,7 +144,7 @@ class RecipeMaterialById(Resource):
     @ns.doc('get_all_material_rels_by_id')
     @ns.marshal_list_with(recipe_material)
     def get(self, id: int):
-        ''' Get all recipe-material relationships by recipe ID '''
+        ''' Get all recipe-material relationships by (recipe) ID '''
         return recipe_service.get_all_material_rels_by_id(id)
 
 
