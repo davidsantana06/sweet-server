@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource
 
 from app.exception import invalid_payload, user_not_found
 from app.service import user_service
-from app.schema import user_schema
+from app.schema import user
 
 
 ns = Namespace(
@@ -11,7 +11,6 @@ ns = Namespace(
     path='/user',
     validate=True
 )
-user = ns.model('User', user_schema)
 
 
 @ns.route('/')

@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import ingredient_not_found, invalid_payload
 from app.service import ingredient_service
-from app.schema import ingredient_schema
+from app.schema import ingredient
 
 
 ns = Namespace(
@@ -12,7 +12,6 @@ ns = Namespace(
     path='/ingredient',
     validate=True
 )
-ingredient = ns.model('Ingredient', ingredient_schema)
 
 
 @ns.route('/')

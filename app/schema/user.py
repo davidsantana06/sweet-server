@@ -1,6 +1,8 @@
 from flask_restx.fields import Integer, String
 from typing import NotRequired, TypedDict
 
+from app.extension import api
+
 
 class UserSchema(TypedDict):
     id: NotRequired[int]
@@ -16,3 +18,5 @@ user_schema = UserSchema(
         max_length=50
     )
 )
+
+user = api.model('User', user_schema)

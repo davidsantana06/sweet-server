@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import collaborator_not_found, invalid_payload
 from app.service import collaborator_service
-from app.schema import collaborator_schema
+from app.schema import collaborator
 
 
 ns = Namespace(
@@ -12,7 +12,6 @@ ns = Namespace(
     path='/collaborator',
     validate=True
 )
-collaborator = ns.model('Collaborator', collaborator_schema)
 
 
 @ns.route('/')

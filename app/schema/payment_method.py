@@ -1,6 +1,8 @@
 from flask_restx.fields import Integer, String
 from typing import NotRequired, TypedDict
 
+from app.extension import api
+
 
 class PaymentMethodSchema(TypedDict):
     id: NotRequired[int]
@@ -18,3 +20,5 @@ payment_method_schema = PaymentMethodSchema(
     ),
     sales_quantity=Integer(title='Sales quantity', readonly=True)
 )
+
+payment_method = api.model('PaymentMethod', payment_method_schema)

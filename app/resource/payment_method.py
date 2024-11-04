@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import invalid_payload, payment_method_not_found
 from app.service import payment_method_service
-from app.schema import payment_method_schema
+from app.schema import payment_method
 
 
 ns = Namespace(
@@ -11,10 +11,6 @@ ns = Namespace(
     description='Payment method related operations',
     path='/payment-method',
     validate=True
-)
-payment_method = ns.model(
-    'PaymentMethod',
-    payment_method_schema
 )
 
 

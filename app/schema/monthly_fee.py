@@ -1,6 +1,8 @@
 from flask_restx.fields import Float, Integer, String
 from typing import NotRequired, TypedDict
 
+from app.extension import api
+
 
 class MonthlyFeeSchema(TypedDict):
     id: NotRequired[int]
@@ -34,3 +36,5 @@ monthly_fee_schema = MonthlyFeeSchema(
         max_length=1_000
     )
 )
+
+monthly_fee = api.model('MonthlyFee', monthly_fee_schema)

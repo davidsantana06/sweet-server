@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import category_not_found, invalid_payload
 from app.service import category_service
-from app.schema import category_schema
+from app.schema import category
 
 
 ns = Namespace(
@@ -12,7 +12,6 @@ ns = Namespace(
     path='/category',
     validate=True
 )
-category = ns.model('Category', category_schema)
 
 
 @ns.route('/')

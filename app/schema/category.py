@@ -1,6 +1,8 @@
 from flask_restx.fields import Integer, String
 from typing import NotRequired, TypedDict
 
+from app.extension import api
+
 
 class CategorySchema(TypedDict):
     id: NotRequired[int]
@@ -16,3 +18,5 @@ category_schema = CategorySchema(
         max_length=100
     )
 )
+
+category = api.model('Category', category_schema)

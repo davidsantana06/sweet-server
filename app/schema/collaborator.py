@@ -1,6 +1,8 @@
 from flask_restx.fields import Float, Integer, String
 from typing import NotRequired, TypedDict
 
+from app.extension import api
+
 
 class CollaboratorSchema(TypedDict):
     id: NotRequired[int]
@@ -29,3 +31,5 @@ collaborator_schema = CollaboratorSchema(
         max_length=1_000
     )
 )
+
+collaborator = api.model('Collaborator', collaborator_schema)

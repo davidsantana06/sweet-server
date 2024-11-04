@@ -1,6 +1,8 @@
 from flask_restx.fields import Integer, String
 from typing import NotRequired, TypedDict
 
+from app.extension import api
+
 
 _PHONE_REGEX = r'^\(\d{2}\) 9\d{4}-\d{4}$'
 ''' (00) 00000-0000 '''
@@ -42,3 +44,5 @@ customer_schema = CustomerSchema(
         max_length=1_000
     )
 )
+
+customer = api.model('Customer', customer_schema)

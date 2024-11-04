@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import customer_not_found, invalid_payload
 from app.service import customer_service
-from app.schema import customer_schema
+from app.schema import customer
 
 
 ns = Namespace(
@@ -12,7 +12,6 @@ ns = Namespace(
     path='/customer',
     validate=True
 )
-customer = ns.model('Customer', customer_schema)
 
 
 @ns.route('/')

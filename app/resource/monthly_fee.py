@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import invalid_payload, monthly_fee_not_found
 from app.service import monthly_fee_service
-from app.schema import monthly_fee_schema
+from app.schema import monthly_fee
 
 
 ns = Namespace(
@@ -12,7 +12,6 @@ ns = Namespace(
     path='/monthly_fee',
     validate=True
 )
-monthly_fee = ns.model('MonthlyFee', monthly_fee_schema)
 
 
 @ns.route('/')

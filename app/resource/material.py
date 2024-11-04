@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import invalid_payload, material_not_found
 from app.service import material_service
-from app.schema import material_schema
+from app.schema import material
 
 
 ns = Namespace(
@@ -12,7 +12,6 @@ ns = Namespace(
     path='/material',
     validate=True
 )
-material = ns.model('Material', material_schema)
 
 
 @ns.route('/')
