@@ -12,7 +12,7 @@ class MonthlyFeeSchema(TypedDict):
     description: str
 
 
-monthly_fee_schema = MonthlyFeeSchema(
+monthly_fee_schema = api.model('MonthlyFee', MonthlyFeeSchema(
     id=Integer(title='ID', readonly=True),
     name=String(
         title='Name',
@@ -35,6 +35,4 @@ monthly_fee_schema = MonthlyFeeSchema(
         required=True,
         max_length=1_000
     )
-)
-
-monthly_fee = api.model('MonthlyFee', monthly_fee_schema)
+))

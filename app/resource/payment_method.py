@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import invalid_payload, payment_method_not_found
 from app.service import payment_method_service
-from app.schema import payment_method
+from app.schema import payment_method_schema
 
 
 ns = Namespace(
@@ -17,15 +17,15 @@ ns = Namespace(
 @ns.route('/')
 class PaymentMethod(Resource):
     @ns.doc('create')
-    @ns.expect(payment_method)
-    @ns.marshal_with(payment_method, code=HTTPStatus.CREATED)
+    @ns.expect(payment_method_schema)
+    @ns.marshal_with(payment_method_schema, code=HTTPStatus.CREATED)
     @ns.response(*invalid_payload)
     def post(self):
         ''' Create a new payment method '''
         return payment_method_service.create(ns.payload), HTTPStatus.CREATED
 
     @ns.doc('get_all')
-    @ns.marshal_list_with(payment_method)
+    @ns.marshal_list_with(payment_method_schema)
     def get(self):
         ''' Get all payment methods '''
         return payment_method_service.get_all()
@@ -36,14 +36,14 @@ class PaymentMethod(Resource):
 @ns.response(*payment_method_not_found)
 class PaymentMethodById(Resource):
     @ns.doc('get_one')
-    @ns.marshal_with(payment_method)
+    @ns.marshal_with(payment_method_schema)
     def get(self, id: int):
         ''' Get a payment method by ID '''
         return payment_method_service.get_one_by('id', id)
 
     @ns.doc('update')
-    @ns.expect(payment_method)
-    @ns.marshal_with(payment_method)
+    @ns.expect(payment_method_schema)
+    @ns.marshal_with(payment_method_schema)
     @ns.response(*invalid_payload)
     def put(self, id: int):
         ''' Update a payment method by ID '''

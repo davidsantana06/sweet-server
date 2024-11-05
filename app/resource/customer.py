@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import customer_not_found, invalid_payload
 from app.service import customer_service
-from app.schema import customer
+from app.schema import customer_schema
 
 
 ns = Namespace(
@@ -17,15 +17,15 @@ ns = Namespace(
 @ns.route('/')
 class Customer(Resource):
     @ns.doc('create')
-    @ns.expect(customer)
-    @ns.marshal_with(customer, code=HTTPStatus.CREATED)
+    @ns.expect(customer_schema)
+    @ns.marshal_with(customer_schema, code=HTTPStatus.CREATED)
     @ns.response(*invalid_payload)
     def post(self):
         ''' Create a new customer '''
         return customer_service.create(ns.payload), HTTPStatus.CREATED
 
     @ns.doc('get_all')
-    @ns.marshal_list_with(customer)
+    @ns.marshal_list_with(customer_schema)
     def get(self):
         ''' Get all customers '''
         return customer_service.get_all()
@@ -36,14 +36,14 @@ class Customer(Resource):
 @ns.response(*customer_not_found)
 class CustomerById(Resource):
     @ns.doc('get_one')
-    @ns.marshal_with(customer)
+    @ns.marshal_with(customer_schema)
     def get(self, id: int):
         ''' Get a customer by ID '''
         return customer_service.get_one_by_id(id)
 
     @ns.doc('update')
-    @ns.expect(customer)
-    @ns.marshal_with(customer)
+    @ns.expect(customer_schema)
+    @ns.marshal_with(customer_schema)
     @ns.response(*invalid_payload)
     def put(self, id: int):
         ''' Update a customer by ID '''
@@ -61,7 +61,7 @@ class CustomerById(Resource):
 @ns.param('name', 'The customer name')
 class CustomerByName(Resource):
     @ns.doc('get_all_by_name')
-    @ns.marshal_list_with(customer)
+    @ns.marshal_list_with(customer_schema)
     def get(self, name: str):
         ''' Get all customers by name '''
         return customer_service.get_all_by_name(name)

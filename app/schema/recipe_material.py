@@ -3,8 +3,8 @@ from typing import NotRequired, TypedDict
 
 from app.extension import api
 
-from .material import MaterialSchema, material
-from .recipe import RecipeSchema, recipe
+from .material import MaterialSchema, material_schema
+from .recipe import RecipeSchema, recipe_schema
 
 
 class RecipeMaterialSchema(TypedDict):
@@ -15,25 +15,23 @@ class RecipeMaterialSchema(TypedDict):
     quantity: int
 
 
-recipe_material_schema = RecipeMaterialSchema(
+recipe_material_schema = api.model('RecipeMaterial', RecipeMaterialSchema(
     id_recipe=Integer(title='Recipe ID', required=True),
     recipe=Nested(
-        recipe,
+        recipe_schema,
         title='Recipe',
         readonly=True
     ),
     id_material=Integer(title='Material ID', required=True),
     material=Nested(
-        material,
+        material_schema,
         title='Material',
         readonly=True
     ),
     quantity=Integer(
-        title='Quantity', 
+        title='Quantity',
         required=True,
         min=1,
         max=10_000
     )
-)
-
-recipe_material = api.model('RecipeMaterial', recipe_material_schema)
+))

@@ -3,8 +3,8 @@ from typing import NotRequired, TypedDict
 
 from app.extension import api
 
-from .collaborator import CollaboratorSchema, collaborator
-from .recipe import RecipeSchema, recipe
+from .collaborator import CollaboratorSchema, collaborator_schema
+from .recipe import RecipeSchema, recipe_schema
 
 
 class ProductSchema(TypedDict):
@@ -24,17 +24,17 @@ class ProductSchema(TypedDict):
     sell_value: NotRequired[float]
 
 
-product_schema = ProductSchema(
+product_schema = api.model('Product', ProductSchema(
     id=Integer(title='ID', readonly=True),
     id_recipe=Integer(title='Recipe ID', required=True),
     recipe=Nested(
-        recipe,
+        recipe_schema,
         title='Recipe',
         readonly=True
     ),
     id_collaborator=Integer(title='Collaborator ID', required=True),
     collaborator=Nested(
-        collaborator,
+        collaborator_schema,
         title='Collaborator',
         readonly=True
     ),
@@ -82,6 +82,4 @@ product_schema = ProductSchema(
         title='Sell value',
         readonly=True
     )
-)
-
-product = api.model('Product', product_schema)
+))

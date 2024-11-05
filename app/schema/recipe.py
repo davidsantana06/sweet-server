@@ -3,7 +3,7 @@ from typing import NotRequired, TypedDict
 
 from app.extension import api
 
-from .category import CategorySchema, category
+from .category import CategorySchema, category_schema
 
 
 class RecipeSchema(TypedDict):
@@ -18,11 +18,11 @@ class RecipeSchema(TypedDict):
     materials_value: NotRequired[float]
 
 
-recipe_schema = RecipeSchema(
+recipe_schema = api.model('Recipe', RecipeSchema(
     id=Integer(title='ID', readonly=True),
     id_category=Integer(title='Category ID', required=True),
     category=Nested(
-        category,
+        category_schema,
         title='Category',
         readonly=True
     ),
@@ -47,6 +47,4 @@ recipe_schema = RecipeSchema(
     ),
     ingredients_value=Float(title='Ingredients value', readonly=True),
     materials_value=Float(title='Materials value', readonly=True)
-)
-
-recipe = api.model('Recipe', recipe_schema)
+))

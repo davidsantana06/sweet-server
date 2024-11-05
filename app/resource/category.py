@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from app.exception import category_not_found, invalid_payload
 from app.service import category_service
-from app.schema import category
+from app.schema import category_schema
 
 
 ns = Namespace(
@@ -17,15 +17,15 @@ ns = Namespace(
 @ns.route('/')
 class Category(Resource):
     @ns.doc('create')
-    @ns.expect(category)
-    @ns.marshal_with(category, code=HTTPStatus.CREATED)
+    @ns.expect(category_schema)
+    @ns.marshal_with(category_schema, code=HTTPStatus.CREATED)
     @ns.response(*invalid_payload)
     def post(self):
         ''' Create a new category '''
         return category_service.create(ns.payload), HTTPStatus.CREATED
 
     @ns.doc('get_all')
-    @ns.marshal_list_with(category)
+    @ns.marshal_list_with(category_schema)
     def get(self):
         ''' Get all categories '''
         return category_service.get_all()
@@ -36,14 +36,14 @@ class Category(Resource):
 @ns.response(*category_not_found)
 class CategoryById(Resource):
     @ns.doc('get_one')
-    @ns.marshal_with(category)
+    @ns.marshal_with(category_schema)
     def get(self, id: int):
         ''' Get a category by ID '''
         return category_service.get_one_by('id', id)
 
     @ns.doc('update')
-    @ns.expect(category)
-    @ns.marshal_with(category)
+    @ns.expect(category_schema)
+    @ns.marshal_with(category_schema)
     @ns.response(*invalid_payload)
     def put(self, id: int):
         ''' Update a category by ID '''

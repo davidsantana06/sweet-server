@@ -11,7 +11,11 @@ from app.exception import (
     recipe_not_found
 )
 from app.service import recipe_service
-from app.schema import recipe, recipe_ingredient, recipe_material
+from app.schema import (
+    recipe_ingredient_schema,
+    recipe_material_schema,
+    recipe_schema
+)
 
 
 ns = Namespace(
@@ -25,8 +29,8 @@ ns = Namespace(
 @ns.route('/')
 class Recipe(Resource):
     @ns.doc('create')
-    @ns.expect(recipe)
-    @ns.marshal_with(recipe, code=HTTPStatus.CREATED)
+    @ns.expect(recipe_schema)
+    @ns.marshal_with(recipe_schema, code=HTTPStatus.CREATED)
     @ns.response(*invalid_payload)
     @ns.response(*category_not_found)
     def post(self):
@@ -34,7 +38,7 @@ class Recipe(Resource):
         return recipe_service.create(ns.payload), HTTPStatus.CREATED
 
     @ns.doc('get_all')
-    @ns.marshal_list_with(recipe)
+    @ns.marshal_list_with(recipe_schema)
     def get(self):
         ''' Get all recipes '''
         return recipe_service.get_all()
@@ -44,8 +48,8 @@ class Recipe(Resource):
 @ns.response(*invalid_payload)
 class RecipeIngredient(Resource):
     @ns.doc('create_ingredient_rel')
-    @ns.expect(recipe_ingredient)
-    @ns.marshal_with(recipe_ingredient, code=HTTPStatus.CREATED)
+    @ns.expect(recipe_ingredient_schema)
+    @ns.marshal_with(recipe_ingredient_schema, code=HTTPStatus.CREATED)
     @ns.response(HTTPStatus.NOT_FOUND, 'Ingredient or recipe not found')
     @ns.response(*recipe_ingredient_already_exists)
     def post(self):
@@ -53,8 +57,8 @@ class RecipeIngredient(Resource):
         return recipe_service.create_ingredient_rel(ns.payload), HTTPStatus.CREATED
 
     @ns.doc('update_ingredient_rel')
-    @ns.expect(recipe_ingredient)
-    @ns.marshal_with(recipe_ingredient)
+    @ns.expect(recipe_ingredient_schema)
+    @ns.marshal_with(recipe_ingredient_schema)
     @ns.response(*recipe_ingredient_not_found)
     def put(self):
         ''' Update a recipe-ingredient relationship '''
@@ -65,8 +69,8 @@ class RecipeIngredient(Resource):
 @ns.response(*invalid_payload)
 class RecipeMaterial(Resource):
     @ns.doc('create_material_rel')
-    @ns.expect(recipe_material)
-    @ns.marshal_with(recipe_material, code=HTTPStatus.CREATED)
+    @ns.expect(recipe_material_schema)
+    @ns.marshal_with(recipe_material_schema, code=HTTPStatus.CREATED)
     @ns.response(HTTPStatus.NOT_FOUND, 'Material or recipe not found')
     @ns.response(*recipe_material_already_exists)
     def post(self):
@@ -74,8 +78,8 @@ class RecipeMaterial(Resource):
         return recipe_service.create_material_rel(ns.payload), HTTPStatus.CREATED
 
     @ns.doc('update_material_rel')
-    @ns.expect(recipe_material)
-    @ns.marshal_with(recipe_material)
+    @ns.expect(recipe_material_schema)
+    @ns.marshal_with(recipe_material_schema)
     @ns.response(*recipe_material_not_found)
     def put(self):
         ''' Update a recipe-material relationship '''
@@ -86,15 +90,15 @@ class RecipeMaterial(Resource):
 @ns.param('id', 'The recipe identifier')
 class RecipeById(Resource):
     @ns.doc('get_one')
-    @ns.marshal_with(recipe)
+    @ns.marshal_with(recipe_schema)
     @ns.response(*recipe_not_found)
     def get(self, id: int):
         ''' Get a recipe by ID '''
         return recipe_service.get_one_by_id(id)
 
     @ns.doc('update')
-    @ns.expect(recipe)
-    @ns.marshal_with(recipe)
+    @ns.expect(recipe_schema)
+    @ns.marshal_with(recipe_schema)
     @ns.response(*invalid_payload)
     @ns.response(HTTPStatus.NOT_FOUND, 'Category or recipe not found')
     def put(self, id: int):
@@ -113,7 +117,7 @@ class RecipeById(Resource):
 @ns.param('id', 'The recipe identifier')
 class RecipeIngredientById(Resource):
     @ns.doc('get_all_ingredient_rels_by_id')
-    @ns.marshal_list_with(recipe_ingredient)
+    @ns.marshal_list_with(recipe_ingredient_schema)
     def get(self, id: int):
         ''' Get all recipe-ingredient relationships by (recipe) ID '''
         return recipe_service.get_all_ingredient_rels_by_id(id)
@@ -125,7 +129,7 @@ class RecipeIngredientById(Resource):
 @ns.response(*recipe_ingredient_not_found)
 class RecipeIngredientByIds(Resource):
     @ns.doc('get_one_ingredient_rel_by_ids')
-    @ns.marshal_with(recipe_ingredient)
+    @ns.marshal_with(recipe_ingredient_schema)
     def get(self, id: int, id_ingredient: int):
         ''' Get a recipe-ingredient relationship by (recipe) ID and ingredient ID '''
         return recipe_service.get_one_ingredient_rel_by_ids(id, id_ingredient)
@@ -142,7 +146,7 @@ class RecipeIngredientByIds(Resource):
 @ns.param('id', 'The recipe identifier')
 class RecipeMaterialById(Resource):
     @ns.doc('get_all_material_rels_by_id')
-    @ns.marshal_list_with(recipe_material)
+    @ns.marshal_list_with(recipe_material_schema)
     def get(self, id: int):
         ''' Get all recipe-material relationships by (recipe) ID '''
         return recipe_service.get_all_material_rels_by_id(id)
@@ -154,7 +158,7 @@ class RecipeMaterialById(Resource):
 @ns.response(*recipe_material_not_found)
 class RecipeMaterialByIds(Resource):
     @ns.doc('get_one_material_rel_by_ids')
-    @ns.marshal_with(recipe_material)
+    @ns.marshal_with(recipe_material_schema)
     def get(self, id: int, id_material: int):
         ''' Get a recipe-material relationship by (recipe) ID and material ID '''
         return recipe_service.get_one_material_rel_by_ids(id, id_material)
@@ -171,7 +175,7 @@ class RecipeMaterialByIds(Resource):
 @ns.param('id_category', 'The category identifier')
 class RecipeByCategory(Resource):
     @ns.doc('get_all_by_id_category')
-    @ns.marshal_list_with(recipe)
+    @ns.marshal_list_with(recipe_schema)
     def get(self, id_category: int):
         ''' Get all recipes by category ID '''
         return recipe_service.get_all_by_id_category(id_category)
@@ -181,7 +185,7 @@ class RecipeByCategory(Resource):
 @ns.param('name', 'The recipe name')
 class RecipeByName(Resource):
     @ns.doc('get_all_by_name')
-    @ns.marshal_list_with(recipe)
+    @ns.marshal_list_with(recipe_schema)
     def get(self, name: str):
         ''' Get all recipes by name '''
         return recipe_service.get_all_by_name(name)

@@ -19,7 +19,7 @@ class CustomerSchema(TypedDict):
     notes: str
 
 
-customer_schema = CustomerSchema(
+customer_schema = api.model('Customer', CustomerSchema(
     id=Integer(title='ID', readonly=True),
     name=String(
         title='Name',
@@ -43,6 +43,4 @@ customer_schema = CustomerSchema(
         required=True,
         max_length=1_000
     )
-)
-
-customer = api.model('Customer', customer_schema)
+))

@@ -10,7 +10,7 @@ class PaymentMethodSchema(TypedDict):
     sales_quantity: NotRequired[int]
 
 
-payment_method_schema = PaymentMethodSchema(
+payment_method_schema = api.model('PaymentMethod', PaymentMethodSchema(
     id=Integer(title='ID', readonly=True),
     name=String(
         title='Name',
@@ -19,6 +19,4 @@ payment_method_schema = PaymentMethodSchema(
         max_length=50
     ),
     sales_quantity=Integer(title='Sales quantity', readonly=True)
-)
-
-payment_method = api.model('PaymentMethod', payment_method_schema)
+))

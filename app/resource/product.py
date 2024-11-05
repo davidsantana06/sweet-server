@@ -6,7 +6,7 @@ from app.exception import (
     product_not_found,
 )
 from app.service import product_service
-from app.schema import product
+from app.schema import product_schema
 
 
 ns = Namespace(
@@ -20,8 +20,8 @@ ns = Namespace(
 @ns.route('/')
 class Product(Resource):
     @ns.doc('create')
-    @ns.expect(product)
-    @ns.marshal_with(product, code=HTTPStatus.CREATED)
+    @ns.expect(product_schema)
+    @ns.marshal_with(product_schema, code=HTTPStatus.CREATED)
     @ns.response(*invalid_payload)
     @ns.response(HTTPStatus.NOT_FOUND, 'Collaborator or recipe not found')
     def post(self):
@@ -29,7 +29,7 @@ class Product(Resource):
         return product_service.create(ns.payload), HTTPStatus.CREATED
 
     @ns.doc('get_all')
-    @ns.marshal_list_with(product)
+    @ns.marshal_list_with(product_schema)
     def get(self):
         ''' Get all products '''
         return product_service.get_all()
@@ -39,15 +39,15 @@ class Product(Resource):
 @ns.param('id', 'The product identifier')
 class ProductById(Resource):
     @ns.doc('get_one')
-    @ns.marshal_with(product)
+    @ns.marshal_with(product_schema)
     @ns.response(*product_not_found)
     def get(self, id):
         ''' Get a product by ID '''
         return product_service.get_one_by_id(id)
 
     @ns.doc('update')
-    @ns.expect(product)
-    @ns.marshal_with(product)
+    @ns.expect(product_schema)
+    @ns.marshal_with(product_schema)
     @ns.response(*invalid_payload)
     @ns.response(HTTPStatus.NOT_FOUND, 'Collaborator, product or recipe not found')
     def put(self, id):
@@ -67,7 +67,7 @@ class ProductById(Resource):
 @ns.param('id_sale', 'The sale identifier')
 class ProductByIdSale(Resource):
     @ns.doc('get_all_unrelated_to_sale')
-    @ns.marshal_list_with(product)
+    @ns.marshal_list_with(product_schema)
     def get(self, id_sale):
         ''' Get all products unrelated to a sale by its ID '''
         return product_service.get_all_unrelated_to_sale(id_sale)
@@ -77,7 +77,7 @@ class ProductByIdSale(Resource):
 @ns.param('name', 'The product name')
 class ProductByName(Resource):
     @ns.doc('get_all_by_name')
-    @ns.marshal_with(product)
+    @ns.marshal_with(product_schema)
     def get(self, name):
         ''' Get all products by name '''
         return product_service.get_all_by_name(name)

@@ -9,7 +9,7 @@ class CategorySchema(TypedDict):
     name: str
 
 
-category_schema = CategorySchema(
+category_schema = api.model('Category', CategorySchema(
     id=Integer(title='ID', readonly=True),
     name=String(
         title='Name',
@@ -17,6 +17,4 @@ category_schema = CategorySchema(
         min_length=1,
         max_length=100
     )
-)
-
-category = api.model('Category', category_schema)
+))

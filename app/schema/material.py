@@ -9,9 +9,7 @@ class MaterialSchema(SupplyInfoSchema, SupplyStockSchema):
     ...
 
 
-material_schema = MaterialSchema(
+material_schema = api.model('Material', MaterialSchema(
     **supply_info_schema,
     **supply_stock_schema
-)
-
-material = api.model('Material', material_schema)
+))

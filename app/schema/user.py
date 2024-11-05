@@ -9,7 +9,7 @@ class UserSchema(TypedDict):
     name: str
 
 
-user_schema = UserSchema(
+user_schema = api.model('User', UserSchema(
     id=Integer(title='ID', readonly=True),
     name=String(
         title='Name',
@@ -17,6 +17,4 @@ user_schema = UserSchema(
         min_length=1,
         max_length=50
     )
-)
-
-user = api.model('User', user_schema)
+))

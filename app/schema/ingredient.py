@@ -10,15 +10,13 @@ class IngredientSchema(SupplyInfoSchema, SupplyStockSchema):
     weight: int
 
 
-ingredient_schema = IngredientSchema(
+ingredient_schema = api.model('Ingredient', IngredientSchema(
     **supply_info_schema,
     weight=Integer(
-        title='Weight in grams', 
+        title='Weight in grams',
         required=True,
         min=1,
         max=10_000
     ),
     **supply_stock_schema
-)
-
-ingredient = api.model('Ingredient', ingredient_schema)
+))

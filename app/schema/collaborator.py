@@ -11,7 +11,7 @@ class CollaboratorSchema(TypedDict):
     notes: str
 
 
-collaborator_schema = CollaboratorSchema(
+collaborator_schema = api.model('Collaborator', CollaboratorSchema(
     id=Integer(title='ID', readonly=True),
     name=String(
         title='Name',
@@ -30,6 +30,4 @@ collaborator_schema = CollaboratorSchema(
         required=True,
         max_length=1_000
     )
-)
-
-collaborator = api.model('Collaborator', collaborator_schema)
+))
