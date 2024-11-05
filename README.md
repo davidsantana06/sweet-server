@@ -1,6 +1,6 @@
 ### 🧁 Sweet Server
 
-Sweet Server is a REST API server designed for managing a confectionery business. It includes the necessary modules to handle all relevant information, such as stock, recipes, products, monthly fees, employees, customers, and sales.
+Sweet Server is a REST API server designed for managing a confectionery business. It includes the necessary modules to handle all relevant information, such as stock, recipes, products, monthly fees, collaborators, customers, and sales.
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
@@ -35,13 +35,18 @@ This process can be performed within a virtual environment.
 
 #### 🗃️ Essential Data Creation
 
-The essential data can be found in `storage\setup.json`. This file contains the following keys:
+The essential data can be found in `storage\setup\`. This file contains the following keys:
 
-- `"category_names"` - A list containing the names of recipe categories;
-- `"payment_method_names"` - A list containing the names of accepted payment methods;
-- `"default_collaborator_data"` - An object with the default collaborator data, without remuneration.
+- `default_categories.json` - A list containing the names of recipe categories;
+- `default_collaborator.json` - An object with the default collaborator data, without remuneration.
+- `default_payment_methods.json` - A list containing the names of accepted payment methods;
+- `user.json` - An object containing the the user's name.
 
 The keys have their default values and can be customized as needed, as long as the format is respected.
+
+### 📚 Docs
+
+The documentation is generated in the Swagger format using Flask-RESTx and is available at the base URL (`/`). For local testing, access `http://localhost:5000/`.
 
 ### ⚖️ License
 
