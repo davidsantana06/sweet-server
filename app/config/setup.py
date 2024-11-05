@@ -55,7 +55,16 @@ def _setup_database(app: Flask) -> None:
 
 
 def _setup_api(app: Flask) -> None:
-    api.init_app(app)
+    api.init_app(
+        app,
+        title='Sweet Server',
+        description=(
+            'Server designed for managing a confectionery business. '
+            'It includes the necessary modules to handle all relevant '
+            'information, such as stock, recipes, products, monthly fees, '
+            'collaborators, customers, and sales.'
+        )
+    )
     api.add_namespace(category_ns)
     api.add_namespace(collaborator_ns)
     api.add_namespace(customer_ns)
