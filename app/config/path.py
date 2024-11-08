@@ -10,7 +10,7 @@ ENV_FILE = ROOT_DIR / '.env'
 STORAGE_DIR = ROOT_DIR / 'storage'
 ''' /storage/ '''
 
-DATABASE_FILE = STORAGE_DIR / 'database.sqlite3'
+SQLITE_FILE = STORAGE_DIR / 'database.sqlite3'
 ''' /storage/database.sqlite3 '''
 
 SETUP_DIR = STORAGE_DIR / 'setup'
