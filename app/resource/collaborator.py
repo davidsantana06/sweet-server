@@ -2,8 +2,8 @@ from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
 from app.exception import collaborator_not_found, invalid_payload
-from app.service import collaborator_service
 from app.schema import collaborator_schema
+from app.service import collaborator_service
 
 
 ns = Namespace(

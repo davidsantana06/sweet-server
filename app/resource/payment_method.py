@@ -2,8 +2,8 @@ from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
 from app.exception import invalid_payload, payment_method_not_found
-from app.service import payment_method_service
 from app.schema import payment_method_schema
+from app.service import payment_method_service
 
 
 ns = Namespace(

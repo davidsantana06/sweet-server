@@ -2,8 +2,8 @@ from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
 from app.exception import invalid_payload, monthly_fee_not_found
-from app.service import monthly_fee_service
 from app.schema import monthly_fee_schema
+from app.service import monthly_fee_service
 
 
 ns = Namespace(

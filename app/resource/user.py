@@ -1,8 +1,8 @@
 from flask_restx import Namespace, Resource
 
 from app.exception import invalid_payload, user_not_found
-from app.service import user_service
 from app.schema import user_schema
+from app.service import user_service
 
 
 ns = Namespace(

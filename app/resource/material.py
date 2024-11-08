@@ -2,8 +2,8 @@ from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
 from app.exception import invalid_payload, material_not_found
-from app.service import material_service
 from app.schema import material_schema
+from app.service import material_service
 
 
 ns = Namespace(
@@ -65,7 +65,7 @@ class MaterialByIdRecipe(Resource):
     def get(self, id_recipe: int):
         ''' Get all materials unrelated to a recipe by its ID '''
         return material_service.get_all_unrelated_to_recipe(id_recipe)
-    
+
 
 @ns.route('/search/<string:name>')
 @ns.param('name', 'The material name')

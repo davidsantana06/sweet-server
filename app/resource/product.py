@@ -1,12 +1,9 @@
 from flask_restx import Namespace, Resource
 from http import HTTPStatus
 
-from app.exception import (
-    invalid_payload,
-    product_not_found,
-)
-from app.service import product_service
+from app.exception import invalid_payload, product_not_found
 from app.schema import product_schema
+from app.service import product_service
 
 
 ns = Namespace(

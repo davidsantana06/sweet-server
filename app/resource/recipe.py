@@ -10,12 +10,12 @@ from app.exception import (
     recipe_material_not_found,
     recipe_not_found
 )
-from app.service import recipe_service
 from app.schema import (
     recipe_ingredient_schema,
     recipe_material_schema,
     recipe_schema
 )
+from app.service import recipe_service
 
 
 ns = Namespace(
