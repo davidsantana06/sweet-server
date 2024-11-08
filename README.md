@@ -28,7 +28,16 @@ git clone https://github.com/davidsantana06/sweet-server
 
 Once you have the files, create a `.env` file based on the template provided in `.env.example`. In this file, specify the following fields:
 
-- `SECRET_KEY` — A secret key, which should be long and contain multiple characters.
+- `DATABASE_URI` (*optional*) — The URI to connect to your database, in the format:
+  - `<dialect>`: Type (e.g., `postgresql`, `mysql`).
+  - `<username>`: Username.
+  - `<password>`: Password.
+  - `<host>`: Host.
+  - `<port>`: Port.
+  - `<database>`: Database name.
+
+  If not specified, the application will default to using a local SQLite database.
+
 - `ALLOWED_HOSTS` — A space-separated list of addresses (or domains) allowed to make requests to the server.
 
 Next, install the application dependencies with the following command:
