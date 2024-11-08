@@ -5,7 +5,10 @@ from app.service import collaborator_service, recipe_service
 
 
 def create(data: ProductSchema) -> Product:
-    collaborator_service.get_one_by_id(data['id_collaborator'])
+    collaborator_service.get_one_by_id(
+        data['id_collaborator'],
+        except_default=False
+    )
     recipe_service.get_one_by_id(data['id_recipe'])
     product = Product(**data)
     Product.save(product)
@@ -32,7 +35,10 @@ def get_one_by_id(id: int) -> Product:
 
 
 def update(id: int, data: ProductSchema) -> Product:
-    collaborator_service.get_one_by_id(data['id_collaborator'])
+    collaborator_service.get_one_by_id(
+        data['id_collaborator'],
+        except_default=False
+    )
     recipe_service.get_one_by_id(data['id_recipe'])
     product = get_one_by_id(id)
     product.update(data)
