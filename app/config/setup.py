@@ -93,9 +93,9 @@ def _get_setup_data(file_path: Path) -> object:
 
 
 def _create_default_categories(data: List[CategorySchema]) -> None:
-    for category in data:
-        try: category_service.get_one_by(category['name'])
-        except: category_service.create(category)
+    for schema in data:
+        try: category_service.get_one_by('name', schema['name'])
+        except: category_service.create(schema)
 
 
 def _create_default_collaborator(data: CollaboratorSchema) -> None:
@@ -104,9 +104,9 @@ def _create_default_collaborator(data: CollaboratorSchema) -> None:
 
 
 def _create_default_payment_methods(data: List[PaymentMethodSchema]) -> None:
-    for payment_method in data:
-        try: payment_method_service.get_one_by(payment_method['name'])
-        except: payment_method_service.create(payment_method)
+    for schema in data:
+        try: payment_method_service.get_one_by('name', schema['name'])
+        except: payment_method_service.create(schema)
 
 
 def _create_user(data: UserSchema) -> None:
